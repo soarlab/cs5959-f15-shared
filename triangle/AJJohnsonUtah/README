@@ -7,4 +7,6 @@ This project is a simple triangle classifier that takes three ordered pairs as i
 
 My test file (triangle_test.py) is the first python script I've ever written, so be kind. It will run several tests to determine the correctness of the triangle classifier executable, and report the results of the tests. Adding the flag "-v" will make the tests verbose to show more information during testing.
 
+To run the program, use the "make" command, and then "./triangle ...". To run the tests, use the command "python triangle_test.py" with the optional -v flag, for more verbose tests.
+
 Note: My triangle classifier's response to floating point input is undefined.
