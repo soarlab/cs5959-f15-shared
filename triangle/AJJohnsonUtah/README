@@ -1,0 +1,10 @@
+August, 2015
+University of Utah - CS 5959
+
+Author: AJ Johnson
+
+This project is a simple triangle classifier that takes three ordered pairs as inputs, and outputs the type of triangle (if the points make a triangle) that the three points make. My classifier does not make use of any floating point numbers, by using a derivative of the Law of Cosines (let's be honest, it's just the Pythagorean theorem) to determine the type of angle (obtuse, right or acute), using the Shoelace formula to determine if the points form a triangle, and finally by comparing side lengths to determine if the triangle is equilateral, isosceles or scalene.
+
+My test file (triangle_test.py) is the first python script I've ever written, so be kind. It will run several tests to determine the correctness of the triangle classifier executable, and report the results of the tests. Adding the flag "-v" will make the tests verbose to show more information during testing.
+
+Note: My triangle classifier's response to floating point input is undefined.
