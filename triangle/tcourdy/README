@@ -1,0 +1,16 @@
+Triangle Classifier:
+
+*Type 'make' to make the triangle executable.
+
+*The triangle classifier takes 6 command line arguments which ultimately represent 3 points in coordinate space.
+
+*The maximum allowed integer value is 1073741823 and the minimum is -1073741823
+
+*To run the testing script type 'python testing_script.py' (This assumes you have python installed)
+
+*The output of this program will match the following regex:
+(((scalene|isosceles|equilateral) (acute|obtuse|right))|not a triangle|error)\n
+
+*You will receive 'error' if you don't provide proper command line args.
+
+*You will receive 'not a triangle' if the points you provide are colinear.
