@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <limits.h>
+#include <string.h>
 
 /*note extra space after type of triangle to match regex
 and new line after angles and errors;*/
@@ -75,10 +76,11 @@ int main(int argc, char *argv[]){
 }
 
 long convert(char *arg){
-  char *end;
-  long l = strtol(arg, &end, 10);
+  char *end = "\0";
+  long l;
   errno = 0;
-  if(errno){
+  l = strtol(arg, &end, 10);
+  if(errno || strcmp(end, "\0")){
     printf(ERROR);
     exit(0);
   } else if(l > MAX || l < MIN){
