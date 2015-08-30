@@ -1,0 +1,56 @@
+========================================================================
+Taylor Wilson
+U0323893
+
+CS 5959 Writing Solid Code, Fall 2014
+Triangle Classifier Assignment
+
+August 25, 2015
+========================================================================
+
+
+========================================================================
+TO RUN:
+
+Commands for compiling and executing this program are provided in the
+accompanied Makefile. 
+
+	make 					cleans and compiles triangle.c
+	make triangle 			compiles triangle.c
+	make test 				cleans, compiles triangle.c and runs tests
+	make testv 				same as test but with unittest verbose on
+	make clean 				removes executable
+
+========================================================================
+TEST CASES:
+
+Test cases were written in Python using Python's unittest. To execute:
+
+	python triangle_test.py
+	python triangle_test.py -v
+
+	*OR USE*
+
+	make test
+	make testv
+
+========================================================================
+NOTES:
+
+To avoid overflow, I used unsigned 64-bit integers. This however created
+some difficulty keeping track of coordinates in (x,y) quadrants other
+than quadrant 1. I decided to use a seperate integer for each unsigned
+coordinate value to represent the sign of the value. When computing 
+length or slope between two points, I translated both points to the same
+quadrant and then performed Pythagorean's theorem. I kept slopes in the
+form of two unsigned 64-bit integers (numerator and denominator). I then
+used Euclid's algorithm for reducing the fractions of each slope. I used
+slopes to determine if the the points A, B, C of triangle ABC formed a 
+vertical line, horizontal line, or diagonal line. I used lengths to 
+determine the classification of the triangle. Lengths in in the form:
+
+	a^2 + b^2 = c^2
+
+were kept in their squared value so as to avoid square root functions.
+
+========================================================================
