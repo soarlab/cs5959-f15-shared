@@ -14,3 +14,5 @@ Triangle Classifier:
 *You will receive 'error' if you don't provide proper command line args.
 
 *You will receive 'not a triangle' if the points you provide are colinear.
+
+*The testing script will exit silently if you pass all tests.  The script will fail with a reason if you do not pass one of its tests.
