@@ -1,9 +1,13 @@
 import subprocess
 
+failed_cnt = 0
+
 def run_test(test, expected):
     output = subprocess.check_output(test, shell=True)
 
     if output != expected:
+        global failed_cnt
+        failed_cnt += 1
         print ("FAILED TEST: '%s'\n\tEXPECTED: %s\r\tRETURNED: %s\n") % (test, expected, output)
 
 if __name__ == "__main__":
@@ -37,3 +41,6 @@ if __name__ == "__main__":
     run_test("./a.out 1 as3df 2 3 4 5", "error\n")
     run_test("./a.out 1 2 3 4asdf 5 6", "error\n")
     run_test("./a.out 1 2 3 4 5 jon", "error\n")
+
+    if failed_cnt == 0:
+        print ("Tests Passed!")
