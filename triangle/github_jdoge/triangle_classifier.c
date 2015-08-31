@@ -29,10 +29,6 @@
 
 #include "triangle_classifier.h"
  
-// verbose mode
-int verbose = 0;
-
-
 int main(int argc, char *argv[])
 {
 	// checks for the correct number of inputs
@@ -105,13 +101,6 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	if(verbose)
-	{
-		printf("Point A: (%lld, %lld)\n", testTriangle.pointA.x, testTriangle.pointA.y);
-		printf("Point B: (%lld, %lld)\n", testTriangle.pointB.x, testTriangle.pointB.y);
-		printf("Point C: (%lld, %lld)\n", testTriangle.pointC.x, testTriangle.pointC.y);
-	}
-
 	__int64_t lengthAB = CalculateLength(testTriangle.pointA, testTriangle.pointB);
 	__int64_t lengthBC = CalculateLength(testTriangle.pointB, testTriangle.pointC);
 	__int64_t lengthAC = CalculateLength(testTriangle.pointA, testTriangle.pointC);
@@ -122,20 +111,8 @@ int main(int argc, char *argv[])
 	edgeLengths[1] = lengthBC;
 	edgeLengths[2] = lengthAC;
 
-	if(verbose)
-	{
-		printf("Distance AB (squred): %lld\n", lengthAB);
-		printf("Distance BC (squred): %lld\n", lengthBC);
-		printf("Distance AC (squred): %lld\n", lengthAC);
-	}
-
 	// counts the number of equal length edges
 	int equalLengthCount = CountEqualLengths(edgeLengths);
-
-	if(verbose)
-	{
-		printf("equalLengthCount: %d\n", equalLengthCount);
-	}
 
 	// Checks the number of equal lengths and prints correct message.
 	if(equalLengthCount == 3) 
@@ -151,27 +128,7 @@ int main(int argc, char *argv[])
 		printf("scalene ");
 	}
 
-	if(verbose)
-	{
-		printf("Before sort lengths:\n");
-		for(int i = 0; i < 3; i++)
-		{
-			printf("edgeLengths[%d] = %lld\n", i, edgeLengths[i]);
-		}
-	}
-
 	// qsort(edgeLengths, 3, sizeof(__int64_t), CompareFunction);
-
-	
-
-	// if(verbose)
-	// {
-	// 	printf("Sorted lengths:\n");
-	// 	for(int i = 0; i < 3; i++)
-	// 	{
-	// 		printf("edgeLengths[%d] = %lld\n", i, edgeLengths[i]);
-	// 	}
-	// }
 
 	// Because qsort() was not working correctly for 
 	// certain __int64_t inputs, Bubble sort was an 
@@ -180,25 +137,10 @@ int main(int argc, char *argv[])
 	// acute/obtuse/right becomes trivial.
 	BubbleSort(edgeLengths, 3);
 
-	if(verbose)
-	{
-		printf("(bubble) Sorted lengths:\n");
-		for(int i = 0; i < 3; i++)
-		{
-			printf("edgeLengths[%d] = %lld\n", i, edgeLengths[i]);
-		}
-	}
-
 	// By calculating the hypotenuse, we can determine if a triangle is
 	// acute, obtuse, or right without dealing with angles.
 	__int64_t calculateHypotenuse = edgeLengths[0] + edgeLengths[1];
 	__int64_t longestEdge = edgeLengths[2];
-
-	if(verbose)
-	{
-		printf("calculateHypotenuse: %lld\n", calculateHypotenuse);
-		printf("longestEdge: %lld\n", longestEdge);
-	}
 
 	// Compares the calculated hypotenuse (adding the 2 shortest edges)
 	// with the longest given edge and prints out the correct message.
@@ -230,13 +172,6 @@ int DuplicatePointsCheck(struct triangle t)
 	struct point A = t.pointA;
 	struct point B = t.pointB;
 	struct point C = t.pointC;
-
-	if(verbose)
-	{
-		printf("Point A: (%lld, %lld)\n", A.x, A.y);
-		printf("Point B: (%lld, %lld)\n", B.x, B.y);
-		printf("Point C: (%lld, %lld)\n", C.x, C.y);
-	}
 
 	if(A.x == B.x && A.y == B.y)
 		duplicatePoints = 1;
@@ -306,12 +241,6 @@ int ColinearityCheck(struct triangle t)
 	if(slope_denominator_AB < 0)
 		slope_denominator_AB *= -1;
 
-	if(verbose)
-	{
-		printf("Slope AB: (%lld / %lld)\n", slope_numerator_AB, slope_denominator_AB);
-		printf("GCD: %lld\n", tempGCD);
-	}
-
 	__int64_t slope_numerator_BC   = B.y - C.y;
 	__int64_t slope_denominator_BC = B.x - C.x;
 
@@ -325,12 +254,6 @@ int ColinearityCheck(struct triangle t)
 	if(slope_denominator_BC < 0)
 		slope_denominator_BC *= -1;
 
-	if(verbose)
-	{
-		printf("Slope AB: (%lld / %lld)\n", slope_numerator_BC, slope_denominator_BC);
-		printf("GCD: %lld\n", tempGCD);
-	}
-
 	__int64_t slope_numerator_AC   = A.y - C.y;
 	__int64_t slope_denominator_AC = A.x - C.x;
 
@@ -343,12 +266,6 @@ int ColinearityCheck(struct triangle t)
 		slope_numerator_AC *= -1;
 	if(slope_denominator_AC < 0)
 		slope_denominator_AC *= -1;
-
-	if(verbose)
-	{
-		printf("Slope AB: (%lld / %lld)\n", slope_numerator_AC, slope_denominator_AC);
-		printf("GCD: %lld\n", tempGCD);
-	}
 
 	// Checks if the points are colinear by comparing slopes.
 	if(
@@ -388,14 +305,6 @@ __int64_t CalculateLength(struct point A, struct point B)
 
 	__int64_t x2 = B.x;
 	__int64_t y2 = B.y;
-
-	if(verbose)
-	{
-		printf("x1: %lld\n", x1);
-		printf("y1: %lld\n", y1);
-		printf("x2: %lld\n", x2);
-		printf("y2: %lld\n", y2);
-	}
 
 	// computes using 
 	__int64_t length = ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1));
