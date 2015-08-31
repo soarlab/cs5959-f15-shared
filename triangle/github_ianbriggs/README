@@ -1,0 +1,56 @@
+Assignment: Triangle Classifier
+     Class: CS5959
+   Teacher: Zvonimir Rakamaric
+   Student: Ian Briggs
+      UNID: U0692013
+ Github ID: ianbriggs
+
+Files:
+	bin/ - Location the executable will be made
+
+	Makefile - Decription on how to build and test the system.
+
+	README - This file
+
+	src/triangle.c - C source for the assignment
+
+	test/gen_triangle_tests.py - Horribly put together tester.
+
+
+Solving Logic:
+	At any point if an exit condition is found then the proper message is
+    printed and the execution ended.
+
+	Check for 6 arguments handed to executable
+	      	  ||
+		  ||
+		  \/
+	Check that args are whole numbers within range
+	      	  ||
+		  ||
+		  \/
+	Compute distance between points squared (since using square root would
+	garantee a whole number)
+	          ||
+		  ||
+		  \/
+	If the least distance squared is 0 then at least two points are the same
+	          ||
+		  ||
+		  \/
+	Test for collinearity using the equation located here:
+	   http://mathworld.wolfram.com/Collinear.html
+	          ||
+		  ||
+		  \/
+	Compare the distance squared values computed above to determine if the
+	triangle is equilateral (apparently that is impossible given our
+	constraints), isosceles, or scalene.
+		  ||
+		  ||
+		  \/
+	Use the distance squared values in the equation a^2+b^2 = c^2. If equal
+	the triangle is a right triangle, if c^2 is smaller then the triangle is
+	acute, else the triangle is obtuse. c is defined as the longest side
+	for my purposes.
+

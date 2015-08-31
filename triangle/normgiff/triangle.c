@@ -10,6 +10,8 @@ int64_t length(int64_t x1, int64_t y1, int64_t x2, int64_t y2)
 	return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
 }
 
+// Checking the size relationship of the sides. I keep the sides squared to 
+// eliminate the need to use any floating point operation.
 const char* check_size(int64_t sides[])
 {
 	int i;
@@ -33,6 +35,8 @@ const char* check_size(int64_t sides[])
 	return "error";
 }
 
+
+// Check the angles using the Pythagorean theorem.
 char* check_angle(int64_t sides[])
 {	
 	// a^2 + b^2 = c^2 right (1)
@@ -59,7 +63,7 @@ char* check_angle(int64_t sides[])
 }
 
 
-
+// Checking if the points lie on the same line using the slope formula.
 int colin_test(int64_t x1, int64_t y1, int64_t x2, int64_t y2, int64_t x3, int64_t y3)
 {
 	if((y2-y1)*(x3-x2) == (y3-y2)*(x2-x1))

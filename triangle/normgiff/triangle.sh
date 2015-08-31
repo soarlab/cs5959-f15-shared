@@ -1,3 +1,9 @@
+# I used this shell script to test the output.
+# I mainly check boundary conditions both between different 
+# classifications and for integer boundaries. I probably 
+# missed a lot but this is where I got.
+
+
 
 function tester()
 {
@@ -32,28 +38,36 @@ echo "Test 1: For less then six arguments."
 tester  "$(./triangle 0)" "$E"
 echo "Test 2: For too many arguments."
 tester "$(./triangle 0 0 0 0 0 0 0)" "$E"
-echo "Test 3: All of the same points so not a triangle."
+echo "Test 3: For non-integer arguments."
+tester "$(./triangle we re qw vf as 3)" "$E"
+echo "Test 4: All of the same points so not a triangle."
 tester "$(./triangle 0 0 0 0 0 0)" "$NAT"
-echo "Test 4: Points that are colinear so not a triangle."
+echo "Test 5: Points that are colinear so not a triangle."
 tester "$(./triangle -25 25 0 0 25 -25)" "$NAT"
-echo "Test 5: Triangle is Isosceles Obtuse."
+echo "Test 6: Triangle is Isosceles Obtuse."
 tester "$(./triangle -25 25 1 1 25 -25)" "$IO"
-echo "Test 6: Triangle is Isosceles Obtuse angle is just more then 90 degreed."
+echo "Test 7: Triangle is Isosceles Obtuse angle is just more then 90 degreed."
 tester "$(./triangle -25 25 24 24 25 -25)" "$IO"
-echo "Test 7: Triangle is Isosceles Acute angle is less more then 90 degreed."
+echo "Test 8: Triangle is Isosceles Acute angle is less more then 90 degreed."
 tester "$(./triangle -25 25 26 26 25 -25)" "$IA"
-echo "Test 8: Triangle is Scalene Right."
+echo "Test 9: Triangle is Scalene Right."
 tester "$(./triangle -20 25 25 25 25 -25)" "$SR"
-echo "Test 9: Triangle is Scalene Obtuse."
+echo "Test 10: Triangle is Scalene Obtuse."
 tester "$(./triangle -20 25 24 24 25 -25)" "$SO"
-echo "Test 10: Check boundaries"
+echo "Test 11: Check boundaries"
+# 1
 tester "$(./triangle $nb $b 1 1 $b $nb)" "$IO"
+# 2
 tester "$(./triangle $nb $b $b $b $b $nb)" "$IR"
+# 3
 let test=$b-1
 tester "$(./triangle $nb $b $test $test $b $nb)" "$IO"
+# 4
+let test=$b-1
 let ntest=$nb+1
-tester "$(./triangle -1073741823 1073741823 1073741823 1073741823 1073741823 -1073741823)" "$IR"
-
-
-tester "$(./triangle -1073741820 1073741823 1073741823 1073741823 1073741823 -1073741823)" "$SR"
-tester "$(./triangle -1073741820 1073741823 1073741822 1073741822 1073741823 -1073741823)" "$SO"
+tester "$(./triangle $ntest 0 0 $b $test 0)" "$IA"
+# 5
+tester "$(./triangle $ntest $b $b $b $b $nb)" "$SR"
+# 6
+let ntest=$nb+3
+tester "$(./triangle $ntest $b $test $test $b $b)" "$SO"
