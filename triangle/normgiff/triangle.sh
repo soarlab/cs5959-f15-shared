@@ -1,3 +1,9 @@
+# I used this shell script to test the output.
+# I mainly check boundary conditions both between different 
+# classifications and for integer boundaries. I probably 
+# missed a lot but this is where I got.
+
+
 
 function tester()
 {
