@@ -1,0 +1,12 @@
+Norm Gifford (u0723476)
+CS 5959
+Homework 1
+
+To run my code you can just use "make" and it will compile the code and 
+run the tests. You can do this separately by enter "make gcc" or "make clang" 
+and then running the tests by entering "make run_test". Enter make clean 
+to remove the executable. Gcc is the default compiler.
+
+I tried it on my computer and on the cade machin so I hope it will work
+on your machine. I aso ran the script in bot bath and tcsh. Let me know if
+you have any problems.

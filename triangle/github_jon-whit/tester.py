@@ -22,6 +22,7 @@ if __name__ == "__main__":
     run_test("./a.out 1073741823 0 -1073741823 0 0 1", "isosceles obtuse\n")
     run_test("./a.out -1073741823 0 1073741823 0 0 1", "isosceles obtuse\n")
     run_test("./a.out 0 0 0 1073741823 1073741823 0", "isosceles right\n")
+    run_test("./a.out -10 0 10 0 0 1073741823", "isosceles acute\n")
 
     # test scalene triangles
     run_test("./a.out 0 0 0 1073741823 1073741822 0", "scalene right\n")

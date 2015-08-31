@@ -1,0 +1,46 @@
+Author: Jared Potter (u0729256)
+
+Date: August 31, 2015
+
+Course: CS 5959 Writing Solid Code - Fall 2015
+
+Professor: Zvonimir Rakamaric
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+EXECUTION INSTRUCTIONS:
+
+make 	cleans and compiles triangle_classifier.c
+
+tests   cleans, compiles triangle_classifier.c, and runs python tests
+
+clean 	cleans the project
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ADDITIONAL INFORMATION
+
+No 128-bit integers were required for this assignment. the __64int_t data type was sufficient for all required tasks. And it compiles without issue on 32-bit target machines (-m32). 
+
+Input verification includes:
+-exactly 6 parameters (->'error')
+-each parameter is an integer in the range [-(2^30)-1, 2^30)-1] (->'error')
+-Duplicate points check (->'not a triangle')
+-Colinearity check (->'not a triangle')
+
+
+Computing the length between 2 points. Uses standard distane formula
+but leaves the distance in squred form to avoid floating points
+involved with squreroots. The __int64_t data type is large enough to
+correctly represent the length. Even in the most extreme case
+point A = (-(2^30)-1, -(2^30)-1) and point B ((2^30)-1, (2^30)-1).
+
+	Ex. length^2 = [(x2 - x1)^2] + [(y2 - y1)^2]
+		length^2 = [(x2 - x1) * (x2 - x1)] + [(y2 - y1) * (y2 - y1)]
+		length^2 = [(((2^30)-1) - (-(2^30)-1)) * (((2^30)-1) - (-(2^30)-1))] + [(((2^30)-1) - (-(2^30)-1)) * (((2^30)-1) - (-(2^30)-1))]
+		length^2 = [((2^31)-2)*((2^31)-2)] + [((2^31)-2)*((2^31)-2)]
+		length^2 = [(2^62)-8,589,934,588] + [(2^62)-8,589,934,588]
+		length^2 = [(2^63)-17,179,869,176]
+	    which is 17,179,869,175 under the 64-bit signed integer limit (2^63)-1.
