@@ -12,6 +12,7 @@ void checkAngles(int points[]);
 /*Global Variables */
 char* sideType;
 char* angleType;
+int rightTriangle;
 
 /* Compute a side of the triangle 
 * Should always return a postive length */
