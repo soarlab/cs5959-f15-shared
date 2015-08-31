@@ -7,6 +7,7 @@
 ./a.out 1073741823 0 -1073741823 0 0 1 // isosceles obtuse
 ./a.out -1073741823 0 1073741823 0 0 1 // isosceles obtuse
 ./a.out 0 0 0 1073741823 1073741823 0 // isosceles right 
+./a.out -10 0 10 0 0 1073741823 // isosceles acute
 
 
 # Test Scalene Triangles
