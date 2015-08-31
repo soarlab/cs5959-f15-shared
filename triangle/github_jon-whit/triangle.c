@@ -109,7 +109,7 @@ int valid_input(int argc, char **argv) {
     for (i = 1; i < 7; i++) {
         char * endPtr;
         long int res = strtol(argv[i], &endPtr, 10);
-	if ( ((!res) | (errno == ERANGE) | (*endPtr != '\0')) && (*argv[i] != '0') )
+	if ( *endPtr != '\0' )
             return 0; 
         else if ( res > 1073741823 || res < -1073741823 )
      	    return 0;
