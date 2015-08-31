@@ -10,6 +10,7 @@
 // http://www.tutorialspoint.com/cprogramming/c_header_files.htm
 // http://stackoverflow.com/questions/4987644/validate-input-cmdline-input-argv-contains-all-integers
 // https://en.wikipedia.org/wiki/Euclidean_algorithm
+// linux.die.net
 
 // @author: Leland Stenquist
 // @unid: U0634909
@@ -34,7 +35,14 @@ long long main (long long argc, char* argv[])
 		return 0;
 	}
 	
-	// Make sure the args are numers and assign them.
+	// Make sure the args are numers and assign them.  // I need to check for Overflow.  This is basic error 
+	//   checking because the user could enter an input that is greater than the specified max.
+	//   undefined behavior means you no longer have control of your code. Don't use atoi in a program where
+	//   your integers might overflow. NEVER ALLOW UNDEFINED BEHAVIOR IN YOUR CODE.
+	//
+	//   I never cheked to see if my code was in the correct range. 
+	//
+
 	point1.x = strtoll(argv[1],&endptr,10);
 	if(*endptr!=0){
 		printf("error\n");
@@ -89,7 +97,7 @@ long long main (long long argc, char* argv[])
 		printf("\tDistance 3: %d\n", dist1_3);
 	}
 	
-	printf("(%s) (%s)\n", tri_side, tri_angle);
+	printf("%s %s\n", tri_side, tri_angle);
 	
 	
 	return 0;
@@ -102,6 +110,8 @@ long long main (long long argc, char* argv[])
 //   angle is acute, obtuse, or square I use the pythagorean theorum. 
 //   This will square my values again anyway, so I might as well avoid
 //   floating points and just use the lengths minus rooting them.
+//
+//   could switch to unsigned
 long long distance(struct Point p1, struct Point p2)
 {
 	long long x, y, sum;
