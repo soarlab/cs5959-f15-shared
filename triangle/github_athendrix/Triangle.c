@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : TriangleClassifier.c
+ Name        : Triangle.c
  Author      : Andrew Hendrix
  Uid         : u0358444
  ============================================================================
@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <math.h>
 #define PI 3.14159265358979323846
+// 2147483647
 
 struct tcPoint
 {
@@ -101,19 +102,43 @@ long long getLineLengthSQ(struct tcLine line)
 	long long y = y1-y2;
 	return x*x + y*y; //a^2 + b^2 = c^2
 }
-double atanpi(long double y, long double x)
+double atan2pi(long double y, long double x)
 {
+	double toReturn;
 	double radtodegree = 180/PI;
-	if(x == 0)
-		return 90;
-	return radtodegree * atan((double)y/x);
+	if (x > 0)
+		toReturn = atan((double)(y / x));
+	if (x < 0 && y >= 0)
+		toReturn = atan((double)(y / x)) + PI;
+	if (x < 0 && y < 0)
+		toReturn = atan((double)(y / x)) - PI;
+	if (x == 0)
+	{
+		if (y > 0)
+		{
+			toReturn = PI / 2;
+		}
+		if (y < 0)
+		{
+			toReturn = -PI / 2;
+		}
+		if (y = 0)
+		{
+			//UNDEFINED
+		}
+	}
+	
+	//if(x == 0)
+	//	return 90;
+	//return radtodegree * atan((double)(y/x));
+	return toReturn *radtodegree;
 }
 
 int getAngleType(struct tcAngle angle)
 {
 	//
-	double anglea = atanpi((long double)(angle.mid.y-angle.left.y),(long double)(angle.mid.x - angle.left.x));
-	double angleb = atanpi((long double)(angle.mid.y-angle.right.y), (long double)(angle.mid.x - angle.right.x));
+	double anglea = atan2pi((long double)(angle.mid.y-angle.left.y),(long double)(angle.mid.x - angle.left.x));
+	double angleb = atan2pi((long double)(angle.mid.y-angle.right.y), (long double)(angle.mid.x - angle.right.x));
 
 	double angleToReturn = anglea - angleb;
 	if (angleToReturn < 0.0)
