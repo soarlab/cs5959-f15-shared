@@ -127,9 +127,10 @@ int get_equal_edge_length_count()
 int validate_atol(char *argv[])
 {
   //check that only numeric characters are supplied as arguments
-  for(int i = 1; i < 7; i++)
+  int i,j;
+  for(i = 1; i < 7; i++)
   {
-    for(int j = 0; j < strlen(argv[i]); j++)
+    for(j = 0; j < strlen(argv[i]); j++)
     {
       int ascii = (int)argv[i][j];
       if(!(ascii >= 48 && ascii <= 57))
