@@ -47,13 +47,19 @@ tester "$(./triangle -20 25 25 25 25 -25)" "$SR"
 echo "Test 9: Triangle is Scalene Obtuse."
 tester "$(./triangle -20 25 24 24 25 -25)" "$SO"
 echo "Test 10: Check boundaries"
+# 1
 tester "$(./triangle $nb $b 1 1 $b $nb)" "$IO"
+# 2
 tester "$(./triangle $nb $b $b $b $b $nb)" "$IR"
+# 3
 let test=$b-1
 tester "$(./triangle $nb $b $test $test $b $nb)" "$IO"
+# 4
+let test=$b-1
 let ntest=$nb+1
-tester "$(./triangle -1073741823 1073741823 1073741823 1073741823 1073741823 -1073741823)" "$IR"
-
-
-tester "$(./triangle -1073741820 1073741823 1073741823 1073741823 1073741823 -1073741823)" "$SR"
-tester "$(./triangle -1073741820 1073741823 1073741822 1073741822 1073741823 -1073741823)" "$SO"
+tester "$(./triangle $ntest 0 0 $b $test 0)" "$IA"
+# 5
+tester "$(./triangle $ntest $b $b $b $b $nb)" "$SR"
+# 6
+let ntest=$nb+3
+tester "$(./triangle $ntest $b $test $test $b $b)" "$SO"
