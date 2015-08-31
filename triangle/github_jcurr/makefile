@@ -1,2 +1,2 @@
 triangle: classifier.c classifier.h
-        gcc -o triangle classifier.c -std=c99
+        gcc -o triangle classifier.c
