@@ -71,3 +71,5 @@ tester "$(./triangle $ntest $b $b $b $b $nb)" "$SR"
 # 6
 let ntest=$nb+3
 tester "$(./triangle $ntest $b $test $test $b $b)" "$SO"
+echo Last
+tester "$(./triangle $nb $nb $b $nb $b $b)" "$IR"

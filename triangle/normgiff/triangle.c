@@ -42,7 +42,7 @@ char* check_angle(int64_t sides[])
 	// a^2 + b^2 = c^2 right (1)
 	// a^2 + b^2 > c^2 acute (2)
 	// a^2 + b^2 < c^2 obtuse (3)
-	int i;
+	
 	
 	if(sides[0] + sides[1] == sides[2] || sides[1] + sides[2] == sides[0] || sides[2] + sides[0] == sides[1])
 	{
