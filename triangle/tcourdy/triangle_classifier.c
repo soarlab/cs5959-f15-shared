@@ -19,23 +19,22 @@ and new line after angles and errors;*/
 #define MIN -1073741823
 
 typedef struct{
-  long int x;
-  long int y;
+  long long int x;
+  long long int y;
 }Point;
 
 typedef struct{
-  long int a;
-  long int b;
-  long int c;
+  long long int a;
+  long long int b;
+  long long int c;
 }Triangle;
 
-long int findSide(Point p1, Point p2);
-long convert(char *arg);
+long long int findSide(Point p1, Point p2);
+long long int convert(char *arg);
 int testColinear(Point p1, Point p2, Point p3);
 void printTriangleType(Triangle t);
 void printAngle(Triangle t);
 int compare (const void * a, const void * b);
-int checkOverflow(long int a, long int b);
 
 int main(int argc, char *argv[]){
   Point p1;
@@ -75,9 +74,9 @@ int main(int argc, char *argv[]){
 
 }
 
-long convert(char *arg){
+long long int convert(char *arg){
   char *end = "\0";
-  long l;
+  long long int l;
   errno = 0;
   l = strtol(arg, &end, 10);
   if(errno || strcmp(end, "\0")){
@@ -90,7 +89,7 @@ long convert(char *arg){
   return l;
 }
 
-long int findSide(Point p1, Point p2){
+long long int findSide(Point p1, Point p2){
   return  ((p1.x - p2.x) * (p1.x - p2.x)) + ((p1.y - p2.y) * (p1.y - p2.y));
 }
 
@@ -113,11 +112,11 @@ void printTriangleType(Triangle t){
 }
 
 void printAngle(Triangle t){
-  long int side[3];
+  long long int side[3];
   side[0] = t.a;
   side[1] = t.b;
   side[2] = t.c;
-  qsort(side, 3, sizeof(long int), compare);
+  qsort(side, 3, sizeof(long long int), compare);
 
   if((side[0] + side[1]) == (side[2])){
     printf(RIGHT);    
@@ -128,18 +127,18 @@ void printAngle(Triangle t){
   }
 }
 
-int checkOverflow(long int a, long int b){
+/*int checkOverflow(long long int a, long long int b){
   if ((b > 0 && a > LONG_MAX - b) || (b < 0 && a < LONG_MIN - b)){
     return 1;
   } else{
     return 0;
   }
 
-}
+  }*/
 
 int compare (const void * a, const void * b){
-  long int x = *(long int*)a;
-  long int y = *(long int*)b;
+  long long int x = *(long long int*)a;
+  long long int y = *(long long int*)b;
 
   if(x == y){
     return 0;
