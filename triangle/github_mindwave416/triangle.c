@@ -4,10 +4,10 @@
 #include <string.h>
 
 /* Pre-declarations of methods */
-double sideLen (int x1, int y1, int x2, int y2);
-void checkPoints(int points[]);
-void checkSides(double sides[]);
-void checkAngles(int points[]);
+double sideLen (long x1, long y1, long x2, long y2);
+void checkPoints(long points[]);
+void checkSides(long long sides[]);
+void checkAngles(long points[]);
 
 /*Global Variables */
 char* sideType;
@@ -15,17 +15,17 @@ char* angleType;
 
 /* Compute a side of the triangle 
 * Should always return a postive length */
-double sideLen (int x1, int y1, int x2, int y2){
-  double a = x1 - x2;
-  double b = y1 - y2;
+double sideLen (long x1, long y1, long x2, long y2){
+  long long a = x1 - x2;
+  long long b = y1 - y2;
   a = a*a;
   b = b*b;
-  double c = sqrt(a+b);
+  long long c = a+b;
   return c;
 }
 
 /* Check that the points aren't on the same line */
-void checkPoints(int points[]){
+void checkPoints(long points[]){
   if (points[0] == points[2] && points[0] == points[4]){
     printf("not a triangle\n");
     exit(0);
@@ -38,7 +38,7 @@ void checkPoints(int points[]){
 }
 
 /* Check the side lengths for patterns that will classify them.*/
-void checkSides(double sides[]){
+void checkSides(long long sides[]){
   if (sides[0] == sides[1]){
     if(sides[0] == sides[2])
       sideType = "equialateral\0";
@@ -53,15 +53,14 @@ void checkSides(double sides[]){
     sideType = "scalene\0";
 }
 
-void checkAngles(int points[]){
-  int i, j;
-  int dotPoints[4];
+void checkAngles(long points[]){
+  long dotPoints[4];
   dotPoints[0] = points[2]-points[0];
   dotPoints[1] = points[3]-points[1];
   dotPoints[2] = points[4]-points[0];
   dotPoints[3] = points[5]-points[1];
   /* calculate the dot product of two lines*/
-  int dot = dotPoints[0]*dotPoints[2]+dotPoints[1]*dotPoints[3];
+  long dot = dotPoints[0]*dotPoints[2]+dotPoints[1]*dotPoints[3];
   if (dot == 0){
     angleType = "right\0";
     return;
@@ -106,8 +105,8 @@ void checkAngles(int points[]){
 
 int main (int argc, char **argv){
 
-  int points[6];
-  double lengths[3]; 
+  long points[6];
+  long long lengths[3]; 
   if (argc == 1 || argc != 7) {
     printf("HERE error\n");
     exit(0);
@@ -115,7 +114,7 @@ int main (int argc, char **argv){
   else{
     int i;
     for(i = 1; i < argc; i++){
-      points[i-1] = atoi(argv[i]);
+      points[i-1] = atol(argv[i]);
       if(points[i-1] == 0){
         char* possibleE = argv[i];
         if((*possibleE != '0')){
