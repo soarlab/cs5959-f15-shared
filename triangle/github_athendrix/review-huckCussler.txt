@@ -1,0 +1,5 @@
+The only real problem I can see  is that precision is lost for higher integers
+for example entering -240000000 0 0 1 240000000 0 into your program gives "not a triangle"
+but it is.
+
+I recommend using long doubles if you do floating point. That may help.
