@@ -1,0 +1,12 @@
+Code review for Andrew Hendrix
+
+~ will lineEqual work if the lines are the same but the endpoints are inverted?
+  ~ e.g. line((1,2),(3,4)) ==? line((3,4),(1,2))
+
+~ same with angleEqual, would it be possible for the same angle to have different left and right points?
+
+~ is there any error checking to make sure the arguments are integers?
+
+~ there should be '\n' after "right", "obtuse", "acute"
+
+~ very thorough approach, i think some optimizations could eliminate some code
