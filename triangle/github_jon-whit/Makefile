@@ -1,4 +1,4 @@
 all: clean
-	gcc triangle.c
+	gcc -o triangle triangle.c
 clean:
 	rm -f *.out
