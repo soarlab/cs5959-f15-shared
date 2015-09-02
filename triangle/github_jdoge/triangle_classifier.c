@@ -105,11 +105,17 @@ int main(int argc, char *argv[])
 	__int64_t lengthBC = CalculateLength(testTriangle.pointB, testTriangle.pointC);
 	__int64_t lengthAC = CalculateLength(testTriangle.pointA, testTriangle.pointC);
 
+
+
 	// Array for holding edge lengths.
 	__int64_t edgeLengths[3];
 	edgeLengths[0] = lengthAB;
 	edgeLengths[1] = lengthBC;
 	edgeLengths[2] = lengthAC;
+
+	printf("AB Length: %lld\n", lengthAB);
+	printf("BC Length: %lld\n", lengthBC);
+	printf("AC Length: %lld\n", lengthAC);
 
 	// counts the number of equal length edges
 	int equalLengthCount = CountEqualLengths(edgeLengths);
@@ -136,6 +142,8 @@ int main(int argc, char *argv[])
 	// By putting the lengths in order, determining
 	// acute/obtuse/right becomes trivial.
 	BubbleSort(edgeLengths, 3);
+
+
 
 	// By calculating the hypotenuse, we can determine if a triangle is
 	// acute, obtuse, or right without dealing with angles.
