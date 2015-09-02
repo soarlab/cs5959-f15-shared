@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 	if (argc < 7)
 	{
 		printf("%s\n", "Not a triangle");
+		return 1;
 	}
 	// Goldilocks arguments, begin parsing
 	for (int i = 0; i < 6; i++)
@@ -28,7 +29,7 @@ int main(int argc, char *argv[])
 		if ( coords[i] < MIN || coords[i] > MAX || *endc != '\0')
 		{
 			printf("%s\n", "error");
-			printf("%s %li %s %li \n", "Coordinates must be integers between", MIN, "and", MAX);
+			//printf("%s %li %s %li \n", "Coordinates must be integers between", MIN, "and", MAX);
 			return 1;
 		}
 	}
