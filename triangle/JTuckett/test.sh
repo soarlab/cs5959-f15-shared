@@ -62,18 +62,6 @@ if [[ $testVar =~ "isosceles obtuse" ]]
  		echo fail
  		fail=$[fail + 1] 
 fi
-#isosceles right
-echo Test Isosceles Right
-testCount=$[testCount + 1]
-testVar=$(./triangle 0 0 0 1 1 1)
-if [[ $testVar =~ "isosceles right" ]]
-	then
- 		echo pass
- 		pass=$[pass + 1] 		
- 	else
- 		echo fail
- 		fail=$[fail + 1] 
-fi
 
 #equilateral acute
 echo Test Equilateral Acute
