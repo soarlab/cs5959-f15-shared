@@ -6,12 +6,14 @@
 int main(int argc, char *argv[])
 {
 	long coords[6]; 
+	int i, j;
 	// no arguments, provide help
 	if (argc == 1)
 	{
 		printf("%s\n", "Please provide 3 coordinates of a triangle in the form:");
 		printf("%s\n", "X1 Y1 X2 Y2 X3 Y3");
 		printf("%s %li %s %li \n", "Where X1-X3 and Y1-Y3 are integers between", MIN, "and", MAX);
+		return 1;
 	}
 	// too few arguments, return Not-A-Triangle
 	if (argc < 7)
@@ -20,9 +22,9 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	// Goldilocks arguments, begin parsing
-	for (int i = 0; i < 6; i++)
+	for (i = 0; i < 6; i++)
 	{
-		int j = i+1; // index of args
+		j = i+1; // index of args
 		char* endc;
 		coords[i] = strtol(argv[j], &endc, 10);
 		// error checking heer
@@ -47,9 +49,9 @@ int main(int argc, char *argv[])
 	sides[2] = line_length_sq(coords[X3], coords[Y3], coords[X2], coords[Y2]);
 	// sort sides
 	long long tmp;
-	for(int i = 0; i < 3; i++)
+	for(i = 0; i < 3; i++)
     {
-        for(int j = i; j < 3; j++)
+        for(j = i; j < 3; j++)
         {
             if(sides[i] > sides[j])
             {
