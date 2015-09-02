@@ -1,0 +1,5 @@
+struct for points -- nice
+compact, lots of comments, but not always clear what you're doing
+while it's not strictly necessary, a comment on how you've reduced the geometry for the angle would be nice
+you printf outside of the main method, which can be a problem in larger applications
+"x1 = strtol(argv[1], NULL, 10), y1 = strtol(argv[2], NULL, 10);" --> you're blowing my mind here.

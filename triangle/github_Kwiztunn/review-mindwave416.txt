@@ -1,0 +1,4 @@
+atol -- what about 00 input
+line 44 - equilateral
+need to check max/min
+dot product -- pretty complicated, you can use olde geometry instead
