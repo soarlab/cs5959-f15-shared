@@ -1,0 +1,28 @@
+Code functionality and Correctness
+==================================
+Functionality: The code adheres to the expected outputs for various corner cases and appears to be tested quite exhaustively. Good work! 
+
+Correctness: Given that the inputs are checked against the lower and upper bounds first, all of the arithmetic operations will produce 
+output that will fit within the data types that you used. Great job with this!
+
+Tests
+=====
+* I would recommend adding some additional test cases that exercise more/less inputs than the program expects. For example,
+  [./triangle
+   ./triangle 0 0 0 0 0
+   ./triangle 0 0 0 0 0 0]
+
+* Really clean test file! I like the usage of the unittest library in Python. That was a great idea!
+
+Build file
+==========
+* Very clean
+* Excersizes the use of a 32-bit architecture despite using 64-bit ints. Great way to test this corner case!
+
+Coding style
+============
+* Really great separation of declarations and definitions. Very clean!
+* [Lines 48-88]: Suggest seperating the functionality out of "main" into individual components (i.e. one for input validation, colinearity, etc..)
+* [ColinearityCheck]: Quite complex. Looks very prone to arithmetic error (assuming our constraints were removed). In the future, here
+  is a great way to check for colinearity. (y2-y1)/(x2-x1) = (y3-y2)/(x3-x2) => (y2-y1)*(x3-x2) = (y3-y2)*(x2-x1)  
+
