@@ -10,7 +10,12 @@
 #define dSquared( x1, y1, x2, y2 )  ( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) )
 #define largest 1073741823
 #define valid( x ) (largest >= abs(x))
-
+#define SCALENE 0
+#define ISOSCELES 1
+#define EQUILATERAL 2
+#define RIGHT 2
+#define ACUTE 0
+#define OBTUSE 1
 /*
  *Define my method signatures for later use.
  */
@@ -55,26 +60,26 @@ int main (int argc, char **argv)
 void printResult( int tClass, int tType ) {
 	
 	switch ( tClass ) {
-		case 0://scalene
+		case SCALENE://scalene
 			printf("scalene ");
 			break;
-		case 1://iso
+		case ISOSCELES://iso
 			printf("isosceles ");
 			break;
-		case 2://equi
+		case EQUILATERAL://equi
 			printf("equilateral ");
 			break;
 		default:;
 	}
 
   switch ( tType ) {
-    case 0://acute
+    case ACUTE://acute
       printf("acute\n");
       break;
-    case 1://obtuse
+    case OBTUSE://obtuse
       printf("obtuse\n");
       break;
-    case 2://right
+    case RIGHT://right
       printf("right\n");
       break;
     default:;
@@ -96,23 +101,8 @@ int parseInput( int argc, char **argv, long * points){
 		if ( !valid( point ) ) {
 			return(1);
 		}
-    /*If it is a valid digit break otherwise,
-      error*/
-    switch ( *endptr) {
-      case 0:
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-      case 8:
-      case 9:
-      case (int)'.':
-      break;
-      default:
-      return (1);
+    if ( *endptr != '\0' ) {
+      return ( 1 );
     }
 	}
   return ( 0 );
@@ -158,12 +148,12 @@ void getSidesAndSort( long *points, long long sides[] ) {
 int whatClass( long long sides[] ){
 	if ( sides[0] == sides[1] && sides[0] == sides[2] )
 	{
-		return 2;
+		return EQUILATERAL;
 	}
 	if( sides[0] == sides[1] || sides[0] == sides[2] || sides[1] == sides[2] ) {
-		return 1;
+		return ISOSCELES;
 	}
-	return 0;
+	return SCALENE;
 
 	
 }
@@ -174,12 +164,12 @@ int whatClass( long long sides[] ){
 int whatType( long long sides[] ){
 	long long hypotenusOfRight = sides[0] + sides[1];
 	if( hypotenusOfRight == sides[2] ) {
-		return 2;
+		return RIGHT;
 	}
 	if (hypotenusOfRight > sides[2] )
 	{
-		return 0;
+		return ACUTE;
 	}
-	return 1;	
+	return OBTUSE;	
 }
 
