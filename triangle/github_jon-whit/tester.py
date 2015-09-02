@@ -17,12 +17,14 @@ if __name__ == "__main__":
     run_test("./triangle 1 2 3 4 5 6", "not a triangle\n")
     run_test("./triangle 1    2    3    4    5    6", "not a triangle\n")
     run_test("./triangle 0 0 0 0 0 0", "not a triangle\n")
+    run_test("./triangle 0 0 -1073741823 -1073741823 1073741823 1073741823", "not a triangle\n")
 
     # test isosceles triangles
     run_test("./triangle 1073741823 0 -1073741823 0 0 1", "isosceles obtuse\n")
     run_test("./triangle -1073741823 0 1073741823 0 0 1", "isosceles obtuse\n")
     run_test("./triangle 0 0 0 1073741823 1073741823 0", "isosceles right\n")
     run_test("./triangle -10 0 10 0 0 1073741823", "isosceles acute\n")
+    run_test("./triangle -1073741823 -1073741823 1073741823 1073741823 1073741823 -1073741823", "isosceles right\n")
 
     # test scalene triangles
     run_test("./triangle 0 0 0 1073741823 1073741822 0", "scalene right\n")
