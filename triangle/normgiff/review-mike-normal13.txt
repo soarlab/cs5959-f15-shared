@@ -1,0 +1,6 @@
+------------------normgiff review----------------------
+It looks really good. The only suggestions that I would make is that I would avoid 
+using floating pont because the rounding errors. I think you will run into problems
+on lines 71 and 87 where you are checking the length. I think it can be likely to 
+have rounding errors. I also do not know how reliable that the trig functions are in 
+c.
