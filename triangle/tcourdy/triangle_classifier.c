@@ -78,7 +78,7 @@ long long int convert(char *arg){
   char *end = "\0";
   long long int l;
   errno = 0;
-  l = strtol(arg, &end, 10);
+  l = strtoll(arg, &end, 10);
   if(errno || strcmp(end, "\0")){
     printf(ERROR);
     exit(0);
@@ -89,10 +89,12 @@ long long int convert(char *arg){
   return l;
 }
 
+/*Use the distance formula (except for the square root part, so as to avoid floating point)*/
 long long int findSide(Point p1, Point p2){
   return  ((p1.x - p2.x) * (p1.x - p2.x)) + ((p1.y - p2.y) * (p1.y - p2.y));
 }
 
+/*Test colinearity by checking slope*/
 int testColinear(Point p1, Point p2, Point p3){
   if((p2.y - p1.y) * (p3.x - p2.x) == (p3.y - p2.y) * (p2.x - p1.x)){
     return 1;
@@ -102,7 +104,7 @@ int testColinear(Point p1, Point p2, Point p3){
 }
 
 void printTriangleType(Triangle t){
-  if((t.a == t.b) == t.c){
+  if((t.a == t.b) && (t.b == t.c)){
     printf(EQUILATERAL);
   } else if(t.a == t.b || t.a == t.c || t.b == t.c){
     printf(ISOSCELES);
@@ -111,6 +113,9 @@ void printTriangleType(Triangle t){
   }
 }
 
+/*Using law of cosines we can determine the angle type.  If the two smaller sides are greater
+then the hypotenuse then it is acute.  If the hypotenuse is larger than the two other sides combined
+then it is an obtuse triangle.  And if the two small sides combined equal the hypotenuse then it is right.*/
 void printAngle(Triangle t){
   long long int side[3];
   side[0] = t.a;
@@ -127,14 +132,6 @@ void printAngle(Triangle t){
   }
 }
 
-/*int checkOverflow(long long int a, long long int b){
-  if ((b > 0 && a > LONG_MAX - b) || (b < 0 && a < LONG_MIN - b)){
-    return 1;
-  } else{
-    return 0;
-  }
-
-  }*/
 
 int compare (const void * a, const void * b){
   long long int x = *(long long int*)a;
