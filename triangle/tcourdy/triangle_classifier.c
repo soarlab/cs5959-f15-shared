@@ -76,17 +76,17 @@ int main(int argc, char *argv[]){
 
 long long int convert(char *arg){
   char *end = "\0";
-  long long int l;
+  long long int val;
   errno = 0;
-  l = strtoll(arg, &end, 10);
+  val = strtoll(arg, &end, 10);
   if(errno || strcmp(end, "\0")){
     printf(ERROR);
     exit(0);
-  } else if(l > MAX || l < MIN){
+  } else if(val > MAX || val < MIN){
     printf(ERROR);
     exit(0);
   }
-  return l;
+  return val;
 }
 
 /*Use the distance formula (except for the square root part, so as to avoid floating point)*/
