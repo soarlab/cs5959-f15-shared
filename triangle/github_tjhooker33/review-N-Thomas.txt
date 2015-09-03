@@ -1,0 +1,42 @@
+############################################################
+# <Makefile>
+
+# make file does not work
+# line 1: remove "triangleClassifier.c"
+# line 4: add "-f" to rm commands
+# i recommend turning on gcc compiler flags
+
+############################################################
+# <TrianglClassifier.c>
+
+# line 19: main has too many lines
+#   try to abstract the functionality away from main by
+#   moving functional units into their own functions
+# line 26: don't use multiline comments for a single line
+#   you can stil do: /* some comment */ , just do it on 1 line
+# line 39: most loops start with variable i, j, then k
+#   when I see the loop with "int j = 1" I start looking for i
+# line 40: replace "atol" with "strtol"
+# line 56: i like that you placed all the points into an array
+#   you could just create a macro or function that would return x1, etc
+# line 75: floating point... you probably want to avoid this
+# line 82: nice work checking colinearity, very clever
+# line 107: you can determine the type of triangle without angles,
+#   just use the lengths
+# line 120: no need for comments when the print statement is obvious
+# line 148: main is missing a default return value
+
+############################################################
+
+# <tests.py>
+
+# line 5: asserts are great but what happens if the first assert fails?
+#   i believe non of the other tests will run at that point
+#   i recommend using Python's unittest if you want to use asserts
+#   unittests will allow a test case to fail an assertion and still
+#     continue to execute the remaining tests
+# line 27: the comments here are obvious when reading the assert call
+#   maybe use more of a block comment for a block of tests
+# test cases are very clean and easy to read, nice work
+
+############################################################
