@@ -1,0 +1,8 @@
+*more descriptive variable name on line 91
+*consider using strtoll instead of strtol to avoid overflow issues
+*consider using constants for strings and numbers you use frequently (ie: "error\n")
+*I may be wrong since I didn't test it, but is line 96 correct?  You might have to use strcmp() to compare the strings...
+*I'm not sure why you are looping in the check_size function.
+*I would recommend using a qsort compare function to sort the sides to help determine the hypotenuse in your check_angle function
+*The makefile does not appear to be working for me.
+*I will run the testing script when the compile works.  One suggestion is what the professor mentioned in class and that is to use a lot of edge cases.	
