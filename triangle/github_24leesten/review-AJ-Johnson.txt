@@ -2,6 +2,8 @@ Leland Stenquist Code Review of AJJohnson's code
 
 General:
 
-I am very impressed by your code it is very thourough.  I like your use of Enums.I also wish I had known the shoelace formula.  That was a great way to tell if the triangle is colinear.
+I am very impressed by your code it is very thourough.  
+I like your use of Enums.
+I also wish I had known the shoelace formula.  That was a great way to tell if the triangle is colinear.
 
 Obviously you alread know this, but you should probably use a long long instead of a long. It will help you avoid overflow.
