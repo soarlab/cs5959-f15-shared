@@ -1,0 +1,14 @@
+There were a few main points that I think would improve the code (based on commit 10fc881):
+
+1) There were very few comments in the code, so it wasn't always 100% clear what functions and/or certain sections of the program would do. It's important to make your code self documenting, but (especially with C) it's better also to have documentation in comments.
+2) A variable named 'l' is not good practice.
+3) Some of the methods relied on unstated assumptions. For example, it would make sense for findSide(Point p1, Point p2) to return the length of the side between p1 and p2, but it actually returns the squared value of the side. It doesn't matter much if it's only being used locally, but if this code were used by others in a different project, they would probably be surprised to find that the method didn't return the actual side length. Document the assumptions.
+4) Use strtoll instead of strtol
+5) Cite where you found the colinearity code, or at least document how it works.
+6) The tests could be more thorough. The values that are tested are not examples that are likely to break poorly implemented versions of the program. Some base cases (such as the ones you have) are fine to start with, but more rigorous tests should be used.
+7) Failing fast isn't bad, but it's not as descriptive as if it ran all the tests even if a single one failed.
+8) There was only one file in the project, so the Makefile you created may have been more than was necessary, but Makefiles are not my strong suit, so... *shrug*
+
+Overall, the actual code itself was very easy to follow, and seemed to function correctly. Most of these suggestions are nit-picky, but are still worth considering.
+
+Great work!
