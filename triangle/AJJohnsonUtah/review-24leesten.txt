@@ -1,0 +1,17 @@
+Hey - here are a few comments that I have about your code after reviewing it:
+
+1) It's not major, but there are lots of typos in your comments ("ment", "coodinates", "lenght", "numers", etc.)
+2) The output of the program should always match the regex specified in the instructions. The output you have for incorrect number of arguments does not match that regex, so it does not match the spec and would likely fail against someone else's tests.
+3) The parsing of the arguments has a lot of repetitive code. You could wrap the strtol and error checking in a method and make the code more succinct and maintainable.
+4) Why does your main method have a return type of long long?
+5) You have an unused variable named "test" declared in your main method.
+6) It wouldn't hurt to be more verbose with method names (nat vs not_a_triangle), especially when they aren't called often.
+7) Style-nit-pick: your comments sound like you are talking to yourself, as opposed to talking to a general audience that might be using and/or maintaining your code. Try to make comments more universal ("This method does...." as opposed to "I might as well...")
+8) Despite #7, your comments are actually quite descriptive and helpful. Just oddly phrased.
+9) Variable names "var1" and "var2" aren't super descriptive.
+10) The sloop method of determining triangularity was interesting to see, but may have been a bit more complicated than necssary.
+11) The values that you tested could have been a bit more extreme, in order to stress the program and more likely find errors.
+12) The tests do test a variety of outputs, but they could report more helpful data for the user. Did the tests pass or fail? How many? Which ones? Etc.
+13) Your assignment submission includes an executable file which it should not have.
+
+Overall, your code was well documented (very helpful comments) and easy to read. I believe it should work correctly, aside from some error cases. All in all, good work!
