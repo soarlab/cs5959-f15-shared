@@ -82,15 +82,6 @@ int pointEqual(struct tcPoint a, struct tcPoint b)
 	return a.x == b.x && a.y == b.y;
 }
 
-int lineEqual(struct tcLine a, struct tcLine b)
-{
-	return pointEqual(a.start,b.start) && pointEqual(a.end,b.end);
-}
-
-int angleEqual(struct tcAngle a, struct tcAngle b)
-{
-	return pointEqual(a.left,b.left) && pointEqual(a.mid,b.mid) && pointEqual(a.right,b.right);
-}
 
 long long getLineLengthSQ(struct tcLine line)
 {

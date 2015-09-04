@@ -56,10 +56,43 @@ int main(void)
 	x3=coords[4];
 	y3=coords[5];
 	
-	deltaX1=absoluteValue(x2-x1);
-	deltaX2=absoluteValue(x3-x1);
-	deltaY1=absoluteValue(y2-y1);
-	deltaY2=absoluteValue(y3-y1);
+	deltaX1=x2-x1;
+	deltaX2=x3-x1;
+	deltaY1=y2-y1;
+	deltaY2=y3-y1;
+	//Check if the signs match
+	if((deltaX1<0 && deltaX2<0) || (deltaX1>0 && deltaX2>0))
+	{
+		if((deltaY1>0 && deltaY1>0) || (deltaY1<0 && deltaY1<0))
+		{
+			deltaX1=absoluteValue(x2-x1);
+			deltaX2=absoluteValue(x3-x1);
+			deltaY1=absoluteValue(y2-y1);
+			deltaY2=absoluteValue(y3-y1);
+			if(deltaX1*deltaY2==deltaX2*deltaY1)
+			{
+				//Not A Triangle
+				printf("not a triangle\n");
+				return 0;
+			}
+		}
+	}
+	else 
+	{
+		if((deltaY1>0 && deltaY1<0) || (deltaY1<0 && deltaY1>0))
+		{
+			deltaX1=absoluteValue(x2-x1);
+			deltaX2=absoluteValue(x3-x1);
+			deltaY1=absoluteValue(y2-y1);
+			deltaY2=absoluteValue(y3-y1);
+			if(deltaX1*deltaY2==deltaX2*deltaY1)
+			{
+				//Not A Triangle
+				printf("not a triangle\n");
+				return 0;
+			}
+		}
+	}
 	
 	if((x1==x2 && y1==y2) || (x1==x3 && y1==y3) || (x3==x2 && y3==y2))
 	{
@@ -68,12 +101,7 @@ int main(void)
 		return 0;
 	}
 	
-	if(deltaX1*deltaY2==deltaX2*deltaY1)
-	{
-		//Not A Triangle
-		printf("not a triangle\n");
-		return 0;
-	}
+
 	
 	aSquared=((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 	bSquared=((x1-x3)*(x1-x3)+(y1-y3)*(y1-y3));

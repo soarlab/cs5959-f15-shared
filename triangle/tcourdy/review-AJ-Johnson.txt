@@ -1,0 +1,28 @@
+*Consider using constant values for non changing values (ie: max_val, min_val,
+ etc.)
+
+*Consider using the built in error checking of strtoll.
+
+*Recommend upgrading to long long data type instead of long to avoid overflow
+ issues.
+
+*The for-loops could be considered a bit confusing at first glance. Consider
+ adding comments to them so that future developers who look at code can 
+ spend less time figuring out what is going on.
+
+*The angle check function could be more succint by using a qsort compare to
+ figure out the largest side before doing law of cosines check.
+
+*We spoke a bit about the 'I' flag in your make file.  Since we were both
+ unsure of its purpose I have included its description below.  I'll let you
+ be the judge if you need to include it or not. 
+
+-I dir
+           Add the directory dir to the list of directories to be searched for
+           header files.  Directories named by -I are searched before the
+           standard system include directories.  If the directory dir is a
+           standard system include directory, the option is ignored to ensure
+           that the default search order for system directories and the
+           special treatment of system headers are not defeated .  If dir
+           begins with "=", then the "=" will be replaced by the sysroot
+           prefix; see --sysroot and -isysroot.
