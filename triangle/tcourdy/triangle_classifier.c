@@ -56,7 +56,8 @@ int main(int argc, char *argv[]){
 
   p3.x = convert(argv[5]); /*5*/
   p3.y = convert(argv[6]); /*6*/
-  
+
+  /*test if all points lie in a line*/
   if(testColinear(p1, p2, p3)){
     printf(NOT_A_TRIANGLE);
     exit(0);
@@ -74,6 +75,8 @@ int main(int argc, char *argv[]){
 
 }
 
+/*Takes a string argument and attempts to convert it into a long long
+Code will exit with an error if strtoll fails to convert string*/
 long long int convert(char *arg){
   char *end = "\0";
   long long int val;
@@ -89,7 +92,8 @@ long long int convert(char *arg){
   return val;
 }
 
-/*Use the distance formula (except for the square root part, so as to avoid floating point)*/
+/*Use the distance formula (except for the square root part, so as to avoid floating point).  Therefore note that it does not return the actual length between
+the two points.  This is to avoid floating point values and their imprecision*/
 long long int findSide(Point p1, Point p2){
   return  ((p1.x - p2.x) * (p1.x - p2.x)) + ((p1.y - p2.y) * (p1.y - p2.y));
 }
@@ -132,7 +136,8 @@ void printAngle(Triangle t){
   }
 }
 
-
+/*Compare function used to sort the sides of the triangle from smallest to 
+  largest */
 int compare (const void * a, const void * b){
   long long int x = *(long long int*)a;
   long long int y = *(long long int*)b;
