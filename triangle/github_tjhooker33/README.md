@@ -8,11 +8,11 @@ Commands for compiling and executing this program are provided in the
 accompanied Makefile. 
 
 ```
-make				# cleans and compiles triangle.c*
-make triangle	    # compiles triangle.c*
-make test			# cleans, compiles triangle.c and runs tests*
-make testv			# same as test but with unittest verbose on*
-make clean			# removes executable*
+make				# cleans and compiles triangle.c
+make triangle	    # compiles triangle.c
+make test			# cleans, compiles triangle.c and runs tests
+make testv			# same as test but with unittest verbose on
+make clean			# removes executable
 ```
 
 # Test Cases
