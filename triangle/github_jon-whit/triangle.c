@@ -37,14 +37,14 @@ void classify_triangle(point *p1, point *p2, point *p3) {
     if ( DEBUG )
         printf("Classifying Triangle with points: (%li, %li), (%li, %li), (%li, %li)...\n", p1->x, p1->y, p2->x, p2->y, p3->x, p3->y);
     
-    long int l1 = (p2->x - p1->x)*(p2->x - p1->x) + (p2->y - p1->y)*(p2->y - p1->y);    
-    long int l2 = (p3->x - p2->x)*(p3->x - p2->x) + (p3->y - p2->y)*(p3->y - p2->y);
-    long int l3 = (p3->x - p1->x)*(p3->x - p1->x) + (p3->y - p1->y)*(p3->y - p1->y);
+    long long int l1 = (p2->x - p1->x)*(p2->x - p1->x) + (p2->y - p1->y)*(p2->y - p1->y);    
+    long long int l2 = (p3->x - p2->x)*(p3->x - p2->x) + (p3->y - p2->y)*(p3->y - p2->y);
+    long long int l3 = (p3->x - p1->x)*(p3->x - p1->x) + (p3->y - p1->y)*(p3->y - p1->y);
     
     if ( DEBUG ) {
-        printf("l1: %li\n", l1);
-        printf("l2: %li\n", l2);
-        printf("l3: %li\n", l3);
+        printf("l1: %lli\n", l1);
+        printf("l2: %lli\n", l2);
+        printf("l3: %lli\n", l3);
     }
 
     /* If the three points lie on the same line then they will have the same slope, otherwise
@@ -66,7 +66,7 @@ void classify_triangle(point *p1, point *p2, point *p3) {
     }
 
     // find the longest side length
-    long int a = l2, b = l3, c = l1;
+    long long int a = l2, b = l3, c = l1;
     if ( l2 > c && l2 > l3 ) {
         a = l1;
         b = l3;
