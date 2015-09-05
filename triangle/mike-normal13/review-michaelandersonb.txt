@@ -1,0 +1,6 @@
+Nice use of Enums
+A brief comment above the S64() prototype would be nice
+Always great to see a solution that is very, very different than mine!
+Nice use of fgets()
+Nice use of strtok()
+Do you mean "mathematically impossible" for both the comments concerning equalateral triangles?

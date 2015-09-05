@@ -1,11 +1,53 @@
 Code functionality and Correctness
 ==================================
+Lines 11-17: It's great that you are providing detailed information back to the user, but these output messages don't adhere
+to the expected out of the application. Instead, I would recommend returning the string "error\n"
+
+Lines 19-23: This should be an "error" case. The return status "not a triangle\n" should only be returned if 3 points are
+given and they do not form a triangle.
+
+Your command-line error checking works for 'argc < 7', but if 'argc > 7' it doesn't account for this case. Running the command:
+"./triangle 1 2 3 4 5 6 7" will fail.
+
+Line 41: "Not a triangle\n" is not a valid return status. It does not match the regular expression specified by the assignment.
+I believe it should be "not a triangle\n".
+
+Lines 64-87: In terms of functionality this code looks solid. However, it doesn't adhere to the regular expression specified in
+the assignment description. I recommend changing the order of these output statements. For example, assuming no error, your
+output should match the following regular expression (equilateral | isosceles | scalene) (right | acute | obtuse). Your output
+is in reverse order.
+
+Lines 113-116 (is_equilateral): I believe you forgot one case. You should also add the conditional check sides[0] == sides[2].
 
 Tests
 =====
+Lines 26-27: This test cannot pass at the moment. I added this comment regarding the correctness above.
+
+* I would recommend adding a few more corner cases for malformed input. In particular, I would recommend adding tests like the
+  following:
+
+./triangle 0a 1 2 3 4 5
+./triangle 0 a1 2 3 4 5
+./triangle * 0 1 2 3 4
+
+  Each of the tests above should return as "error\n".
+
+* I would also recommend making this Shell script more versatile so that it can be run on other students code. Simply adding
+  "make" at the top of the script will allow these tests to be easy to run on other peoples code. Just a simple suggestion...
+
+Very exhaustive test cases though! Great job!
 
 Build file
 ==========
+Very clean and simple Makefile. Great job! I have no suggestions.
 
-Coding style 
+Coding style
 ============
+* In general, it is good practice to comment code. This makes it a lot easier for you and other individuals to read and understand
+  your code. I would highly recommend adding some more comments, especially for function contracts.
+
+* I really like how well you separated out functions from the main method. Great job!
+
+Lines 25-37: Such an elegant way to handle this. Very well done!
+
+Lines 95-100: This is awesome! Such a simple check for colinearity.

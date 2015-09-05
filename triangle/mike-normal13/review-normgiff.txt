@@ -1,0 +1,5 @@
+Nice use of Int_64
+Very concise program in general
+Program is easy to follow despite minimal commenting
+Nice use of strcat
+Having no function prototypes, and having the main() at the bottom actually makes the program more readable
