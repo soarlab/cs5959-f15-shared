@@ -70,11 +70,11 @@ int check_arg_count(int argc) {
  *
  * INPUTS :
  *      GLOBALS :   
- *          struct    triangle_points[] an array of coordinate points
+ *          struct    triangle_points[]  reads coordinate pairs for array
  *
  * OUTPUTS :
  *      RETURN :
- *          int                         0 on success, -1 on failure
+ *          int                          0 on success, -1 on failure
  */
 int check_colinearity(void) {
   if ( triangle_points[0].x * (triangle_points[1].y - triangle_points[2].y)
@@ -172,7 +172,7 @@ int create_point_component(char *num, long *component) {
  *      PARAMETERS :   
  *          char      * argv[]           strings containing program name, (x,y) pairs
  *      GLOBALS :
- *          struct    triangle_points[]  an array of coordinate pairs
+ *          struct    triangle_points[]  writes coordinate pair values to array
  *
  * OUTPUTS :
  *      RETURN :
@@ -225,11 +225,11 @@ long long compute_distance(coordinate *p1, coordinate *p2) {
  *
  * INPUTS : 
  *      GLOBALS :
- *          struct    triangle_points[]  an array of coordinate pairs
+ *          struct    triangle_points[]  reads coordinate pairs for array
  *
  * OUTPUTS :
- *      RETURN :
- *          long long                    distance between p1 and p2
+ *      GLOBALS :
+ *          struct    triangle_sides[]   writes side lengths in global array
  */
 void compute_triangle_sides(void) {
   int i, j;
@@ -256,7 +256,7 @@ void compute_triangle_sides(void) {
  *
  * INPUTS : 
  *      GLOBALS :
- *          struct    triangle_points[]  an array of coordinate pairs
+ *          struct    triangle_sides[]   read side lengths of the triangle
  *
  * OUTPUTS :
  *      RETURN :
@@ -276,7 +276,7 @@ int is_isosceles(void) {
  *
  * INPUTS : 
  *      GLOBALS :
- *          struct    triangle_points[]  an array of coordinate pairs
+ *          struct    triangle_sides[]   read side lengths of the triangle
  *
  * OUTPUTS :
  *      RETURN :
@@ -296,7 +296,7 @@ int is_scalene(void) {
  *
  * INPUTS : 
  *      GLOBALS :
- *          struct    triangle_points[]  an array of coordinate pairs
+ *          struct    triangle_sides[]   read side lengths of the triangle
  *
  * OUTPUTS :
  *      RETURN :
@@ -316,7 +316,7 @@ int is_acute(void) {
  *
  * INPUTS : 
  *      GLOBALS :
- *          struct    triangle_points[]  an array of coordinate pairs
+ *          struct    triangle_sides[]   read side lengths of the triangle
  *
  * OUTPUTS :
  *      RETURN :
@@ -336,7 +336,7 @@ int is_right(void) {
  *
  * INPUTS : 
  *      GLOBALS :
- *          struct    triangle_points[]  an array of coordinate pairs
+ *          struct    triangle_sides[]   read side lengths of the triangle
  *
  * OUTPUTS :
  *      RETURN :
