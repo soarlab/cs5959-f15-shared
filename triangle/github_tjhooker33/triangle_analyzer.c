@@ -61,7 +61,7 @@ int check_arg_count(int argc) {
 /*******************************************************************************************
  * NAME :             check_colinearity()
  *
- * DESCRIPTION :      Determines of three coordinate pairs represent a valid triangle.
+ * DESCRIPTION :      Determines if three coordinate pairs represent a valid triangle.
  *                    Mathematical implementation obtained from:
  *                    
  *                      http://mathworld.wolfram.com/Collinear.html
@@ -117,7 +117,7 @@ int check_input_format(char *num) {
 }
 
 /*******************************************************************************************
- * NAME :             create_range(num)
+ * NAME :             check_range(num)
  *
  * DESCRIPTION :      Checks if input num is bounded by MAX and MIN range.
  *
@@ -209,11 +209,11 @@ int create_triangle(char *argv[]) {
  *          long long                    distance between p1 and p2
  */
 long long compute_distance(coordinate *p1, coordinate *p2) {
-  long long delta_x, delta_y;
+  long long dx, dy;
 
-  delta_x = p2->x - p1->x;
-  delta_y = p2->y - p1->y;
-  return (delta_x * delta_x) + (delta_y * delta_y);
+  dx = p2->x - p1->x;
+  dy = p2->y - p1->y;
+  return (dx * dx) + (dy * dy);
 }
 
 
@@ -378,8 +378,8 @@ void print_classification(void) {
  *
  * INPUTS :
  *      PARAMETERS :   
- *          long long   * i             swap dereferenced value with j
- *          long long   * j             swap dereferenced value with i
+ *          long long   * i             swap dereferenced value with *j
+ *          long long   * j             swap dereferenced value with *i
  */
 void swap_triangle_sides(long long *i, long long *j) {
   long long temp;

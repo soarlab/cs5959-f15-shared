@@ -17,8 +17,8 @@
  * Custom macros
  */
 #define ARG_COUNT 7           /* max argument count for program main */
-#define MAX_RANGE 1073741823  /* largest acceptable integer value */
-#define MIN_RANGE -1073741823 /* smalles acceptable integer value */
+#define MAX_RANGE 1073741823  /* largest  acceptable integer value */
+#define MIN_RANGE -1073741823 /* smallest acceptable integer value */
 #define ERROR() {     \
     printf("error\n");\
     return -1;	      \
@@ -74,7 +74,7 @@ int check_colinearity(void);
 /*******************************************************************************************
  * NAME :             check_input_format(num)
  *
- * DESCRIPTION :      Check each char of the string to make sure a valid int is represented.
+ * DESCRIPTION :      Check each char if the string to make sure a valid int is represented.
  *
  * INPUTS :
  *      PARAMETERS :   
@@ -87,7 +87,7 @@ int check_colinearity(void);
 int check_input_format(char *num);
 
 /*******************************************************************************************
- * NAME :             create_range(num)
+ * NAME :             check_range(num)
  *
  * DESCRIPTION :      Checks if input num is bounded by MAX and MIN range.
  *
@@ -256,7 +256,7 @@ void print_classification(void);
  *
  * INPUTS :
  *      PARAMETERS :   
- *          long long   * i             swap dereferenced value with j
- *          long long   * j             swap dereferenced value with i
+ *          long long   * i             swap dereferenced value with *j
+ *          long long   * j             swap dereferenced value with *i
  */
 void swap_triangle_sides(long long *i, long long *j);
