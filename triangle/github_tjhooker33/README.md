@@ -1,4 +1,3 @@
-CS 5959 Writing Solid Code, Fall 2014
 Triangle Classifier Assignment
 =====================================
 
@@ -9,27 +8,28 @@ Commands for compiling and executing this program are provided in the
 accompanied Makefile. 
 
 ```
-make 					cleans and compiles triangle.c
-make triangle 			compiles triangle.c
-make test 				cleans, compiles triangle.c and runs tests
-make testv 				same as test but with unittest verbose on
-make clean 				removes executable
+**make**				*cleans and compiles triangle.c*
+**make triangle**	    *compiles triangle.c*
+**make test**			*cleans, compiles triangle.c and runs tests*
+**make testv**			*same as test but with unittest verbose on*
+**make clean**			*removes executable*
 ```
 
-# TEST CASES:
+# Test Cases
 
-Test cases were written in Python using Python's unittest. To execute:
+Test cases were written in Python using Python's unittest. 
+To execute:
 
 ```
-python triangle_test.py
-python triangle_test.py -v
+**python triangle_test.py**
+**python triangle_test.py -v**
 ```
 
 or run:
 
 ```
-make test
-make testv
+**make test**
+**make testv**
 ```
 
 # Notes
