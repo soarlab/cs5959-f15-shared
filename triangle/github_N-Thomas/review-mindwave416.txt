@@ -1,0 +1,25 @@
+triangle.c:
+
+Very easy to read code, I appreciate that. 
+
+atol is probably bad as discussed in class. 
+
+I don't really understand how your input check (for bad inputs) works but assuming it does it looks good. 
+
+Unless I am misunderstanding, your checkpoints function checks if points are on a line perpendicular or parallel 
+to the origin but not if its on a line with slope.
+
+Commenting is pretty good but some comments to explain why you are doing the math operations that you do for people 
+like me who are rusty on things like the dot product.
+
+The sideLen function is quite a bit simpler than the other ones I have seen. Looks like it should work just as well as well. 
+Nice.
+
+testScript.pl:
+
+Tests look good. Maybe add a check for invalid input and maybe some max size triangles that are slightly off of being right
+or isoseles to make sure it checks out. 
+
+Makefile:
+
+Simple and fine. Looks just like mine. 
