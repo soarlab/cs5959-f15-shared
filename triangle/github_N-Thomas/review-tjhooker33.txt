@@ -1,3 +1,5 @@
+triangle_analyzer.c:
+
 Could use more comments, maybe comments for functions.
 
 I like the equal slopes check. I didn't think about solving the colinear issue that way. 
@@ -11,4 +13,12 @@ Checking for duplicate points and checking for colinearity is redundant.
 
 compute function could be named better. 
 
-~Not yet complete~
+triangle_test.py:
+
+Tests look great. 
+
+Makefile:
+
+looks great. 
+
+Overall your code looks really good. I am really struggling to find anything to say on this code review. Nice Work. 
