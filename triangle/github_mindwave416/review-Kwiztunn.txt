@@ -1,0 +1,4 @@
+-Needs sys.exit on incorrect input.
+-I like the full separation of determining sides and angles into thir own helper methods very readable code
+-Header file for predeclaration of methods also makes for readable code probably a better habbit than predeclaring in the c file.
+-Good test cases on the border cases of overflow
