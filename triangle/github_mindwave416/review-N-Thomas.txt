@@ -1,0 +1,3 @@
+-Using doubles and computing an angle could lead to some floating point errors upon exhastive testing.
+-I like having a verbose command line option. Useful for debugging.
+
