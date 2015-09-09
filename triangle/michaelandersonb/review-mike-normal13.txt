@@ -1,0 +1,5 @@
+The code would be correct but because of the precision of the double it will probably fail for angles which are on boundaries. 
+
+Other than the rounding errors caused by the precision of the law of cosines approach looks like it is implemented correctly.
+
+For the parsing it looks like it is possible to give an invalid input such as 123a and still have it parse without any errors since the strtol will just accept the 123 as the long.
