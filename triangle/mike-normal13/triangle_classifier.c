@@ -1,16 +1,18 @@
-
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <string.h>
 
 // point & edge types
 typedef struct{int x; int y;} point;
 
 // makes a point, returns 0 upon success, -1 otherwise
 int point_init(point* p, int x, int y);
-// determines magnitude of an edge
-long double get_mag(point* p_1, point* p_2);
+// determines squared magnitude of an edge
+long long get_mag(point* p_1, point* p_2);
+// returns length of longest side
+char get_longest_side(long long side_a, long long side_b, long long side_c);
 
 // 3 global points
 point p_a, p_b, p_c;
@@ -19,9 +21,10 @@ int main(int argc, char* argv[])
 {
 	// 3 local magnitudes and angles
 	long double mag_a, mag_b, mag_c;
-	double ang_a, ang_b, ang_c;
-
-	ang_a = ang_b = ang_c = 0;
+	
+	// error validation
+	char* end_ptr_a;
+	char* end_ptr_b;
 
 	// local output strings
 	char* edge_t;
@@ -35,12 +38,42 @@ int main(int argc, char* argv[])
 	}
 
 	//make 3 points, if any intializations fail, return and display errors.....
-	if( point_init(&p_a, strtol(argv[1], NULL, 10), strtol(argv[2], NULL, 10)) == -1 || 
-		point_init(&p_b, strtol(argv[3], NULL, 10), strtol(argv[4], NULL, 10)) == -1 || 
-		point_init(&p_c, strtol(argv[5], NULL, 10), strtol(argv[6], NULL, 10)) == -1)
+	//	inputs of '\0' will be treated as 0...
+	// point a
+	if(point_init(&p_a, strtoll(argv[1], &end_ptr_a, 10), strtoll(argv[2], &end_ptr_b, 10)) == -1)
 	{
 		printf("error\n");
 		return -1;
+	}
+	// printf("end pointer check 1\n");
+	// printf("end_ptr_a: %c\n", *end_ptr_a);
+	// printf("end_ptr_b: %s\n", end_ptr_b);
+	if(*end_ptr_a != 0 || *end_ptr_b != 0)
+	{
+		printf("error\n");
+		return -1;	
+	}
+	// point b
+	if(point_init(&p_b, strtoll(argv[3], &end_ptr_a, 10), strtoll(argv[4], &end_ptr_b, 10)) == -1)
+	{
+		printf("error\n");
+		return -1;
+	}
+	if(*end_ptr_a != 0 || *end_ptr_b != 0)
+	{
+		printf("error\n");
+		return -1;	
+	}
+	// point c
+	if(point_init(&p_c, strtoll(argv[5], &end_ptr_a, 10), strtoll(argv[6], &end_ptr_b, 10)) == -1)
+	{
+		printf("error\n");
+		return -1;
+	}
+	if(*end_ptr_a != 0 || *end_ptr_b != 0)
+	{
+		printf("error\n");
+		return -1;	
 	}
 	
 	// if one of the coordinates was non-numeric
@@ -50,22 +83,26 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	// get three edge magnitudes
+	// get three edge magnitudes (squared)
 	mag_a = get_mag(&p_a, &p_b);
 	mag_b = get_mag(&p_b, &p_c);
 	mag_c = get_mag(&p_c, &p_a);
 
-	// determine 3 angles via cos and dot product (vectors)
-	ang_a = (180/3.14159265359) * acos((((p_b.x - p_a.x) * (p_c.x - p_a.x)) + ((p_b.y - p_a.y) * (p_c.y - p_a.y))) / (mag_a * mag_c));
-	ang_b = (180/3.14159265359) * acos((((p_a.x - p_b.x) * (p_c.x - p_b.x)) + ((p_a.y - p_b.y) * (p_c.y - p_b.y))) / (mag_a * mag_b));
-	ang_c = (180/3.14159265359) * acos((((p_b.x - p_c.x) * (p_a.x - p_c.x)) + ((p_b.y - p_c.y) * (p_a.y - p_c.y))) / (mag_b * mag_c));
-	
-	// if any of the angles is 0 degrees...
-	if(ang_a == 0 || ang_b == 0 || ang_c == 0)
+	// printf("mag_a: %Lf\n", mag_a);
+	// printf("mag_b: %Lf\n", mag_b);
+	// printf("mag_c: %Lf\n", mag_c);
+
+	//check for colinear points
+	 //x_1(y_2-y_3)+x_2(y_3-y_1)+x_3(y_1-y_2)=0. 
+	if((p_a.x*(p_b.y - p_c.y) + p_b.x*(p_c.y - p_a.y) + p_c.x*(p_a.y - p_b.y)) == 0)
 	{
 		printf("not a triangle\n");
 		return 0;
 	}
+
+	// printf("ang_a: %f\n", ang_a);
+	// printf("ang_b: %f\n", ang_b);
+	// printf("ang_c: %f\n", ang_c);
 
 	// if all three edges are the same length...
 	if(fabsl(mag_a - mag_b) < 0.00000001 && fabsl(mag_b - mag_c) < 0.00000001 && fabsl(mag_c - mag_a) < 0.00000001)
@@ -83,20 +120,62 @@ int main(int argc, char* argv[])
 		edge_t = "isosceles";
 	}
 
-	// if right...
-	if(fabs(ang_a - 90) < 0.0000001 || fabs(ang_b - 90) < 0.0000001 || fabs(ang_c - 90) < 0.0000001)
-	{
-		angle_t = "right";
-	}
-	// else if acute...
-	else if(ang_a < 90 && ang_b < 90 && ang_c < 90)
+	if(strcmp(edge_t, "equilateral") == 0)
 	{
 		angle_t = "acute";
+		printf("%s %s\n", edge_t, angle_t);
+		return 0;
 	}
-	// else if obtuse...
-	else
+	
+// 	Let "c" be the longest side on each set of three numbers.
+	// If c^2 = a^2+b^2, the triangle is right
+	// If c^2 > a^2 + b^2, the triangle is obtuse
+	// If c^2 < a^2 + b^2, the triangle is acute.
+
+	if(get_longest_side(mag_a, mag_b, mag_c) == 'a')
 	{
-		angle_t = "obtuse";
+		if(mag_a == (mag_b + mag_c))
+		{
+			angle_t = "right";
+		}
+		else if(mag_a > (mag_b + mag_c))
+		{
+			angle_t = "obtuse";
+		}
+		else
+		{
+			angle_t = "acute";
+		}
+	}
+	else if(get_longest_side(mag_a, mag_b, mag_c) == 'b')
+	{
+		if(mag_b == (mag_a + mag_c))
+		{
+			angle_t = "right";
+		}
+		else if(mag_b > (mag_a + mag_c))
+		{
+			angle_t = "obtuse";
+		}
+		else
+		{
+			angle_t = "acute";
+		}
+	}
+	else
+	{	
+		if(mag_c == (mag_a + mag_b))
+		{
+			angle_t = "right";
+		}
+		else if(mag_c > (mag_a + mag_b))
+		{
+			angle_t = "obtuse";
+		}
+		else
+		{
+			angle_t = "acute";
+		}
 	}
 
 	printf("%s %s\n", edge_t, angle_t);
@@ -117,8 +196,27 @@ int point_init(point* p, int x, int y)
 	return 0;
 }
 
-//	returns the magnitude of an edge.
-long double get_mag(point* p_1, point* p_2)
+//	returns the squared magnitude of an edge.
+long long get_mag(point* p_1, point* p_2)
 {
-	return sqrtl(pow((p_2->x - p_1->x), 2) + pow((p_2->y - p_1->y), 2));
+	//printf("in Point: p_2->x - p_1->x = %d\n", p_2->x - p_1->x);
+	//printf("in Point: p_2->y - p_1->y = %d\n", p_2->y - p_1->y);
+	return pow((p_2->x - p_1->x), 2) + pow((p_2->y - p_1->y), 2);
+}
+
+// returns the length of the longest side (squared)
+char get_longest_side(long long side_a, long long side_b, long long side_c)
+{
+	if(side_a >= side_b && side_a >= side_c)
+	{
+		return 'a';
+	}
+	else if(side_b >= side_a && side_b >= side_c)
+	{
+		return 'b';
+	}
+	else
+	{
+		return 'c';
+	}
 }
