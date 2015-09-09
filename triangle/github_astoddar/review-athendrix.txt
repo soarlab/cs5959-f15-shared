@@ -1,0 +1,9 @@
+-No test cases, max possible triangle, input out of range, letters, etc..
+
+-Comment on the code, how you expect code to work/how it works
+
+-Didnt see a check for input that checks for characters
+
+-add check to make sure input is in the given range.
+
+-Line 96 Im not sure but I think you might have some rounding issues with how you determine the angles.
