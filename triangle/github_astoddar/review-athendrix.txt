@@ -2,8 +2,8 @@
 
 -More comments on the code would be helpful to determine whats going on
 
--Didnt see a check for input that checks for characters
+-I didnt notice a check for character input.
 
--add check to make sure input is in the given range.
+-also didnt see a chack for out of range inputs.
 
--Line 96 Im not sure but I think you might have some rounding issues with how you determine the angles.
+-Line 96 Im not sure but there may be rounding issues with the conversions from radians to degrees
