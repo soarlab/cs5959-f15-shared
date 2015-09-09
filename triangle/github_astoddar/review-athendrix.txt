@@ -2,8 +2,6 @@
 
 -More comments on the code would be helpful to determine whats going on
 
--I didnt notice a check for character input.
-
--also didnt see a chack for out of range inputs.
+-I didnt notice if you were checking an input for characters or if the input was outside the given range (–(2^30 – 1) to (2^30 – 1)).
 
 -Line 96 Im not sure but there may be rounding issues with the conversions from radians to degrees
