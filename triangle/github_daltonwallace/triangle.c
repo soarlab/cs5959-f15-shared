@@ -1,136 +1,124 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-#include <math.h>
-#include <stdint.h>
-#include <limits.h>
 
 // Question: Without adding the -lm flag to my makefile my program could not find the sqrt function
 // even though i've included the math library, according to stack overflow there is a difference 
 // between linking to the definitions of functions as apposed to just the definitions of those functions
-// in the header file..
+// in the header file and although i am not using the sqrt function anymore my question still remains
 
 #define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
 
-struct point 
+typedef struct point 
 {
 	long x, y;
-};
+} POINT;
 
 
-int64_t getDistanceSquared(struct point a, struct point b)
+long long getDistanceSquared(POINT a, POINT b)
 {
   // Don't take the square root so as to not lose precision
-	int64_t val = pow(a.x - b.x, 2) + pow(a.y - b.y, 2);
+	long long val =((a.x - b.x)*(a.x - b.x)) + ((a.y - b.y)*(a.y - b.y));
 	return val;
 }
 
-char* getType(int64_t a, int64_t b, int64_t c)
+void printType(long long a, long long b, long long c)
 {
 	if(a == b && a == c)
 	{
-		return "Equilateral";
+		printf("equilateral ");
 	}
 	else if(a != b && a != c && c != b)
 	{
-		return "Scalene";
+		printf("scalene ");
 	}
 	else
 	{
-		return "Isosceles";
+		printf("isosceles ");
 	}
 }
 
-char* getAngle(int64_t longest, int64_t other, int64_t another)
+void printAngle(long long longest, long long other, long long another)
 {
 	if((other + another) > longest)
 	{
-		return "Acute";
+		printf("acute\n");
 	}
 	else if((other + another) == longest)
 	{
-		return "Right";
+		printf("right\n");
 	}
 	else
 	{
-		return "Obtuse";
+		printf("obtuse\n");
 	}
 
 }
 
-char* getAngleType(int64_t a, int64_t b, int64_t c)
+void printAngleType(long long a, long long b, long long c)
 {
 	// Find longest side
-  int64_t max = MAX(a, b);
+  long long max = MAX(a, b);
 	max = MAX(max, c);
 
 	if(max == a)
 	{
-		return getAngle(a, b, c);
+		printAngle(a, b, c);
 	}
 	else if(max == b)
 	{
-		return getAngle(b, a, c);
+		printAngle(b, a, c);
 	}
 	else
 	{
-		return getAngle(c, b, a);
+		printAngle(c, b, a);
 	}
 }
 
-void isTriangle(struct point a, struct point b, struct point c)
+void isTriangle(POINT a, POINT b, POINT c)
 {
 	// Check the slopes against each other
-	int64_t val1 = (b.y - a.y)*(c.x - b.x);
-	int64_t val2 = (b.x - a.x)*(c.y - b.y);
+	long long val1 = (b.y - a.y)*(c.x - b.x);
+	long long val2 = (b.x - a.x)*(c.y - b.y);
 
 	if(val1 == val2)
 	{
-		printf("not a triangle \n");
-		exit(EXIT_FAILURE);
+		printf("not a triangle\n");
+		exit(0);
 	}
 	
 }
 
 int main (int argc, char** argv)
 {
-  // Ensure the valid number of arguments
+  // START INPUT VALIDATION
 	if(argc != 7)
 	{
-		printf("error \n");
-		exit(EXIT_FAILURE);
+		printf("error\n");
+		exit(0);
 	}
 
   int counter;
 	long values[6];
 	char *ptr;
-	errno = 0;
 
 	for(counter = 1; counter < argc; counter++)
 	{
 		long result = strtol(argv[counter], &ptr, 10);
 	  
-		if((errno == EINVAL && (result == LONG_MAX || result == LONG_MIN))
-				|| (errno != 0 && result == 0)) {
-		
-			printf("error \n");
-			exit(EXIT_FAILURE);
-
-		}
-
-		if(ptr == argv[counter])
-		{
-			printf("error \n");
-			exit(EXIT_FAILURE);
+		// Check if we are not at the end of the input or if the input is
+		// valid but exceeds the given range of -(2^30-1) - (2^30-1)
+		if(*ptr != '\0' || (result > 1073741823 || result < -1073741823)) {
+			printf("error\n");
+			exit(0);
 		}
 		
 		values[counter - 1] = result;
 	}
+	// END INPUT VALIDATION
 
-	struct point a;
-	struct point b;
-	struct point c;
+	POINT a;
+	POINT b;
+	POINT c;
 
 	a.x = values[0];
 	a.y = values[1];
@@ -139,24 +127,16 @@ int main (int argc, char** argv)
 	c.x = values[4];
 	c.y = values[5];
 
-	// Determine if 'Not A Triangle'
+	// Determine if 'not a triangle'
 	isTriangle(a, b, c);
 
   // Determine side lengths
-	int64_t lengthA = getDistanceSquared(a, b);
-	int64_t lengthB = getDistanceSquared(b, c);
-	int64_t lengthC = getDistanceSquared(c, a);
+	long long lengthA = getDistanceSquared(a, b);
+	long long lengthB = getDistanceSquared(b, c);
+	long long lengthC = getDistanceSquared(c, a);
 
-	char* triangleType = getType(lengthA, lengthB, lengthC);
-	char* angleType;
+  printType(lengthA, lengthB, lengthC);
+  printAngleType(lengthA, lengthB, lengthC);
 
-	if(strcmp(triangleType,"Equilateral") == 0)
-	{
-		angleType = "Acute";	
-	}
-  else
-	{
-		angleType = getAngleType(lengthA, lengthB, lengthC);
-	}
-	printf("%s %s \n", triangleType, angleType);
+	return 0;
 }
