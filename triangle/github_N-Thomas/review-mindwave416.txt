@@ -10,7 +10,7 @@ Unless I am misunderstanding, your checkpoints function checks if points are on 
 to the origin but not if its on a line with slope.
 
 Commenting is pretty good but some comments to explain why you are doing the math operations that you do for people 
-like me who are rusty on things like the dot product.
+like me who are rusty on things like the dot product would help.
 
 The sideLen function is quite a bit simpler than the other ones I have seen. Looks like it should work just as well as well. 
 Nice.
