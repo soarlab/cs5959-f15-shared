@@ -1,6 +1,6 @@
 -No test cases, max possible triangle, input out of range, letters, etc..
 
--Comment on the code, how you expect code to work/how it works
+-More comments on the code would be helpful to determine whats going on
 
 -Didnt see a check for input that checks for characters
 
