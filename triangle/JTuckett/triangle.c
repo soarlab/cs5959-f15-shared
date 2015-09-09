@@ -1,29 +1,6 @@
 /*Dustin Jay Tuckett, Triangle classifier*/
-#include <stdio.h>
-#include <stdlib.h>
-/*
- * This definition for checking for collinear points is not of my own devising.  I
- * used the equation found here:  (written by  Abhishek Gupta )
- * http://www.bscshortnote.com/2014/12/c-program-to-check-collinearity-of-three-points.html
- */
-#define checkColinear( x1, y1, x2, y2, x3, y3)  (x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2)==0)
-#define dSquared( x1, y1, x2, y2 )  ( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) )
-#define largest 1073741823
-#define valid( x ) (largest >= abs(x))
-#define SCALENE 0
-#define ISOSCELES 1
-#define EQUILATERAL 2
-#define RIGHT 2
-#define ACUTE 0
-#define OBTUSE 1
-/*
- *Define my method signatures for later use.
- */
-int parseInput( int argc, char **argv, long * points);
-void getSidesAndSort( long *points, long long sides[] );
-int whatClass( long long sides[] );
-int whatType( long long sides[] );
-void printResult( int tClass, int tType );
+#include "triangle.h"
+
 /*
  * This program can only accept 6 numbers as arguments.  The 6 numbers will represent the
  * x and y coordinates of six points ( x1, y1,...).  The points may be in decimal notation
@@ -35,77 +12,44 @@ void printResult( int tClass, int tType );
 int main (int argc, char **argv)
 {
 
-	long points[6];
-	long long sides[3];
-	
-	if ( parseInput( argc, argv, points ) == 1) {
+  long points[6];
+  long long sides[3];
+  if ( !parseInput( argc, argv, points ) ) {    
     printf("error\n");
-		return 1;
-	}
-  if ( checkColinear( points[0], points[1], points[2], points[3], points[4], points[5]) ) {
+    return 1;
+  }
+  if ( checkColinear( points ) ) {
     printf("not a triangle\n");
     return 1;
   }
 
-	getSidesAndSort( points, sides);
+  calculateSidesAndSort( points, sides);
   printResult( whatClass( sides ), whatType( sides ) );
-	
-  return(0);
+
+  return 0;
 }
 
-/*
- * Prints the classification of the tryangle to the 
- * console.  i.e. scalene right
- */
-void printResult( int tClass, int tType ) {
-	
-	switch ( tClass ) {
-		case SCALENE://scalene
-			printf("scalene ");
-			break;
-		case ISOSCELES://iso
-			printf("isosceles ");
-			break;
-		case EQUILATERAL://equi
-			printf("equilateral ");
-			break;
-		default:;
-	}
 
-  switch ( tType ) {
-    case ACUTE://acute
-      printf("acute\n");
-      break;
-    case OBTUSE://obtuse
-      printf("obtuse\n");
-      break;
-    case RIGHT://right
-      printf("right\n");
-      break;
-    default:;
-  }
-
-}
 /*
  * Parses the input from the command line and catches errors.
  * 1 is returned if there was an error, 0 otherwise.
  */
-int parseInput( int argc, char **argv, long * points){
+int parseInput( int argc, char **argv, long *points){
 	char *endptr;
 	if (argc != 7) {
-		return(1);
+		return FALSE;
 	}
 	for (int i = 1; i < argc ; i++) {
 		long point = points[ i - 1 ] = strtol(argv[i], &endptr, 10);
     //valid() ensures that the numbers are not bigger than the limit
 		if ( !valid( point ) ) {
-			return(1);
+			return FALSE;
 		}
     if ( *endptr != '\0' ) {
-      return ( 1 );
+      return FALSE;
     }
 	}
-  return ( 0 );
+  return TRUE;
 }
 /*
  * This method calculates the square of lengths of the sides
@@ -113,23 +57,18 @@ int parseInput( int argc, char **argv, long * points){
  * This method also sorts the sides from smallest to largest to 
  * facilitate easy comparison.
  */
-void getSidesAndSort( long *points, long long sides[] ) {
+void calculateSidesAndSort( long *points, long long sides[] ) {
 	
 	sides[0] = dSquared ( points[0], points[1], points[2], points[3]);	
 	sides[1] = dSquared ( points[0], points[1], points[4], points[5]);	
 	sides[2] = dSquared ( points[2], points[3], points[4], points[5]);
 	
 	int minIndex = 0;
-	for(int i=0; i<3; i++)
-	{
-		int minIndex = i;
+	for(int i=0; i<3; i++) {
+		minIndex = i;
 
-		for(int j=i; j<3; j++)
-
-		{
-			if(sides[minIndex]>sides[j])
-
-			{
+		for(int j=i; j<3; j++) {
+			if(sides[minIndex]>sides[j]) {
 				minIndex = j;
 			}
 		}
@@ -146,8 +85,7 @@ void getSidesAndSort( long *points, long long sides[] ) {
  * scalene (returns 0), isosceles ( returns 1 ), or equilateral ( returns 2 ).
  */
 int whatClass( long long sides[] ){
-	if ( sides[0] == sides[1] && sides[0] == sides[2] )
-	{
+	if ( sides[0] == sides[1] && sides[0] == sides[2] ) {
 		return EQUILATERAL;
 	}
 	if( sides[0] == sides[1] || sides[0] == sides[2] || sides[1] == sides[2] ) {
@@ -166,10 +104,65 @@ int whatType( long long sides[] ){
 	if( hypotenusOfRight == sides[2] ) {
 		return RIGHT;
 	}
-	if (hypotenusOfRight > sides[2] )
-	{
+	if (hypotenusOfRight > sides[2] ) {
 		return ACUTE;
 	}
 	return OBTUSE;	
 }
+
+/*
+ * Prints the classification of the triangle to the 
+ * console.  i.e. scalene right
+ */
+void printResult( int tClass, int tType ) {
+  
+  switch ( tClass ) {
+    case SCALENE:
+      printf("scalene ");
+      break;
+    case ISOSCELES:
+      printf("isosceles ");
+      break;
+    case EQUILATERAL:
+      printf("equilateral ");
+      break;
+    default:;
+  }
+
+  switch ( tType ) {
+    case ACUTE:
+      printf("acute\n");
+      break;
+    case OBTUSE:
+      printf("obtuse\n");
+      break;
+    case RIGHT:
+      printf("right\n");
+      break;
+    default:;
+  }
+}
+/*
+ *  Calculates the length of the side specified by the given points
+ */
+long long dSquared( long x1, long y1, long x2, long y2 ) {
+  long long result = ( (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) );
+  return result;
+}
+/*
+ *  Determines whether the parsed number is within the valid range. ( +/- LARGEST)
+ */
+int valid( long x ) {
+  return ( LARGEST >= abs(x) );
+}
+/*
+ * This definition for checking for collinear points is not of my own devising.  I
+ * used the equation found here:  (written by  Abhishek Gupta )
+ * http://www.bscshortnote.com/2014/12/c-program-to-check-collinearity-of-three-points.html
+ * It checks the area of the triangle, if the area is zero, the points are colinear.
+ */
+int checkColinear( long *points ) {
+  return ( points[0]*(points[3]-points[5])+points[2]*(points[5]-points[1])+points[4]*(points[1]-points[3]) == 0 );
+}  
+
 
