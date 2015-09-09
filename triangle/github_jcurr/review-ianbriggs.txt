@@ -1,0 +1,9 @@
+Ian,
+
+There are many things that I like about your code. My favorite thing that you have done is to define constant values and enums for commonly used values at the top of your file. This is a great practice as it avoids copy pasting or retyping things like "isosceles" which may lead to output errors. Defining these also allows the reader to reference and understand key values quickly. Another good quality I noticed is that your methods tend to do exactly one thing, which is implied by the method's name.The formatting is fine, you have chosen a single convention and stuck to it throughout the file. Personally, I'm not a fan of breaking convention by putting the return value above the method signature but as long as you stick to a single style it is fine by me. As I mentioned in class, other coders will likely expect method signatures to start with the return value at the beginning of a new line so breaking with this convention my reduce readability.
+
+My main criticism of your code is that it is not an "easy read" for the reader. If this is a quality you desire in your code, I think it could be improved with a few simple changes. First and foremost, commenting and method headers would greatly aide readability. You have chosen to decompose the solution into many methods and the addition of a few comments would help the reader understand your decisions better. Additionally, I would consider chosing more informative method names so that reader does not have to review a method's implementation to determinewhat it does. While this may not be critical to the performance of the code it will greatly enhance the ability of others to quickly collaborate with your code or help debug it.
+
+Let me know if you have any further questions,
+
+Jon Curry

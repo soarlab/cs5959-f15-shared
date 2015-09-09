@@ -1,0 +1,15 @@
+First off, I like your test file. It looks like exactly like mine except mine is in perl. I appreciate that you simplifed the individual test blocks to be easy to read. It looks like you tested the big numbers but perhaps could use a larger number of tests (I know, we only needed about 10, but i'm sure you'd do more for other projects).
+
+There are a few recommendations I have for improving your code:
+
+First, define a constant for the range max and min so that you don't have to repeatedly type or copy/paste the value. Retyping or copy/pasting will eventually lead to an error.
+
+Second, consider being more strict with a single formatting style. I noticed that in some places you reduce whitespace to make things more compact,and in other places the indentations did not align perfectly with the scope of control statements. In terms of compacting whitespace, I would generally advise against it becuase as a reader/code reveiwer, my eyes want to skip the tightly spaced blocks and this may lead to slower bug fixing. And in terms of indentation, if you can lign up the indentations with the scope of control statements it makes things very easy on the reader.
+
+Third, judging from your comments and commented out code you had some difficulty using the libraries you wanted for sorting data, perhaps you could have performed your this task manually? Maybe I am underestimating the task you were trying to accomplish but personally if I can confidently complete the sort without including a library I need to research I will just write the simple sort on my own, might save some time or a headache in the future.
+
+Finally, I noticed a lot of duplicate code. For instance the screen i'm looking at now has 4 identical if statements for leading to the same block to print an error. If you find your self copy/pasting or retyping the same code, consider extracting it into a method. This will greatly reduce human error that might lead to output errors or bugs.
+
+Let me know if you have any questions,
+
+Jon Curry

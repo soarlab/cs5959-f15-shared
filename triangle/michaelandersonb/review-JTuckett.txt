@@ -1,0 +1,7 @@
+All of the code looks great and very functional.
+
+The approach of comparing the sides in their squared form will prevent any rounding errors and the variables look big enough to avoid overflow.
+
+The parsing code looks fantastic (now that the case statement was resolved)
+
+I can't see any issues with the correctness of the code.

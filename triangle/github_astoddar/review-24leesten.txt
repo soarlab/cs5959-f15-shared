@@ -1,0 +1,7 @@
+-Didn’t check if input was out of given range. 
+
+-line 34 should print out “error” (Not positive)
+
+-line 10 in header file change debug to Int 
+
+-Should have a test case to check if inputs are out of given range.
