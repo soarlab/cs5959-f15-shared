@@ -1,0 +1,8 @@
+You're incorrectly comparing char* s to ints when you're looking for your input errors (You might mean to be using aoti there)
+You don't have a return in those same if statements, so they fall into the rest of your code (which I don't think is intentional)
+Your comparison of arguments 0, 2, and 4 for equality (and arguments 1, 3, and 6 for equality) is insufficient to check for triangle linearity (for example the line 0 0 1 1 2 2 or the line 0 0 1 2 2 4 would both fail to be detected)
+
+In addition, the sqrt function doesn't work on longs, only on doubles.
+(So you need to convert to and from ints and doubles)
+
+There are plenty of other things you should probably fix, but that's the extent of what I saw on my first look through. I'd fix those before anything else.
