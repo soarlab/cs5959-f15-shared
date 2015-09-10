@@ -59,7 +59,7 @@ int check_arg_count(int argc);
  *                    
  *                      http://mathworld.wolfram.com/Collinear.html
  *                      
- *                      x_1 * (y_2 - y_3) + x_2 * (y_3 - y_1) + x_3 * (y_1 - y_2)
+ *                      x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)
  *
  * INPUTS :
  *      GLOBALS :   
@@ -70,21 +70,6 @@ int check_arg_count(int argc);
  *          int                          0 on success, -1 on failure
  */
 int check_colinearity(void);
-
-/*******************************************************************************************
- * NAME :             check_input_format(num)
- *
- * DESCRIPTION :      Check each char if the string to make sure a valid int is represented.
- *
- * INPUTS :
- *      PARAMETERS :   
- *          char      * num             string representing a numeric value
- *
- * OUTPUTS :
- *      RETURN :
- *          int                         0 on success, -1 on failure
- */
-int check_input_format(char *num);
 
 /*******************************************************************************************
  * NAME :             check_range(num)
@@ -138,7 +123,7 @@ int create_triangle(char *argv[]);
  * NAME :             compute_distance(p1, p2)
  *
  * DESCRIPTION :      Computes the distance between two coordinate pairs.
- *                    (x_2 - x_1)^2 + (y_2 - y_1)^2
+ *                    (x2 - x1)^2 + (y2 - y1)^2
  *
  * INPUTS :
  *      PARAMETERS :   
