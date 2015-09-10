@@ -152,9 +152,9 @@ int check_range(long *num) {
 int create_point_component(char *num, long *component) {
   char *endptr;
 
-  if (check_input_format(num)) {
-    return -1;
-  }
+  // if (check_input_format(num)) {
+  //   return -1;
+  // }
   *component = strtol(num, &endptr, 10);
   if (*endptr != '\0' || check_range(component)) {
     return -1;
