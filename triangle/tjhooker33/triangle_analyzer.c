@@ -66,7 +66,7 @@ int check_arg_count(int argc) {
  *                    
  *                      http://mathworld.wolfram.com/Collinear.html
  *                      
- *                      x_1 * (y_2 - y_3) + x_2 * (y_3 - y_1) + x_3 * (y_1 - y_2)
+ *                      x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)
  *
  * INPUTS :
  *      GLOBALS :   
@@ -81,37 +81,6 @@ int check_colinearity(void) {
      + triangle_points[1].x * (triangle_points[2].y - triangle_points[0].y)
      + triangle_points[2].x * (triangle_points[0].y - triangle_points[1].y) == 0 ) {
     return -1;
-  }
-  return 0;
-}
-
-/*******************************************************************************************
- * NAME :             check_input_format(num)
- *
- * DESCRIPTION :      Check each char of the string to make sure a valid int is represented.
- *
- * INPUTS :
- *      PARAMETERS :   
- *          char      * num             string representing a numeric value
- *
- * OUTPUTS :
- *      RETURN :
- *          int                         0 on success, -1 on failure
- */
-int check_input_format(char *num) {
-  int i, length;
-
-  length = strlen(num);
-  for (i = 0; i < length; i++) {
-    /* Allows left most char to represent numeric sign */
-    if (i == 0 && (num[i] == '-' || num[i] == '+')) {
-      if (length == 1) {
-        return -1; 
-      }
-      continue;
-    } else if (!isdigit(num[i])) {
-      return -1; 
-    }
   }
   return 0;
 }
@@ -152,9 +121,6 @@ int check_range(long *num) {
 int create_point_component(char *num, long *component) {
   char *endptr;
 
-  if (check_input_format(num)) {
-    return -1;
-  }
   *component = strtol(num, &endptr, 10);
   if (*endptr != '\0' || check_range(component)) {
     return -1;
@@ -181,8 +147,8 @@ int create_point_component(char *num, long *component) {
 int create_triangle(char *argv[]) {
   int i, j;  
 
-  /* j keeps track of the coordinate pair */
-  /* i keeps track of the individual component parsed from argv */
+  /* j keeps track of the coordinate pair (x,y) */
+  /* i keeps track of the individual component (x) or (y) parsed from argv */
   j = 0;
   for(i = 1; i < 7; i+=2, j++) {
     if ( create_point_component(argv[i],   &(triangle_points[j].x)) 
@@ -197,7 +163,7 @@ int create_triangle(char *argv[]) {
  * NAME :             compute_distance(p1, p2)
  *
  * DESCRIPTION :      Computes the distance between two coordinate pairs.
- *                    (x_2 - x_1)^2 + (y_2 - y_1)^2
+ *                    (x2 - x1)^2 + (y2 - y1)^2
  *
  * INPUTS :
  *      PARAMETERS :   
