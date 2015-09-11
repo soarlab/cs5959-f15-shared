@@ -26,6 +26,9 @@ tri_test("./triangle 1 2 3 4 5 6 7", "error\n", "Too many inputs gives error.")
 # Test - Char input gives error
 tri_test("./triangle 1 2 3 a 0 -1", "error\n", "Char input gives error.")
 
+# Test - Mixed char/number input gives error
+tri_test("./triangle 1 23b 4 5 6 7", "error\n", "Mixed char/number input gives error.")
+
 # Test - Too few inputs gives error.
 tri_test("./triangle 1", "error\n", "Too few inputs gives error.")
 
@@ -34,6 +37,9 @@ tri_test("./triangle 1 0 hello 2 3 4", "error\n", "Invalid input gives error.")
 
 # Test - Too large of value gives error.
 tri_test("./triangle 1 123456789012345 2 3 4 5", "error\n", "Too large of value gives error.")
+
+# Test - Nearly equilateral, but not quite.
+tri_test("./triangle -1073741823 -1073741823 -498325314 1073741823 1073741823 -498325314", "isosceles acute\n", "Nearly equilateral, but actually isosceles, acute.")
 
 # Test - Barely exceed boundaries gives error.
 tri_test("./triangle -1073741824 -1073741823 1073741823 -1073741823 1073741822 1073741823", "error\n", "Number below -(2^30 - 1) gives error.")
@@ -61,6 +67,9 @@ tri_test("./triangle -4 1 -1 1 -2 2", "scalene obtuse\n", "Scalene, obtuse trian
 
 # Test - Valid Isosceles, Right
 tri_test("./triangle -1 -1 -2 -1 -1 -2", "isosceles right\n", "Isosceles, right triangle.")
+
+# Test - Valid Isosceles, Right
+tri_test("./triangle -1 -1073741823 0 0 1073741823 -1", "isosceles right\n", "Isosceles, right triangle.")
 
 # Test - Valid Isosceles, Acute
 tri_test("./triangle 0 929887696 -536870912 0 536870912 0", "isosceles acute\n", "Isosceles, acute triangle.")

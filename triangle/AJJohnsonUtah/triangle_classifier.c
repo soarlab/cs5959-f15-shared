@@ -4,13 +4,15 @@
 #include <string.h>
 
 const int side_count = 3;
+const long long max_val = 1073741823L;
+const long long min_val = -1073741823L;
 
 enum TRIANGLE_TYPE { scalene, isosceles, equilateral };
 enum ANGLE_TYPE { acute, right, obtuse };
 
 struct TrianglePoint {
-  long x;
-  long y;  
+  long long x;
+  long long y;  
 };
 
 /**
@@ -19,12 +21,11 @@ struct TrianglePoint {
  *
  * Returns the string parsed to an integer if successful
  **/
-long arg_to_long(char* str, int* err) {
-  long parsed_val = strtol(str, NULL, 0);
-  long max_val = 1073741823L;
-  long min_val = -1L * max_val;
+long long arg_to_long(char* str, int* err) {
+  char* lastChar;
+  long long parsed_val = strtoll(str, &lastChar, 0);
   // Determine if an error occured while parsing the string
-  if(parsed_val == 0 && (strlen(str) != 1 || str[0] != '0')) {
+  if(*lastChar != '\0') {
     // Error from strtol()
     *err = -1;
   } else if(parsed_val > max_val || parsed_val < min_val) {
@@ -33,7 +34,7 @@ long arg_to_long(char* str, int* err) {
   } else {
     *err = 0;    
   }
-  return (long) parsed_val;
+  return parsed_val;
 }
 
 /**
@@ -51,13 +52,14 @@ int parse_args(int argc, char** argv, struct TrianglePoint* points) {
     return -1;
   }
 
+  // Loop through the arguments, and store them in their respective points
   int arg_index;
   for(arg_index = 1; arg_index < argc; arg_index++) {
 
     // 1 & 2 are first point, 3 & 4 are second, 5 & 6 are third.
     struct TrianglePoint* curr_point = &points[(arg_index - 1) / 2];
 
-    long parsed_arg = arg_to_long(argv[arg_index], &error_val);
+    long long parsed_arg = arg_to_long(argv[arg_index], &error_val);
     if(error_val < 0) {
       return -1;
     }
@@ -76,13 +78,13 @@ int parse_args(int argc, char** argv, struct TrianglePoint* points) {
  *
  * A "functional length" is the length of its respective side SQUARED.
  **/
-void compute_side_lengths(struct TrianglePoint* points, long* lengths) {
+void compute_side_lengths(struct TrianglePoint* points, long long* lengths) {
   int point_index;
   for(point_index = 0; point_index < side_count; point_index++) {
-    long x1 = points[point_index].x;
-    long y1 = points[point_index].y;
-    long x2 = points[(point_index == side_count - 1 ? 0 : point_index + 1)].x;
-    long y2 = points[(point_index == side_count - 1 ? 0 : point_index + 1)].y;
+    long long x1 = points[point_index].x;
+    long long y1 = points[point_index].y;
+    long long x2 = points[(point_index == side_count - 1 ? 0 : point_index + 1)].x;
+    long long y2 = points[(point_index == side_count - 1 ? 0 : point_index + 1)].y;
     lengths[point_index] = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
   }
 }
@@ -110,7 +112,7 @@ int is_triangle(struct TrianglePoint* points) {
 /**
  * Determine the type of the triangle based on the lengths of the sides.
  **/
-enum TRIANGLE_TYPE determine_triangle_type(long* side_lengths) {
+enum TRIANGLE_TYPE determine_triangle_type(long long* side_lengths) {
   if(side_lengths[0] == side_lengths[1]
      && side_lengths[0] == side_lengths[2]) {
     return equilateral;
@@ -126,9 +128,9 @@ enum TRIANGLE_TYPE determine_triangle_type(long* side_lengths) {
 /**
  * Determine the type of the angle based on the lengths of the sides.
  **/
-enum ANGLE_TYPE determine_angle_type(long* side_lengths) {
+enum ANGLE_TYPE determine_angle_type(long long* side_lengths) {
   // Determine which side is the longest, store it in side_c
-  long side_a, side_b, side_c;
+  long long side_a, side_b, side_c;
   if(side_lengths[0] > side_lengths[1]
      && side_lengths[0] > side_lengths[2]) { 
     side_a = side_lengths[1];
@@ -154,8 +156,8 @@ enum ANGLE_TYPE determine_angle_type(long* side_lengths) {
   //   A^2 + B^2 > C^2 --> Acute
   //   A^2 + B^2 < C^2 --> Obtuse
 
-  long a_sqaured_plus_b_squared = side_a + side_b;
-  long c_squared = side_c;
+  long long a_sqaured_plus_b_squared = side_a + side_b;
+  long long c_squared = side_c;
    
   if(a_sqaured_plus_b_squared < c_squared) {
     return obtuse;
@@ -191,7 +193,7 @@ char* angle_type_to_str(enum ANGLE_TYPE angle_type) {
 main(int argc, char** argv) {
 
   struct TrianglePoint points[side_count];
-  long squared_side_lengths[side_count];
+  long long squared_side_lengths[side_count];
   enum TRIANGLE_TYPE triangle_type;
   enum ANGLE_TYPE angle_type;
   if(parse_args(argc, argv, points) < 0) {
