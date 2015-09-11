@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
 	ClassifyTriangle(triPtr);
 
-  return 0;
+	return 0;
 }
 
 /*
