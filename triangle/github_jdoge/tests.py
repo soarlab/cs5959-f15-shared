@@ -58,17 +58,17 @@ class TriangleTests(unittest.TestCase):
     self.assertEqual(myTriangle.executeTest(),'not a triangle\n')
 
   # horizontal line
-  def testColinear1(self):
+  def testColinear2(self):
     myTriangle = Triangle('-1073741823 0 0 0 1073741823 0'.split())
     self.assertEqual(myTriangle.executeTest(),'not a triangle\n')
 
   # top left to bottom right
-  def testColinear1(self):
+  def testColinear3(self):
     myTriangle = Triangle('-1073741823 1073741823 0 0 1073741823 -1073741823'.split())
     self.assertEqual(myTriangle.executeTest(),'not a triangle\n')
 
   # top right to bottom left
-  def testColinear1(self):
+  def testColinear4(self):
     myTriangle = Triangle('1073741823 1073741823 0 0 -1073741823 -1073741823'.split())
     self.assertEqual(myTriangle.executeTest(),'not a triangle\n')
 

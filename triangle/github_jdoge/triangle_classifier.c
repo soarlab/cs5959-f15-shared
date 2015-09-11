@@ -31,281 +31,173 @@
  
 int main(int argc, char *argv[])
 {
-	// checks for the correct number of inputs
-	if(argc != 7)
-	{
-		printf("error\n");
-		return 0;
-	}
-
-	// the triangle to be tested
+	// The test triangle.
 	struct triangle testTriangle;
+	struct triangle *triPtr = &testTriangle;
 
-	// for error checking strtol.
-	char* endptr;
-
-	// first point - A
-	testTriangle.pointA.x = strtol(argv[1], &endptr, 0);
-	if(*endptr != '\0')
-	{ printf("error\n"); return 0; }
-	testTriangle.pointA.y = strtol(argv[2], &endptr, 0);
-	if(*endptr != '\0')
-	{ printf("error\n"); return 0; }
-
-	// second point - B
-	testTriangle.pointB.x = strtol(argv[3], &endptr, 0);
-	if(*endptr != '\0')
-	{ printf("error\n"); return 0; }
-	testTriangle.pointB.y = strtol(argv[4], &endptr, 0);
-	if(*endptr != '\0')
-	{ printf("error\n"); return 0; }
-
-	// third point - C
-	testTriangle.pointC.x = strtol(argv[5], &endptr, 0);
-	if(*endptr != '\0')
-	{ printf("error\n"); return 0; }
-	testTriangle.pointC.y = strtol(argv[6], &endptr, 0);
-	if(*endptr != '\0')
-	{ printf("error\n"); return 0; }
-
-	// validating input [-(2^30)-1, (2^30)-1]
-	if(testTriangle.pointA.x >  1073741823 || 
-	   testTriangle.pointA.x < -1073741823 ||
-	   testTriangle.pointA.y >  1073741823 || 
-	   testTriangle.pointA.y < -1073741823 ||
-	   testTriangle.pointB.x >  1073741823 ||
-	   testTriangle.pointB.x < -1073741823 ||
-	   testTriangle.pointB.y >  1073741823 ||
-	   testTriangle.pointB.y < -1073741823 ||
-	   testTriangle.pointC.x >  1073741823 ||
-	   testTriangle.pointC.x < -1073741823 ||
-	   testTriangle.pointC.y >  1073741823 ||
-	   testTriangle.pointC.y < -1073741823
-	  )
+	// Validating the input.
+	if(!ValidateInput(argc, argv, triPtr))
 	{
 		printf("error\n");
 		return 0;
 	}
 
-	// checks if there is at least 1 pair of duplicate points
-	if(DuplicatePointsCheck(testTriangle))
-	{
-		printf("not a triangle\n");
-		return 0;
-	}
+	ClassifyTriangle(triPtr);
 
-	// checks if the points are colinear
-	if(ColinearityCheck(testTriangle))
-	{
-		printf("not a triangle\n");
-		return 0;
-	}
-
-	__int64_t lengthAB = CalculateLength(testTriangle.pointA, testTriangle.pointB);
-	__int64_t lengthBC = CalculateLength(testTriangle.pointB, testTriangle.pointC);
-	__int64_t lengthAC = CalculateLength(testTriangle.pointA, testTriangle.pointC);
-
-
-
-	// Array for holding edge lengths.
-	__int64_t edgeLengths[3];
-	edgeLengths[0] = lengthAB;
-	edgeLengths[1] = lengthBC;
-	edgeLengths[2] = lengthAC;
-
-	printf("AB Length: %lld\n", lengthAB);
-	printf("BC Length: %lld\n", lengthBC);
-	printf("AC Length: %lld\n", lengthAC);
-
-	// counts the number of equal length edges
-	int equalLengthCount = CountEqualLengths(edgeLengths);
-
-	// Checks the number of equal lengths and prints correct message.
-	if(equalLengthCount == 3) 
-	{
-		printf("equilateral ");
-	}
-	else if(equalLengthCount == 1) // 1 matching pair = 2 equal sides.
-	{
-		printf("isosceles ");
-	}
-	else if(equalLengthCount == 0) // 0 equal sides.
-	{
-		printf("scalene ");
-	}
-
-	// qsort(edgeLengths, 3, sizeof(__int64_t), CompareFunction);
-
-	// Because qsort() was not working correctly for 
-	// certain __int64_t inputs, Bubble sort was an 
-	// easy alternative for the small N of 3.
-	// By putting the lengths in order, determining
-	// acute/obtuse/right becomes trivial.
-	BubbleSort(edgeLengths, 3);
-
-
-
-	// By calculating the hypotenuse, we can determine if a triangle is
-	// acute, obtuse, or right without dealing with angles.
-	__int64_t calculateHypotenuse = edgeLengths[0] + edgeLengths[1];
-	__int64_t longestEdge = edgeLengths[2];
-
-	// Compares the calculated hypotenuse (adding the 2 shortest edges)
-	// with the longest given edge and prints out the correct message.
-	if(calculateHypotenuse > longestEdge)
-	{
-		printf("acute\n");
-	}
-	else if(calculateHypotenuse < longestEdge)
-	{
-		printf("obtuse\n");
-	}
-	else if(calculateHypotenuse == longestEdge)
-	{
-		printf("right\n");
-	}
   return 0;
 }
 
 /*
-	Checks if any 2 points are the same. 
-
-	Returns 1 (true) is at least 2 points are the same. 0 (false) otherwise.
-*/
-int DuplicatePointsCheck(struct triangle t)
+ * Validates the input from the user. 
+ *
+ * Validates that exactly 6 points came from the command line.
+ * Validates the success of the system library strtol().
+ * Validates the range of the point values. 
+ *
+ * Returns 1 on valid input. Otherwise returns 0 on fail. 
+ */
+int ValidateInput(int argc, char *argv[], struct triangle *t)
 {
-	int duplicatePoints = 0;
-
-	// The points of the triangle.
-	struct point A = t.pointA;
-	struct point B = t.pointB;
-	struct point C = t.pointC;
-
-	if(A.x == B.x && A.y == B.y)
-		duplicatePoints = 1;
-	if(B.x == C.x && B.y == C.y)
-		duplicatePoints = 1;
-	if(A.x == C.x && A.y == C.y)
-		duplicatePoints = 1;
-
-	return duplicatePoints;
-}
-
-/*
-	Citation: modified from Andrei Ciobanu's.
-	http://andreinc.net/2010/12/11/euclids-algorithm-reducing-fraction-to-lowest-terms/
-
-	Finds the greatest common divisor of two integers. 
-*/ 
-__int64_t FindGCD(__int64_t number1, __int64_t number2)
-{
-	__int64_t temp;
-
-	// Absolute value of __int64_t.
-	if(number1 < 0)
-		number1 *= -1;
-
-	// Absolute value of __int64_t.
-	if(number2 < 0)
-		number2 *= -1;
-
-	while (number1 > 0) {
-		temp = number1;
-		number1 = number2 % number1;
-		number2 = temp;
+	// Checks for the correct number of inputs.
+	if(argc != 7)
+	{
+		return 0;
 	}
-	return number2;
-}
 
-/*
-	Checks if 3 points are colinear (3 points that reside along a single line).
-	Uses 2 __int64_t integer values to represent the (rise/run) slope that is
-	reduced using their GCD. 
+	// For error checking strtol.
+	char* endptr;
 
-	Returns 1 (true) if the 3 points are colinear. 0 (false) otherwise.
-*/
-int ColinearityCheck(struct triangle t)
-{
-	int colinear = 0;
-	__int64_t tempGCD = 0;
+	// First point - A.
+	t->pointA.x = strtol(argv[1], &endptr, 0);
+	if(*endptr != '\0')
+		return 0;
+	t->pointA.y = strtol(argv[2], &endptr, 0);
+	if(*endptr != '\0')
+		return 0;
 
-	// The points of the triangle.
-	struct point A = t.pointA;
-	struct point B = t.pointB;
-	struct point C = t.pointC;
+	// Second point - B.
+	t->pointB.x = strtol(argv[3], &endptr, 0);
+	if(*endptr != '\0')
+		return 0;
+	t->pointB.y = strtol(argv[4], &endptr, 0);
+	if(*endptr != '\0')
+		return 0;
 
-	// Find slopes between each set of points. 
+	// Third point - C.
+	t->pointC.x = strtol(argv[5], &endptr, 0);
+	if(*endptr != '\0')
+		return 0;
+	t->pointC.y = strtol(argv[6], &endptr, 0);
+	if(*endptr != '\0')
+		return 0;
 
-	__int64_t slope_numerator_AB   = A.y - B.y;
-	__int64_t slope_denominator_AB = A.x - B.x;
-
-	tempGCD = FindGCD(slope_numerator_AB, slope_denominator_AB);
-	slope_numerator_AB /= tempGCD;
-	slope_denominator_AB /= tempGCD;
-
-	// Absolute value.
-	if(slope_numerator_AB < 0)
-		slope_numerator_AB *= -1;
-	if(slope_denominator_AB < 0)
-		slope_denominator_AB *= -1;
-
-	__int64_t slope_numerator_BC   = B.y - C.y;
-	__int64_t slope_denominator_BC = B.x - C.x;
-
-	tempGCD = FindGCD(slope_numerator_BC, slope_denominator_BC);
-	slope_numerator_BC /= tempGCD;
-	slope_denominator_BC /= tempGCD;
-
-	// Absolute value.
-	if(slope_numerator_BC < 0)
-		slope_numerator_BC *= -1;
-	if(slope_denominator_BC < 0)
-		slope_denominator_BC *= -1;
-
-	__int64_t slope_numerator_AC   = A.y - C.y;
-	__int64_t slope_denominator_AC = A.x - C.x;
-
-	tempGCD = FindGCD(slope_numerator_AC, slope_denominator_AC);
-	slope_numerator_AC /= tempGCD;
-	slope_denominator_AC /= tempGCD;
-
-	// Absolute value.
-	if(slope_numerator_AC < 0)
-		slope_numerator_AC *= -1;
-	if(slope_denominator_AC < 0)
-		slope_denominator_AC *= -1;
-
-	// Checks if the points are colinear by comparing slopes.
-	if(
-	   (slope_numerator_AB == slope_numerator_BC && 
-		slope_denominator_AB == slope_denominator_BC)
-	   &&
-	   (slope_numerator_BC == slope_numerator_AC && 
-	   	slope_denominator_BC == slope_denominator_AC)
-	   &&
-	   (slope_numerator_AB == slope_numerator_AC && 
-	   	slope_denominator_AB == slope_denominator_AC)
+	// Validating input [-(2^30)-1, (2^30)-1].
+	if(t->pointA.x > MAX || 
+	   t->pointA.x < MIN ||
+	   t->pointA.y > MAX || 
+	   t->pointA.y < MIN ||
+	   t->pointB.x > MAX ||
+	   t->pointB.x < MIN ||
+	   t->pointB.y > MAX ||
+	   t->pointB.y < MIN ||
+	   t->pointC.x > MAX ||
+	   t->pointC.x < MIN ||
+	   t->pointC.y > MAX ||
+	   t->pointC.y < MIN
 	  )
-		colinear = 1;
+		return 0;
 
-	return colinear;
+	// Input has been validated as correct. 
+	return 1;
 }
 
 /*
-	Computes the length between 2 points. Uses standard distane formula
-	but leaves the distance in squred form to avoid floating points
-	involved with squreroots. The __int64_t data type is large enough to
-	correctly represent the length. Even in the most extreme case
-	point A = (-(2^30)-1, -(2^30)-1) and point B ((2^30)-1, (2^30)-1).
+ * Classifies a given triangle t. A detailed description at top of file.
+ */
+void ClassifyTriangle(struct triangle *t)
+{
+	// Checks if the points are colinear.
+	if(ColinearityCheck(t))
+	{
+		printf("not a triangle\n");
+		return;
+	}
 
-	Ex. length^2 = [(x2 - x1)^2] + [(y2 - y1)^2]
-		length^2 = [(x2 - x1) * (x2 - x1)] + [(y2 - y1) * (y2 - y1)]
-		length^2 = [(((2^30)-1) - (-(2^30)-1)) * (((2^30)-1) - (-(2^30)-1))] + [(((2^30)-1) - (-(2^30)-1)) * (((2^30)-1) - (-(2^30)-1))]
-		length^2 = [((2^31)-2)*((2^31)-2)] + [((2^31)-2)*((2^31)-2)]
-		length^2 = [(2^62)-8,589,934,588] + [(2^62)-8,589,934,588]
-		length^2 = [(2^63)-17,179,869,176]
-	    which is 17,179,869,175 under the 64-bit signed integer limit (2^63)-1.
-*/
+	// Computing the lengths of the edges.
+	__int64_t lengthAB = CalculateLength(t->pointA, t->pointB);
+	__int64_t lengthBC = CalculateLength(t->pointB, t->pointC);
+	__int64_t lengthAC = CalculateLength(t->pointA, t->pointC);
+
+	// Setting initial edges. 
+	// 'a' should be shortest.
+	// 'b' should be middle.
+	// 'c' should be longest.
+	__int64_t a = lengthBC;
+	__int64_t b = lengthAC;
+	__int64_t c = lengthAB;
+
+	// Sorting edges by length.
+	if(lengthBC > c && lengthBC > lengthAC)
+	{
+		a = lengthAB;
+		b = lengthAC;
+		c = lengthBC;
+	}
+	else if(lengthAC > c && lengthAC > lengthBC)
+	{
+		a = lengthAB;
+		b = lengthBC;
+		c = lengthAC;
+	}
+
+	// Classify the triangle's edge type through 
+	// comparing for equal lengths.
+	if(a == b == c) 
+        printf("equilateral "); 
+    else if(a == b | a == c | b == c) 
+        printf("isosceles ");
+    else 
+        printf("scalene ");
+    
+	// Classify the triangle based on the lengths of the edges.
+	// Compares the calculated hypotenuse (adding the 2 shortest edges).
+	// with the longest given edge and prints out the correct message.
+    if(a + b > c)
+    	printf("acute\n");
+    else if(a + b < c)
+  		printf("obtuse\n");
+  	else if(a + b == c)
+  		printf("right\n");
+}
+
+/*
+ *	Checks if 3 points are colinear (3 points that reside along a single line).
+ *
+ *	Returns 1 (true) if the 3 points are colinear. 0 (false) otherwise.
+ */
+int ColinearityCheck(struct triangle *t)
+{
+	if(((t->pointB.y - t->pointA.y)*(t->pointC.x - t->pointB.x)) == ((t->pointC.y - t->pointB.y)*(t->pointB.x - t->pointA.x)))	
+		return 1;
+	else 
+		return 0;
+}
+
+/*
+ *	Computes the length between 2 points. Uses standard distane formula
+ *	but leaves the distance in squred form to avoid floating points
+ *	involved with squreroots. The __int64_t data type is large enough to
+ *	correctly represent the length. Even in the most extreme case
+ *	point A = (-(2^30)-1, -(2^30)-1) and point B ((2^30)-1, (2^30)-1).
+ *
+ *	Ex. length^2 = [(x2 - x1)^2] + [(y2 - y1)^2]
+ *		length^2 = [(x2 - x1) * (x2 - x1)] + [(y2 - y1) * (y2 - y1)]
+ *		length^2 = [(((2^30)-1) - (-(2^30)-1)) * (((2^30)-1) - (-(2^30)-1))] + [(((2^30)-1) - (-(2^30)-1)) * (((2^30)-1) - (-(2^30)-1))]
+ *		length^2 = [((2^31)-2)*((2^31)-2)] + [((2^31)-2)*((2^31)-2)]
+ *		length^2 = [(2^62)-8,589,934,588] + [(2^62)-8,589,934,588]
+ *		length^2 = [(2^63)-17,179,869,176]
+ *	    which is 17,179,869,175 under the 64-bit signed integer limit (2^63)-1.
+ */
 __int64_t CalculateLength(struct point A, struct point B)
 {
 	__int64_t x1 = A.x;
@@ -314,66 +206,8 @@ __int64_t CalculateLength(struct point A, struct point B)
 	__int64_t x2 = B.x;
 	__int64_t y2 = B.y;
 
-	// computes using 
+	// Computes the length.
 	__int64_t length = ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1));
 
 	return length;
 }
-
-/*
-	Counts the number of triangle edges that are equal.
-	Starts at 1 to  
-*/
-int CountEqualLengths(__int64_t arr[])
-{
-	int count = 0;
-
-	if(arr[0] == arr[1]) //AB and BC
-		count++;
-
-	if(arr[1] == arr[2]) // BC and AC
-		count++;
-
-	if(arr[0] == arr[2]) // AB and AC
-		count++;
-
-	return count;
-}
-
-/*
-	Currently unused due to qsort() not working for legal inputs.
-*/
-int CompareFunction(const void* a, const void* b)
-{
-	return (*(__int64_t*)a) - (*(__int64_t*)b);
-}
-
-/*
-	Citation: Stackoverflow.com user Donotalo's 
-	implementation of Bubble sort.
-
-	http://stackoverflow.com/questions/3893937/c-array-sorting-tips
-
-	The standard library sorting algorithm qsort() was not working 
-	correctly for __int64_t types on certain inputs. But thankfully
-	this implementation of bubble sort works like a charm. 
-*/
-void BubbleSort(__int64_t a[], int array_size)
-{
-	__int64_t i, j, temp;
-	for (i = 0; i < (array_size - 1); ++i)
-	{
-		for (j = 0; j < array_size - 1 - i; ++j )
-	  	{
-	    	if (a[j] > a[j+1])
-	        {
-	            temp = a[j+1];
-	            a[j+1] = a[j];
-	            a[j] = temp;
-	        }
-	  	}
-	}
-}
-
-
-
