@@ -40,3 +40,15 @@ assert(result == "not a triangle\n"), "Program's output: " + result;
 #10 large input test, this will pass on 64 bit.  Will fail on 32 bit
 result = subprocess.check_output("./triangle 0 0 1073741823 0 0 -1073741823", shell=True);
 assert(result == "isosceles right\n"), "Program's output: " + result;
+
+#11 vertical line
+result = subprocess.check_output("./triangle 0 1073741823 0 0 0 -1073741823", shell=True);
+assert(result == "not a triangle\n"), "Program's output: " + result;
+
+#invalid input
+result = subprocess.check_output("./triangle 0 a b c d e", shell=True);
+assert(result == "error\n"), "Program's output: " + result;
+
+#large scalene right
+result = subprocess.check_output("./triangle 0 -1073741823 1 -1073741823 0 1073741823", shell=True);
+assert(result == "scalene right\n"), "Program's output: " + result;
