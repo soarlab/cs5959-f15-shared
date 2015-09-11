@@ -52,3 +52,7 @@ assert(result == "error\n"), "Program's output: " + result;
 #large scalene right
 result = subprocess.check_output("./triangle 0 -1073741823 1 -1073741823 0 1073741823", shell=True);
 assert(result == "scalene right\n"), "Program's output: " + result;
+
+#too large of a number
+result = subprocess.check_output("./triangle 1 2 3 4 0 1073741824", shell=True);
+assert(result == "error\n"), "Program's output: " + result;
