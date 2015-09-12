@@ -8,7 +8,7 @@ double sideLen (long x1, long y1, long x2, long y2);
 void checkPoints(long points[]);
 void checkSides(long long sides[]);
 void checkAngles(long points[]);
-
+int valid(long point);
 /*Global Variables */
 char* sideType;
 char* angleType;
@@ -26,15 +26,19 @@ double sideLen (long x1, long y1, long x2, long y2){
 
 /* Check that the points aren't on the same line */
 void checkPoints(long points[]){
-  if (points[0] == points[2] && points[0] == points[4]){
-    printf("not a triangle\n");
-    exit(0);
-  }
-  if (points[1] == points[3] && points[1] == points[5]){
-    printf("not a triangle\n");
+  
+  if((points[2] - points[0]) * (points[5] - points[1]) == (points[4] - points[0]) * (points[3] - points[1])) {
+    printf("not a triangle");
     exit(0);
   }
   checkAngles(points);
+}
+
+int valid(long point){
+  if(point > 1073741823 || point < -1073741823)
+    return 1;
+  else
+    return 0;
 }
 
 /* Check the side lengths for patterns that will classify them.*/
@@ -106,25 +110,24 @@ void checkAngles(long points[]){
 int main (int argc, char **argv){
 
   long points[6];
-  long long lengths[3]; 
-  if (argc == 1 || argc != 7) {
-    printf("HERE error\n");
+  long long lengths[3];
+  char *endptr;
+ 
+  if (argc != 7) {
+    printf("error\n");
     exit(0);
   }
   else{
     int i;
     for(i = 1; i < argc; i++){
-      points[i-1] = atol(argv[i]);
-      if(points[i-1] == 0){
-        char* possibleE = argv[i];
-        if((*possibleE != '0')){
+      points[i-1] = strtol(argv[i], &endptr, 10);
+      if(*endptr != '\0' || valid(points[i-1])){
           printf("error\n");
           exit(0);
         }
       }
     }
-    checkPoints(points);	
-  }
+  checkPoints(points);	
   lengths[0] = sideLen(points[0], points[1], points[2], points[3]);
   lengths[1] = sideLen(points[0], points[1], points[4], points[5]);
   lengths[2] = sideLen(points[2], points[3], points[4], points[5]);
