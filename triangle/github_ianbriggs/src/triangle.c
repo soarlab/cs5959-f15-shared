@@ -132,6 +132,7 @@ void
 result_init(result_s *result)
 {
   assert(result != NULL);
+  
   result->condition = UNSET;
   result->first = UNSET;
   result->second = UNSET;
@@ -144,6 +145,7 @@ swap(uint64_t *first, uint64_t *second)
 {
   assert(first != NULL);
   assert(second != NULL);
+  
   uint64_t temp = *first;
   *first = *second;
   *second = temp;
@@ -155,6 +157,7 @@ void
 sort(uint64_t *array, const size_t length)
 {
   assert(array != NULL);
+  
   uint64_t max;
   size_t index_of_max;
 
@@ -187,6 +190,7 @@ parse_int_ranged(const char *string, const int64_t min, const int64_t max,
   assert(min <= max);
   assert(min > INT64_MIN);
   assert(max < INT64_MAX);
+
   char *end;
   long long int parsed = strtoll(string, &end, 10);
 
@@ -211,6 +215,7 @@ parse_int_array_ranged(const char *strings[], const size_t length,
 { 
   assert(strings != NULL);
   assert(outs != NULL);
+
   for (size_t i=0; i<length; i++) {
     if (parse_int_ranged(strings[i], min, max, &outs[i]) == FAIL) {
       return FAIL;
@@ -226,7 +231,7 @@ parse_int_array_ranged(const char *strings[], const size_t length,
 int
 parse_points(const char *strings[], const size_t length,
 	     const int64_t low, const int64_t high,
-	     point_s out[])
+	     point_s outs[])
 {
   assert(strings != NULL);
   assert(outs != NULL);
@@ -238,8 +243,8 @@ parse_points(const char *strings[], const size_t length,
   }
   
   for (size_t i=0; i<length; i+=2) {
-    out[i/2].x = numbers[i];
-    out[i/2].y = numbers[i+1];
+    outs[i/2].x = numbers[i];
+    outs[i/2].y = numbers[i+1];
   }
 
   return PASS;
@@ -301,7 +306,7 @@ classify_length_name(const uint64_t lengths[],
   assert(lengths != NULL);
   assert(result != NULL);
   
-  if ((lengths[0] == lengths[1]) && (lengths[1] == langths[2])) {
+  if ((lengths[0] == lengths[1]) && (lengths[1] == lengths[2])) {
     result->first = EQUILATERAL;
   }
   else if ((lengths[0] == lengths[1]) || (lengths[1] == lengths[2])) {
