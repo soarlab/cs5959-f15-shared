@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdint.h>
+#include<stdlib.h>
 #include<string.h>
 #include<inttypes.h>
 
@@ -11,7 +12,7 @@ angle getAngleType(int64_t aSquared, int64_t bSquared, int64_t cSquared);
 int64_t absoluteValue(int64_t input);
 int64_t S64(const char *s);
 
-int main(void)
+int main(int argc, char **argv)
 {
 	static const int64_t MAX_VALUE=1073741823;
 	static const int64_t MIN_VALUE=-1073741823;
@@ -22,32 +23,28 @@ int main(void)
 	int64_t coords[6];
 	angle angleType;
 	side sideType;
-	char buffer[74];
+	char *end;
 	
-	fgets(buffer, sizeof(buffer), stdin);
-	
-	char* token = strtok(buffer, " ");
-	int x=0;
-	while (token) {
-		//Remove newline character from fgets (stupid fgets)
-		size_t ln = strlen(token) - 1;
-		if (token[ln] == '\n')token[ln] = '\0';
-		//Convert token into 64bit int and place into array
-		coords[x] = S64(token);
-		//Check if overflow or higher/lower than allowed
-		if(coords[x]<MIN_VALUE || coords[x]>MAX_VALUE )
+	if (argc != 7) {
+		
+		printf("error\n");
+		return 0;
+	}
+	for (int x = 1; x < argc ; x++) {
+		coords[x-1]=strtoll(argv[x], &end, 10);
+		if(coords[x-1]<MIN_VALUE || coords[x-1]>MAX_VALUE )
 		{
 			printf("error\n");
 			return 0;
 		}
-		token = strtok(NULL, " ");
-		x++;
 	}
-	if(x!=6)
+	
+	if ( *end != '\0' ) 
 	{
 		printf("error\n");
 		return 0;
 	}
+	
 	//After parsing args place into variables for readability
 	x1=coords[0];
 	y1=coords[1];
@@ -102,7 +99,7 @@ int main(void)
 	}
 	
 
-	
+
 	aSquared=((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 	bSquared=((x1-x3)*(x1-x3)+(y1-y3)*(y1-y3));
 	cSquared=((x2-x3)*(x2-x3)+(y2-y3)*(y2-y3));
@@ -121,7 +118,6 @@ int main(void)
 		bSquared=swap;
 	}
 	angleType=getAngleType(aSquared, bSquared, cSquared);
-	
 	//Check return and print accordingly (I didn't want to print inside the function)
 	if(sideType==scalene)
 	{
@@ -181,27 +177,18 @@ side getSideType(int64_t aSquared, int64_t bSquared, int64_t cSquared)
 
 angle getAngleType(int64_t aSquared, int64_t bSquared, int64_t cSquared)
 {
-	if((aSquared+bSquared)==cSquared)
-	{
-		return right;
-	}
-	else if((aSquared+bSquared)>cSquared)
-	{
-		return acute;
-	}
-	else
-	{
-		return obtuse;
-	}
+	int64_t sumOfAAndB=aSquared+bSquared;
+    if(sumOfAAndB==cSquared)
+    {
+        return right;
+    }
+    else if(sumOfAAndB>cSquared)
+    {
+        return acute;
+    }
+    else
+    {
+        return obtuse;
+    }
 }
 
-//adapted from https://stackoverflow.com/questions/17002969/how-to-convert-string-to-int64-t
-int64_t S64(const char *s) {
-  int64_t i;
-  char c =0;
-  int scanned = sscanf(s, "%" SCNd64 "%c" , &i, &c);
-  if (scanned == 1 ) return i;
-  //return max int if there are more or less arguments parsed than expected.
-  //This works because INT64_MAX is also considered an error condition which we handle the same.
-  return INT64_MAX;  
-}

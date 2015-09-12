@@ -1,6 +1,9 @@
-default: triangle
-	gcc  triangle.c -o triangle
+all: triangle 
+clean: rm -f Program *.o
+.PHONY: all clean
 
-clean:
-	-rm -f triangle.o
-	-rm -f triangle
+CFLAGS := -std=c99
+
+triangle: triangle.o
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+triangle.o: triangle.c
