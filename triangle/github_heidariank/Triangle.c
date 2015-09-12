@@ -8,7 +8,7 @@
 #define PI   3.141592653
 /*3.141592653589793238462643383279502884197169399375105820974944...*/
 
-static int debugging = 1;
+static int debugging = 0;
 
 typedef struct
 {
@@ -81,7 +81,7 @@ int cmp_float(const void *a, const void *b)
  */
 void find_sides(Triangle *tri)
 {
-  int debugging = 0;
+  
   int i;
   int size = 3;
   float sides[size];
@@ -125,7 +125,7 @@ int are_colinear(Triangle *tri)
 
 int main( int argc, const char* argv[] )
 {
-  int debugging = 0;
+  
   int i;
   float test;
   Triangle tri;
