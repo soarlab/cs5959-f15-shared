@@ -18,12 +18,12 @@ int main(int argc, char *argv[])
      print_error_and_close("error");
 
   // assign point data to globals
-  x1 = atol(argv[1]);
-  x2 = atol(argv[3]);
-  x3 = atol(argv[5]);
-  _y1 = atol(argv[2]); //naming collision with method y1() 
-  y2 = atol(argv[4]);
-  y3 = atol(argv[6]);
+  x1 = extract_value_and_verify_strtol(argv[1]);
+  x2 =  extract_value_and_verify_strtol(argv[3]);
+  x3 =  extract_value_and_verify_strtol(argv[5]);
+  _y1 =  extract_value_and_verify_strtol(argv[2]); 
+  y2 =  extract_value_and_verify_strtol(argv[4]);
+  y3 =  extract_value_and_verify_strtol(argv[6]);
 
   // assign vecter values to globals
   ax = x2 - x1;
@@ -32,10 +32,6 @@ int main(int argc, char *argv[])
   by = y3 - _y1;
   cx = x3 - x2;
   cy = y3 - y2;
-
-  // check if atol failed or an argument was too big/small
-  if(!validate_atol(argv) || !validate_range())
-    print_error_and_close("error");
 
   // check if the points are collinear
   if(!validate_triangle())
@@ -122,40 +118,28 @@ int get_equal_edge_length_count()
   return equal_count;
 }
 
-// atol() results cannot be trusted unless the input string contained
-// only numeric digits
-int validate_atol(char *argv[])
+long extract_value_and_verify_strtol(char *str)
 {
-  //check that only numeric characters are supplied as arguments
-  int i,j;
-  for(i = 1; i < 7; i++)
-  {
-    for(j = 0; j < strlen(argv[i]); j++)
-    {
-      int ascii = (int)argv[i][j];
-      if(!(ascii >= 48 && ascii <= 57))
-      {
-        // allow "-" as the first character for negatives
-        if(j == 0  && ascii == 45)
-          continue;
-        else
-          return 0;
-      }
-     }
-   }
-  return 1;
+  char * endptr;
+  long extracted_value = strtol(str, &endptr, 10);
+
+  if(*endptr != '\0')
+    print_error_and_close("error"); 
+
+  if(!validate_range(extracted_value))
+    print_error_and_close("error");  
+
+  return extracted_value;
 }
 
-int validate_range()
+int validate_range(long value)
 {
-  if( labs(x1) > 1073741823 ||
-      labs(x2) > 1073741823 ||
-      labs(x3) > 1073741823 ||
-      labs(_y1) > 1073741823 ||
-      labs(y2) > 1073741823 ||
-      labs(y3) > 1073741823  )
-     return 0;
-  return 1;
+  long max = 1073741823;
+  
+  if(labs(value) > max)
+    return 0;
+  else
+    return 1;
 }
 
 // compute the area of the supposed triangle, if 0, not a triangle
@@ -173,4 +157,3 @@ void print_error_and_close(char *msg)
   printf("%s\n",msg);
   exit(-1);
 }
-
