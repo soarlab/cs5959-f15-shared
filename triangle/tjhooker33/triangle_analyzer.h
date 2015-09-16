@@ -20,24 +20,24 @@
 #define ARG_COUNT 7           /* max argument count for program main */
 #define MAX_RANGE 1073741823  /* largest  acceptable integer value */
 #define MIN_RANGE -1073741823 /* smallest acceptable integer value */
-#define ERROR() {     	\
-    printf("error\n");	\
-    return -1;	      	\
+#define ERROR() {     \
+	printf("error\n");	\
+    return -1;	      \
   }
-#define NAT()   {               \
-    printf("not a triangle\n");	\
-    return -1;					\
+#define NAT() { 	            \
+  printf("not a triangle\n");	\
+    return -1;								\
   }
 
-#define ASSERT_DISTANCE(res, dx, dy) { 				\
-  	assert(res > 0);								\
-  	if (dx == 0) {									\
-  		assert(res % dy == 0);						\
-  	} else if ((dx == 1 || dx == -1) && dy == 0) {	\
-  		assert(res == 1);							\
-  	} else {										\
-  		assert(res > dx);							\
-  	}												\
+#define ASSERT_DISTANCE(res, dx, dy) { 						\
+	assert(res > 0);																\
+	if (dx == 0) {																	\
+		assert(res % dy == 0);												\
+	} else if ((dx == 1 || dx == -1) && dy == 0) {	\
+		assert(res == 1);															\
+	} else {																				\
+		assert(res > dx);															\
+	}																								\
 }
 
 
