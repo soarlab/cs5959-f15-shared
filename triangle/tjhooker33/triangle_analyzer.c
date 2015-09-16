@@ -123,7 +123,7 @@ int create_point_component(char *num, long *component) {
 
   *component = strtol(num, &endptr, 10);
   if (*endptr != '\0' || check_range(component)) {
-    return -1;
+    return -1;  
   }
   return 0;
 }
@@ -151,6 +151,10 @@ int create_triangle(char *argv[]) {
   /* i keeps track of the individual component (x) or (y) parsed from argv */
   j = 0;
   for(i = 1; i < 7; i+=2, j++) {
+    /* ensure a null pointer is not passed to create_point_component function */
+    assert(&triangle_points[j]   != NULL);
+    assert(&triangle_points[j].x != NULL);
+    assert(&triangle_points[j].y != NULL);
     if ( create_point_component(argv[i],   &(triangle_points[j].x)) 
       || create_point_component(argv[i+1], &(triangle_points[j].y)) ) {
       return -1;
@@ -175,11 +179,17 @@ int create_triangle(char *argv[]) {
  *          long long                    distance between p1 and p2
  */
 long long compute_distance(coordinate *p1, coordinate *p2) {
-  long long dx, dy;
+  long long dx, dy, res;
 
-  dx = p2->x - p1->x;
-  dy = p2->y - p1->y;
-  return (dx * dx) + (dy * dy);
+  dx  = p2->x - p1->x;
+  dy  = p2->y - p1->y;
+  res = (dx * dx) + (dy * dy);
+
+  /* result must be in terms of magnitude which is always non-negative */
+  /* result cannot be zero, otherwise two points were in fact the same */
+  ASSERT_DISTANCE(res, dx, dy);
+  ASSERT_DISTANCE(res, dy, dx);
+  return res;
 }
 
 
@@ -203,6 +213,14 @@ void compute_triangle_sides(void) {
   triangle_sides[0] = compute_distance(&triangle_points[0], &triangle_points[1]);
   triangle_sides[1] = compute_distance(&triangle_points[0], &triangle_points[2]);
   triangle_sides[2] = compute_distance(&triangle_points[2], &triangle_points[1]);
+
+  assert(triangle_sides[0] > 0);
+  assert(triangle_sides[1] > 0);
+  assert(triangle_sides[2] > 0);
+  /*
+    This assertion fails on OVERFLOW!!!
+    assert(triangle_sides[0] + triangle_sides[1] + triangle_sides[2] > 0);
+  */
 
   /* Ascending order sort by length */
   for (i = 0; i < 2; i++) {
@@ -335,6 +353,7 @@ void print_classification(void) {
   } else {
     printf("obtuse\n");
   }
+  return;
 }
 
 /*******************************************************************************************
