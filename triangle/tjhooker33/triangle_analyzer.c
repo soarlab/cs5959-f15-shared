@@ -152,9 +152,7 @@ int create_triangle(char *argv[]) {
   j = 0;
   for(i = 1; i < 7; i+=2, j++) {
     /* ensure a null pointer is not passed to create_point_component function */
-    assert(&triangle_points[j]   != NULL);
-    assert(&triangle_points[j].x != NULL);
-    assert(&triangle_points[j].y != NULL);
+    ASSERT_TRI_PTRS(&triangle_points[j]);
     if ( create_point_component(argv[i],   &(triangle_points[j].x)) 
       || create_point_component(argv[i+1], &(triangle_points[j].y)) ) {
       return -1;
@@ -210,17 +208,15 @@ long long compute_distance(coordinate *p1, coordinate *p2) {
 void compute_triangle_sides(void) {
   int i, j;
 
+  /* ensure a null pointer is not passed to compute_distance function */
+  ASSERT_SIDE_PTRS();
+
   triangle_sides[0] = compute_distance(&triangle_points[0], &triangle_points[1]);
   triangle_sides[1] = compute_distance(&triangle_points[0], &triangle_points[2]);
   triangle_sides[2] = compute_distance(&triangle_points[2], &triangle_points[1]);
 
-  assert(triangle_sides[0] > 0);
-  assert(triangle_sides[1] > 0);
-  assert(triangle_sides[2] > 0);
-  /*
-    This assertion fails on OVERFLOW!!!
-    assert(triangle_sides[0] + triangle_sides[1] + triangle_sides[2] > 0);
-  */
+  /* all lengths must have positive magnitude */
+  ASSERT_MAGNITUDE();
 
   /* Ascending order sort by length */
   for (i = 0; i < 2; i++) {
@@ -230,6 +226,10 @@ void compute_triangle_sides(void) {
       }
     }
   }
+  
+  /* swaps must preseve lengths' magnitude */
+  ASSERT_MAGNITUDE();
+
   return;
 }
 
@@ -342,16 +342,20 @@ int is_obtuse(void) {
 void print_classification(void) {
   if (is_isosceles()) {
     printf("isosceles ");
-  } else {
+  } else if (is_scalene()) {
     printf("scalene ");
+  } else {
+    assert(0); /* something went horribly wrong, didn't it */
   }
 
   if (is_acute()) {
     printf("acute\n");
   } else if (is_right()) {
     printf("right\n");
-  } else {
+  } else if (is_obtuse()) {
     printf("obtuse\n");
+  } else {
+    assert(0); /* something went horribly wrong, didn't it */
   }
   return;
 }
