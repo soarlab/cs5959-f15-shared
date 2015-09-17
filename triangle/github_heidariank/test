@@ -1,41 +1,41 @@
 #!/bin/bash
 
 #out of range test
-echo "1. expected: error, actual: " 
+printf "1. expected: error,\n   actual:   " 
 ./triangle 0 0 0 0 0 1073741824
-echo "2. expected: error, actual: "
+printf "2. expected: error,\n   actual:   "
 ./triangle 0 0 0 0 0 -1073741824
 #too few arguments
-echo "3. expected: error, actual: "
+printf "3. expected: error,\n   actual:   "
 ./triangle 0 0 0 0 0 
 
 #too many arguments
-echo "4. expected: error, actual: "
+printf "4. expected: error,\n   actual:   "
 ./triangle 0 0 0 0 0 0 0
 
 #colinear points
-echo "5. expected: not a triangle, actual: "
+printf "5. expected: not a triangle,\n   actual:   "
 ./triangle 0 0 1073741823 1073741823 -1073741823 -1073741823
 
 #not a triangle
-echo "6. expected: not a triangle, actual: "
+printf "6. expected: not a triangle,\n   actual:   "
 ./triangle 1 1 1 1 1 1
 
 #Triangles
-echo "7. expected: scalene acute, actual: "
+printf "7. expected: scalene acute,\n   actual:   "
 ./triangle 0 0 0 10 9 9
 
-echo "8. expected: scalene obtuse, actual: "
+printf "8. expected: scalene obtuse,\n   actual:   "
 ./triangle 0 0 0 10 9 100
 
-echo "9. expected: scalene right, actual: "
+printf "9. expected: scalene right,\n   actual:   "
 ./triangle 0 0 0 2 4 0
 
-echo "10. expected: isosceles right, actual: "
+printf "10. expected: isosceles right,\n   actual:   "
 ./triangle 0 0 0 2 2 0
 
-echo "11. expected: isosceles acute, actual: "
+printf "11. expected: isosceles acute,\n   actual:   "
 ./triangle 0 0 1 2 2 0
 
-echo "12. expected: isosceles obtuse, actual: "
+printf "12. expected: isosceles obtuse,\n   actual:   "
 ./triangle 0 0 10 2 20 0
