@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 		printf("%s\n", "Not a triangle");
 		return 1;
 	}
+	assert(argc == 7)
 	// Goldilocks arguments, begin parsing
 	for (i = 0; i < 6; i++)
 	{
@@ -55,6 +56,7 @@ int main(int argc, char *argv[])
         {
             if(sides[i] > sides[j])
             {
+            	assert(sides[i] > 0)
                 tmp = sides[i];
                 sides[i] = sides[j];
                 sides[j] = tmp;
@@ -74,6 +76,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	// determine sides
+	// it's impossible to have an equilateral triangle in this setup
+	assert(!is_equilateral(sides))
 	if (is_equilateral(sides))
 		printf("%s\n", "equilateral");
 	else if(is_isosceles(sides))
