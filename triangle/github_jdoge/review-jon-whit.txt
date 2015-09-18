@@ -1,0 +1,68 @@
+~~~~~~~~~~~~
+README file
+~~~~~~~~~~~~
+
+-The readme file is very well written. It is quite clear as to the functionality of the.
+
+
+**************************************************************************
+**************************************************************************
+
+~~~~~~~~~~
+triangle.c
+~~~~~~~~~~
+
+Line 20: Very nice way of determining colinearity. No overflow for 64-bit ints. Method documentation is good as well.
+
+Line 40-42: Consider using either a 'long long' or an __int64_t data type to ensure overflow doe not happen when computing the lengths. Note: the printf() for those is %lld.
+
+Line 60: Very clean way to compare edges for catagorizing triangle type.
+
+Line 69-79: Also, a very nice way for ordering lengths to avoid overflow. 
+
+Line 111: Possible streamline would be to store the arguments coming out of argv rather than pulling the arguments out again. I honestly like it better the way it currently is because it looks much cleaner.
+
+Overall very solid solution. It is very clean and simple. It is amazing you only have 153 lines of code and that includes detailed comments and printf() debugging code. In addition, citation of sources was also nice to see. Lastly, method headers a 
+
+**************************************************************************
+**************************************************************************
+
+~~~~~~~~~
+tester.py
+~~~~~~~~~
+
+Perhaps include a few more tests for duplicate points. ex. 1 2 98 23 1 2 etc. 
+
+Overall a very comprehensive set of sets. The illegal input section is very creative. 
+
+**************************************************************************
+**************************************************************************
+
+~~~~~~~~~
+Makefile
+~~~~~~~~~
+
+-I'd suggest adding the ability to run your tests from your Makefile. 
+
+-On the make function, I'd recommend using an extensive list of error flags. It kinda serves as a way to get feedback on your code without an IDE. 
+
+-In particular, I would test your code with -m32 to ensure it works with 32-bit target machines per the assignment spec.
+
+-I'm including a copy of my Makefile here to show you what I do. I stole the make line from John Regehr in his Operating Systems class so I trust it is extensive. 
+
+all:	clean	make
+
+make:	triangle_classifier.c
+	gcc -fmessage-length=0 -pedantic-errors -std=gnu99 -Werror -Wall -Wextra -Wwrite-strings -Winit-self -Wcast-align -Wcast-qual -Wpointer-arith -Wstrict-aliasing -Wformat=2 -Wmissing-include-dirs -Wno-unused-parameter -Wshadow -Wuninitialized -Wold-style-definition -m32 triangle_classifier.c -o triangle
+
+tests:	clean	make
+	python tests.py
+
+clean:
+	rm -f *.o $(objects) triangle
+
+
+
+
+
+

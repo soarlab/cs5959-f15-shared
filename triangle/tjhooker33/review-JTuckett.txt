@@ -1,0 +1,28 @@
+############################################################
+
+# <test.sh>
+# DRY! use of functions
+# good use of comments describing what the test do
+# suggest printing why the test failed: <expected> <actual> results
+
+############################################################
+
+# <triangle.c>
+# line 9: question on coding practices, should we really use macros? 
+# line 22-26: put forward declaration in .h file
+# line 25: i like main at the top because i can see what the program is meant to do
+# line 45: just pass points to checkColinear (if checkColinear were a function)
+# line 35: i like that the functionality in main is abstracted away into functions
+# line 50: don't start function names with "get" or "set"
+# line 60: don't need comments on switch case
+# line 104: i see you updated that nasty switch case, nice fix!
+# line 108: you have return with parenthesis, but elsewhere in your code you don't use parenthesis. i would drop parens.
+# line 148: you use curly brace on same line as block, but in other places you do not; pick one.
+
+############################################################
+
+# <Makefile>
+# i recommend have a clean function
+# i also recommend turning on compiler flags in your gcc call
+
+############################################################

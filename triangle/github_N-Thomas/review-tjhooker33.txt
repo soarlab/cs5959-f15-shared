@@ -1,0 +1,24 @@
+triangle_analyzer.c:
+
+Could use more comments, maybe comments for functions.
+
+I like the equal slopes check. I didn't think about solving the colinear issue that way. 
+But, if that's in there, what is the point of check vert horz lines? Isn't it a line if any two have equal slopes?
+I might just be missing something about your solution.
+
+Might be a bit simpler to do checks for euqilateral, scalene and isoseles printing that and then printing the next check with the line break after.
+That way the number of checks scales linearly. 
+
+Checking for duplicate points and checking for colinearity is redundant. 
+
+compute function could be named better. 
+
+triangle_test.py:
+
+Tests look great. 
+
+Makefile:
+
+looks great. 
+
+Overall your code looks really good. I am really struggling to find anything to say on this code review. Nice Work. 

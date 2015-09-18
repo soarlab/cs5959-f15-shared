@@ -35,6 +35,18 @@ const char* check_size(int64_t sides[])
 	return "error";
 }
 
+int compare (const void * a, const void * b){
+  long long int x = *(long long int*)a;
+  long long int y = *(long long int*)b;
+
+  if(x == y){
+    return 0;
+  }else if (x < y){
+    return -1;
+  }else{
+    return 1;
+  }
+}
 
 // Check the angles using the Pythagorean theorem.
 char* check_angle(int64_t sides[])
@@ -42,17 +54,17 @@ char* check_angle(int64_t sides[])
 	// a^2 + b^2 = c^2 right (1)
 	// a^2 + b^2 > c^2 acute (2)
 	// a^2 + b^2 < c^2 obtuse (3)
+	qsort(sides, 3, sizeof(int64_t), compare);
 	
-	
-	if(sides[0] + sides[1] == sides[2] || sides[1] + sides[2] == sides[0] || sides[2] + sides[0] == sides[1])
+	if(sides[0] + sides[1] == sides[2])
 	{
 		return "right";
 	}
-	else if(sides[0] + sides[1] > sides[2] && sides[1] + sides[2] > sides[0] && sides[2] + sides[0] > sides[1])
+	else if(sides[0] + sides[1] > sides[2])
 	{
 		return "acute";
 	}
-	else if(sides[0] + sides[1] < sides[2] || sides[1] + sides[2] < sides[0] || sides[2] + sides[0] < sides[1])
+	else if(sides[0] + sides[1] < sides[2])
 	{
 		return "obtuse";
 	}
@@ -92,7 +104,7 @@ int main(int argc, char *argv[])
 		char* error;
 		for(i = 1; i < 7; i = i + 1)
 		{	
-			p[i-1] = strtol(argv[i], &error, 10);
+			p[i-1] = strtoll(argv[i], &error, 10);
 			if (*error != '\0')
 			{
 				strcat(out_put, "error\n");

@@ -1,0 +1,5 @@
+------------------normgiff review----------------------
+As for your code I could not see anything that looked like it would cause 
+problems. I just hove one question. Where did you find that qsort() function? 
+As for the testing I would suggest you test some of the error outputs. I 
+did not see any with unacceptable inputs. 

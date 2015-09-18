@@ -16,22 +16,22 @@
 // @unid: U0634909
 //
 // Triangle is ment to take in six numbers as x y coordinates for a triangle. 
-//   The first two points are the x and y cooidnates of the first point. the 
+//   The first two points are the x and y cooridnates of the first point. the 
 //   next to coordinates the second point and so forth.  If a proper triangle is
 //   entered the program will tell the user two things:
 //   	1- Is the triangle scalene, equilateral, or isosceles?
 //   	2- Is the triangle obtuse, acute, or right?
-long long main (long long argc, char* argv[])
+int main (long long argc, char* argv[])
 {
 	struct Point point1, point2, point3; 
-	long long distance1, dist1_2, dist2_3, dist1_3, test;
+	long long distance1, dist1_2, dist2_3, dist1_3;
 	char* tri_angle;
 	char* tri_side;
 	char * endptr = NULL;
 	
 	// do we have the correct amount of arguments
 	if (argc != 7){
-		printf("please enter six numbers\n");
+		printf("error\n");
 		return 0;
 	}
 	
@@ -44,32 +44,32 @@ long long main (long long argc, char* argv[])
 	//
 
 	point1.x = strtoll(argv[1],&endptr,10);
-	if(*endptr!=0){
+	if(*endptr != 0 || point1.x < -1073741823L || point1.x > 1073741823L){
 		printf("error\n");
 		return 0;
 	}endptr = NULL;
 	point1.y = strtoll(argv[2],&endptr,10);
-	if(*endptr!=0){
+	if(*endptr != 0 || point1.y < -1073741823L || point1.y > 1073741823L){
 		printf("error\n");
 		return 0;
 	}endptr = NULL;
 	point2.x = strtoll(argv[3],&endptr,10);
-	if(*endptr!=0){
+	if(*endptr != 0 || point2.x < -1073741823L || point2.x > 1073741823L){
 		printf("error\n");
 		return 0;
 	}endptr = NULL;
 	point2.y = strtoll(argv[4],&endptr,10);
-	if(*endptr!=0){
+	if(*endptr != 0 || point2.y < -1073741823L || point2.y > 1073741823L){
 		printf("error\n");
 		return 0;
 	}endptr = NULL;
 	point3.x = strtoll(argv[5],&endptr,10);
-	if(*endptr!=0){
+	if(*endptr != 0 || point3.x < -1073741823L || point3.x > 1073741823L){
 		printf("error\n");
 		return 0;
 	}endptr = NULL;
 	point3.y = strtoll(argv[6],&endptr,10);
-	if(*endptr!=0){
+	if(*endptr != 0 || point3.y < -1073741823L || point3.y > 1073741823L){
 		printf("error\n");
 		return 0;
 	}
@@ -104,8 +104,12 @@ long long main (long long argc, char* argv[])
 
 }
 
+// This function is meant to check the 
+
 // Distance Formula:
+// 
 // 	|d| = sqrt((x1 - x2)^2 + (y1 - y2)^2)
+// 
 // I can ignore the sqrt because when I am trying to determine if the 
 //   angle is acute, obtuse, or square I use the pythagorean theorum. 
 //   This will square my values again anyway, so I might as well avoid

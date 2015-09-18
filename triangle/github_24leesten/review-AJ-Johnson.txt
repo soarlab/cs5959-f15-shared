@@ -1,0 +1,11 @@
+Leland Stenquist Code Review of AJJohnson's code
+
+General:
+
+I am very impressed by your code it is very thourough.  
+I like your use of Enums.
+I also wish I had known the shoelace formula.  That was a great way to tell if the triangle is colinear.
+Your testing file is organized very well. It is good clean code.
+You are very thorough is your testing.  You could add a test the check invalid input where the first part is a number and the next part is a not a number.  Ex: 24hello 
+
+Obviously you alread know this, but you should probably use a long long instead of a long. It will help you avoid overflow.

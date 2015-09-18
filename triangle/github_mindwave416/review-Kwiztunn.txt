@@ -1,0 +1,6 @@
+-Needs sys.exit on incorrect input.
+-I like the full separation of determining sides and angles into thir own helper methods very readable code
+-Header file for predeclaration of methods also makes for readable code probably a better habbit than predeclaring in the c file.
+-Excellent parse error checking. Combined with overflow checking proper bounded input. 
+-Good test cases on the border cases of overflow
+-Make file needs a -std=c99 call in the triangle_classifier.o file to compile on my linux machine. (Kristen fixed this already during our class review. All she needed was to declare the int i,j; before using them in a for loop.)

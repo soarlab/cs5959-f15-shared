@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#out of range test
+printf "1. expected: error,\n   actual:   " 
+./triangle 0 0 0 0 0 1073741824
+printf "2. expected: error,\n   actual:   "
+./triangle 0 0 0 0 0 -1073741824
+#too few arguments
+printf "3. expected: error,\n   actual:   "
+./triangle 0 0 0 0 0 
+
+#too many arguments
+printf "4. expected: error,\n   actual:   "
+./triangle 0 0 0 0 0 0 0
+
+#colinear points
+printf "5. expected: not a triangle,\n   actual:   "
+./triangle 0 0 1073741823 1073741823 -1073741823 -1073741823
+
+#not a triangle
+printf "6. expected: not a triangle,\n   actual:   "
+./triangle 1 1 1 1 1 1
+
+#Triangles
+printf "7. expected: scalene acute,\n   actual:   "
+./triangle 0 0 0 10 9 9
+
+printf "8. expected: scalene obtuse,\n   actual:   "
+./triangle 0 0 0 10 9 100
+
+printf "9. expected: scalene right,\n   actual:   "
+./triangle 0 0 0 2 4 0
+
+printf "10. expected: isosceles right,\n   actual:   "
+./triangle 0 0 0 2 2 0
+
+printf "11. expected: isosceles acute,\n   actual:   "
+./triangle 0 0 1 2 2 0
+
+printf "12. expected: isosceles obtuse,\n   actual:   "
+./triangle 0 0 10 2 20 0

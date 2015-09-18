@@ -1,0 +1,16 @@
+Review By: Leland Stenquist
+
+========General======== 
+You do a good jab at checking all your input to make sure they are the correct size. This is something I think that is really important and could be overlooked.
+
+Good use of math.h
+
+Personally I like how you use your methods as booleans to check your triangle properties.  You do not need to have == 1 though, unless that is your preference.
+
+Line 10: You know this already because we talked about it so much, but it will help with overflow to make your variables long long.
+
+Line 157, 174, 182: If you decide that using decimals to decide the angles is to much waork you could switch to pythagorean's theorum.
+
+Line  157: I do not think your right angle code will catch every case.
+
+Line 122, 132, 146: With floating point error these might not always be acurate even though you are not using doubles or floats.

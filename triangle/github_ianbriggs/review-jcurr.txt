@@ -1,0 +1,36 @@
+pedantic comments from me are marked with (p) they are really picky and should
+be taken with heaps of salt
+
+classifier.c:
+	I changed all occurrences of "_y1" with "y1" and was able to compile fine
+	    I'm wondering why you had issues (can you send me compiler
+	    version etc?)
+	atol is bad (you didn't know that at the time)
+	    - you did do checking that the args are numbers
+	(p) line 139: I think you could also allow '+'
+	Should probably use constants for 2^30-1 and return codes
+	Incredible commenting!
+	Great naming conventions, I never had to look at the body of a func to
+	    tell what it did.
+	Overall clear, easy to read and understand code with a high emphasis on
+	    encapsulating high level concerns from details.
+
+classifier.h:
+	(p) I was taught to include only what you use in a file itself, but
+	    there is also a school of thought to #include everything in .h files
+	    to hide details and allow for pch file generation
+	Proper include guarding
+
+makefile:
+	Use of makefile variables would make this more flexible
+	A clean rule would come in useful
+
+readme.txt:
+	Everything someone needs to know to run your tests.
+
+test_script.pl:
+	I was unable to get it to run.
+	I also am scared of perl, so it might just know that ;-)
+	I don't read perl, but it is well commented.
+	From what I understand, when a test fails you say what was expected and
+	    what actually came out. Quite useful for debugging.

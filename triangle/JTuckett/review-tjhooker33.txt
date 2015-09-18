@@ -1,0 +1,86 @@
+#More comments would be helpful, method contracts.
+#names can be clearer, I'd prefer descriptive names especially when the definitions are in another file.
+#the code can be simplified by using signed data type, and area for colinearity
+#The struts are a good idea.  
+#line 119, what is it computing? 
+#A comment for line 139 would make understanding what each argument is for easier.
+#it is true, when you go to a signed approach the code will be simpler
+#line 348 - 372 would be simpler if you sorted the lengths
+#As you said, much of the code will be changed when you simplify it.
+#I am impressed with your clean, well put together test file.
+
+
+(I have included more thorough comments below.  I have copied your code to this file and 
+added my comments in context.  I have offset my comments with '----------')
+-----------Now that I know what these are, your analyzer made more sense.  I prefer
+longer, more inteligible variable names. -----------------------------------------
+// Colors for standard out
+#define KCYN  "\x1B[36m"
+#define KGRN  "\x1b[32m"
+#define KMAG  "\x1b[35m"
+#define KRED  "\x1B[31m"
+#define RESET "\033[0m"
+
+#define POSITIVE 0
+#define NEGATIVE -1
+
+-----------------I really like the level of encapsulation------------------
+#define ERROR() {     \
+    printf("error\n");\
+    return -1;	      \
+  }
+#define NAT()   {               \
+    printf("not a triangle\n");	\
+    return -1;			\
+  }
+
+------------------------Nice, I like the use of structs---------------------
+typedef struct coordinate {
+  uint64_t x;
+  uint64_t y;
+  int x_sign;
+  int y_sign;
+} coordinate;
+
+typedef struct slope {
+  uint64_t rise;
+  uint64_t run;
+  int sign;
+} slope;
+
+typedef struct length_slope {
+  uint64_t length;
+  slope m;
+} length_slope;
+
+------------I try not to take for granted that I will remember what particular methodology
+I used in solving a problem weeks or months down the line.  Comments/reminders that indicate
+what you were doing/thinking at the time don't hurt.  (I say this because I didn't remember
+what euclids method was.  I remember hearing the name in geometry. That was about it.)
+------------------------------------------------
+typedef struct euclid_tuple {
+  uint64_t x;
+  uint64_t y;
+  uint64_t d;
+} euclid_tuple;
+
+// Prints points A,B,C to stdout
+void print_points(void);
+---------------------------------------------
+------------------------At work, when we are implementing interfaces (not the same thing
+as pre-defining a method signature, but similar) even if there is a method contract for 
+the method in the interface class we are still required to add the contracts to the methods
+where they are implemented. That way, we see the comments in context of the implementation-----
+--------------------------------------------------
+// Program must run with 7 arguements (first is executable).
+// Returns -1 arg count is not 7, otherwise returns 0.
+int check_arg_count(int argc);
+
+// Returns -1 if any two points ABC are equal, otherwise returns 0.
+int check_duplicate_points(void);
+
+---------I have left out the rest of the file as I did not have comments for it-------------
+-------------------------------------------------------------------------------------------------
+I looked through the .c file, but did not find any additional things to comment on.
+-------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,250 @@
+/*************************************************************************************************																							   *
+*			                    Review of Make File 											 *
+*																								 *
+*  Because we don't have access to the review tools mentioned in class, I have instead copied    *
+*  Your code here and commented it in context   												 *
+*																								 *
+*************************************************************************************************/
+default: triangle  
+    gcc  triangle.c -o triangle  #Looks good as it is, but it was suggested to me to use flags 
+                                 #to turn any possible problem into an error 
+
+clean:
+    -rm -f triangle.o
+    -rm -f triangle
+
+/*************************************************************************************************                                                                                             *
+*                               Review of Test.sh                                                *
+*                                                                                                *
+*                                                                                                *
+*                                                                                                *
+*                                                                                                *
+*************************************************************************************************/
+
+#The first thing I noticed after running your tests was that I had no idea what any of them were
+doing, or if the one meant pass or fail (I assume pass because they were all ones).
+Perhaps if you printed a test name along with a worded response?
+
+#You could test every type of output possible.  equilateral acute, isoscleces right, etc.
+
+
+/*************************************************************************************************                                                                                             *
+*                               Review of Triangle.c                                             *
+*                                                                                                *
+*                                                                                                *
+*                         I have offset my comments with '-----------'                           *
+*                                                                                                *
+*************************************************************************************************/
+----------------------It is good practice to put method contracts at the top of your methods, that
+outline what the method does, what input it expects, etc.  -------------------------------------
+#include<stdio.h>
+#include<stdint.h>
+#include<string.h>
+#include<inttypes.h>
+
+----------------------I like your use of enums, that was a good idea.------------------
+typedef enum { scalene, isosceles, equilateral } side;
+typedef enum { acute, obtuse, right } angle;
+
+-----------------------These could have gone in a .h file-----------------
+side getSideType(int64_t aSquared, int64_t bSquared, int64_t cSquared);
+angle getAngleType(int64_t aSquared, int64_t bSquared, int64_t cSquared);
+int64_t absoluteValue(int64_t input);
+int64_t S64(const char *s);
+
+int main(void)
+{
+    ------------------This could have been defined in a .h file-----------------
+    ----It really doesn't matter in this small of a program, but the only time--
+    ----I would use a min and max is for cases when the range is not symmetric.- 
+    ----If, in the future you want to change the range, you now have two things-
+    ----to change rather than one.----------------------------------------------
+    static const int64_t MAX_VALUE=1073741823;
+    static const int64_t MIN_VALUE=-1073741823;
+
+    ----Good to see that you are using int64_t, I didn't think to do that.  This
+    ----Makes the width of your integer explicit--------------------------------
+    int64_t x1,x2,x3,y1,y2,y3; 
+    int64_t aSquared, bSquared, cSquared;
+    int64_t deltaX1, deltaX2, deltaY1, deltaY2;
+    int64_t swap;
+    int64_t coords[6];
+    angle angleType;
+    side sideType;
+
+    ----There is an easier way to do this.  I don't think reading in your digits
+    one by one is a bad thing, per se.  But it does limit your input (take the 
+    leading zero example.  You wouldn't be able to fit valid input.) Also,
+    this could have gone in its own method to clean up main a bit.--------
+    char buffer[74];
+    
+    fgets(buffer, sizeof(buffer), stdin);
+    
+    char* token = strtok(buffer, " ");
+    int x=0;
+    while (token) {
+        //Remove newline character from fgets (stupid fgets)  --I like humor in comments-----
+        size_t ln = strlen(token) - 1;
+        if (token[ln] == '\n')token[ln] = '\0';
+        //Convert token into 64bit int and place into array
+        coords[x] = S64(token);
+        //Check if overflow or higher/lower than allowed
+        if(coords[x]<MIN_VALUE || coords[x]>MAX_VALUE )
+        {
+            printf("error\n");
+            return 0;
+        }
+        token = strtok(NULL, " ");
+        x++;
+    }
+    if(x!=6)
+    {
+        printf("error\n");
+        return 0;
+    }
+    //After parsing args place into variables for readability
+    x1=coords[0];
+    y1=coords[1];
+    x2=coords[2];
+    y2=coords[3];
+    x3=coords[4];
+    y3=coords[5];
+    
+
+    ---There is an abs() funtion in stdlib.h.  If you are already using absoluteValue
+    here, why do you need to have a min/max value at the top? An abs() on the input will
+    indicate if it is within the range allowed-----------------------
+    deltaX1=absoluteValue(x2-x1);
+    deltaX2=absoluteValue(x3-x1);
+    deltaY1=absoluteValue(y2-y1);
+    deltaY2=absoluteValue(y3-y1);
+    
+    ----------This is a very interesting way of doing things! Nice---------
+    if((x1==x2 && y1==y2) || (x1==x3 && y1==y3) || (x3==x2 && y3==y2))
+    {
+        //Not A Triangle
+        printf("not a triangle\n");
+        return 0;
+    }
+    
+    if(deltaX1*deltaY2==deltaX2*deltaY1)
+    {
+        //Not A Triangle
+        printf("not a triangle\n");
+        return 0;
+    }
+    
+    aSquared=((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+    bSquared=((x1-x3)*(x1-x3)+(y1-y3)*(y1-y3));
+    cSquared=((x2-x3)*(x2-x3)+(y2-y3)*(y2-y3));
+    sideType=getSideType(aSquared, bSquared, cSquared);
+    
+
+
+    ---------------I know it is only 3 points, but a simple sorting algorithm
+    would be easier to read, and have less repeated logic, now if you wanted
+    to change it, or expand it or whatever you would need to rewrite the entire 
+    section.  --------------------
+    if(aSquared>=bSquared && aSquared>=cSquared)
+    {
+        swap=cSquared;
+        cSquared=aSquared;
+        aSquared=swap;
+    }
+    else if(bSquared>=aSquared && bSquared>=cSquared)
+    {
+        swap=cSquared;
+        cSquared=bSquared;
+        bSquared=swap;
+    }
+    angleType=getAngleType(aSquared, bSquared, cSquared);
+    
+    //Check return and print accordingly (I didn't want to print inside the function)
+    if(sideType==scalene)
+    {
+        printf("scalene ");
+    }
+    else if(sideType==isosceles)
+    {
+        printf("isosceles ");
+    }
+    else
+    {
+        //There is a case here despite the fact that 
+        //this should not be mathematically possible given integer coordinates.
+        printf("equilateral ");
+    }
+    
+    if(angleType==acute)
+    {
+        printf("acute\n");
+    }
+    else if(angleType==obtuse)
+    {
+        printf("obtuse\n");
+    }
+    else
+    {
+        printf("right\n");
+    }
+    return 0;
+}
+
+//Gets the absolute value of the input without other libraries
+//Adapted for 64bit from https://graphics.stanford.edu/~seander/bithacks.html#IntegerAbs
+int64_t absoluteValue(int64_t input)
+{
+    int64_t const ABSValueMask =  input >> sizeof(int64_t) * 8 - 1;
+    return (input + ABSValueMask) ^ ABSValueMask;
+}
+
+side getSideType(int64_t aSquared, int64_t bSquared, int64_t cSquared)
+{
+    if(aSquared==bSquared && bSquared==cSquared)
+    {
+        //There is a case here despite the fact that 
+        //this should not be mathematically possible given integer coordinates.
+        return equilateral;
+    }
+    else if(aSquared==bSquared || cSquared==bSquared || aSquared==cSquared)
+    {
+        return isosceles;
+    }
+    else
+    {
+        return scalene;
+    }
+}
+
+angle getAngleType(int64_t aSquared, int64_t bSquared, int64_t cSquared)
+{
+-----------------You are using aSquared + bSquared more than once, you
+could probably store it in a variable.  Then if you need to change it later,
+or you made a mistake in it's "calculation" (not likely for this, but if it 
+were more complex the same would hold) you would only need to change it in one
+spot.  DRY (Don't Repeat Yourself) -----------------------------------------
+    if((aSquared+bSquared)==cSquared)
+    {
+        return right;
+    }
+    else if((aSquared+bSquared)>cSquared)
+    {
+        return acute;
+    }
+    else
+    {
+        return obtuse;
+    }
+}
+
+--------------Nice citation, and your comments have been generally good-------------------
+//adapted from https://stackoverflow.com/questions/17002969/how-to-convert-string-to-int64-t
+int64_t S64(const char *s) {
+  int64_t i;
+  char c =0;
+  int scanned = sscanf(s, "%" SCNd64 "%c" , &i, &c);
+  if (scanned == 1 ) return i;
+  //return max int if there are more or less arguments parsed than expected.
+  //This works because INT64_MAX is also considered an error condition which we handle the same.
+  return INT64_MAX;  
+}

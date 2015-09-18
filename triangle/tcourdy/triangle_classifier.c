@@ -56,7 +56,8 @@ int main(int argc, char *argv[]){
 
   p3.x = convert(argv[5]); /*5*/
   p3.y = convert(argv[6]); /*6*/
-  
+
+  /*test if all points lie in a line*/
   if(testColinear(p1, p2, p3)){
     printf(NOT_A_TRIANGLE);
     exit(0);
@@ -74,25 +75,30 @@ int main(int argc, char *argv[]){
 
 }
 
+/*Takes a string argument and attempts to convert it into a long long
+Code will exit with an error if strtoll fails to convert string*/
 long long int convert(char *arg){
   char *end = "\0";
-  long long int l;
+  long long int val;
   errno = 0;
-  l = strtol(arg, &end, 10);
+  val = strtoll(arg, &end, 10);
   if(errno || strcmp(end, "\0")){
     printf(ERROR);
     exit(0);
-  } else if(l > MAX || l < MIN){
+  } else if(val > MAX || val < MIN){
     printf(ERROR);
     exit(0);
   }
-  return l;
+  return val;
 }
 
+/*Use the distance formula (except for the square root part, so as to avoid floating point).  Therefore note that it does not return the actual length between
+the two points.  This is to avoid floating point values and their imprecision*/
 long long int findSide(Point p1, Point p2){
   return  ((p1.x - p2.x) * (p1.x - p2.x)) + ((p1.y - p2.y) * (p1.y - p2.y));
 }
 
+/*Test colinearity by checking slope*/
 int testColinear(Point p1, Point p2, Point p3){
   if((p2.y - p1.y) * (p3.x - p2.x) == (p3.y - p2.y) * (p2.x - p1.x)){
     return 1;
@@ -102,7 +108,7 @@ int testColinear(Point p1, Point p2, Point p3){
 }
 
 void printTriangleType(Triangle t){
-  if((t.a == t.b) == t.c){
+  if((t.a == t.b) && (t.b == t.c)){
     printf(EQUILATERAL);
   } else if(t.a == t.b || t.a == t.c || t.b == t.c){
     printf(ISOSCELES);
@@ -111,6 +117,9 @@ void printTriangleType(Triangle t){
   }
 }
 
+/*Using law of cosines we can determine the angle type.  If the two smaller sides are greater
+then the hypotenuse then it is acute.  If the hypotenuse is larger than the two other sides combined
+then it is an obtuse triangle.  And if the two small sides combined equal the hypotenuse then it is right.*/
 void printAngle(Triangle t){
   long long int side[3];
   side[0] = t.a;
@@ -127,15 +136,8 @@ void printAngle(Triangle t){
   }
 }
 
-/*int checkOverflow(long long int a, long long int b){
-  if ((b > 0 && a > LONG_MAX - b) || (b < 0 && a < LONG_MIN - b)){
-    return 1;
-  } else{
-    return 0;
-  }
-
-  }*/
-
+/*Compare function used to sort the sides of the triangle from smallest to 
+  largest */
 int compare (const void * a, const void * b){
   long long int x = *(long long int*)a;
   long long int y = *(long long int*)b;

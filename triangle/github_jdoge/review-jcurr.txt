@@ -1,0 +1,54 @@
+~~~~~~~~~~~~
+README file
+~~~~~~~~~~~~
+
+I would recommend adding some more detail here. Some basic information about what the program does. 
+
+
+**************************************************************************
+**************************************************************************
+
+~~~~~~~~~~
+triangle.c
+~~~~~~~~~~
+
+Lines: 10, 24, etc. In regards to the '_y1', I'm not sure if you need to call it that anymore. I could not find a method that was using that name. Aligning the names would look a bit cleaner.
+
+Lines 21-26: As already discussed in class, atol() isn't the most ideal given that it is error prone. Consider replacing it with strtol().
+
+Lines 37-57: I really like how your kept all of the work in this section. Good comments too. This looks very clean and was easy for me to understand. In addition, moving your work to methods rather than all over main (like mine was) was good coding practice. 
+
+Line 127: This goes along with the atol() bit. You might be able to get away with using this method to validate the input. However, I would recommend switching to the strtol() for the revised version since it is more standard.  
+
+Overall, this is a very solid solution to the problem. I could not find any places where overflow would happen - which was a primary goal of the assignment. Your solution was quite compact at just ~175 lines of well documented code - which is good. I wish I could give you more feedback but it is just too good of a solution. 
+
+**************************************************************************
+**************************************************************************
+
+~~~~~~~~~
+test_script.pl
+~~~~~~~~~
+
+Although I was not able to run your tests due to a compilation error - it could be my machine (I'm running OS X Yosemite) - you seem to be covering all of the test cases. I ran my set of tests on your code and they all passed. Nice work!
+
+
+**************************************************************************
+**************************************************************************
+
+~~~~~~~~~
+Makefile
+~~~~~~~~~
+
+-When I tried to run the 'make' command from the directory, I got this error: 
+makefile:2: *** missing separator (did you mean TAB instead of 8 spaces?).
+
+I edited my local version of the file to make sure. 
+I'm not sure if it worked on other systems but from my experience makefiles require tabs rather than spaces. 
+
+-I would recommend adding a few other standard make file commands. For example, 'all', 'make', 'test(or something similar)', 'clean'. I'll include a copy of mine here as an imperfect example. 
+
+-For the make command, I would also recommend adding a list of compilation flags. These flags give feedback of your code much like an IDE would, which is useful considering we have not seen an IDE in ages. 
+
+-Here is a gcc compile command that I got from John Regehr during his operating systems course. I trust that it is a robust collection of flags. Also, be sure to note the -m32 which means it is compiling for a 32-bit target machine. Be sure your code works with this flag on. 
+
+gcc -fmessage-length=0 -pedantic-errors -std=gnu99 -Werror -Wall -Wextra -Wwrite-strings -Winit-self -Wcast-align -Wcast-qual -Wpointer-arith -Wstrict-aliasing -Wformat=2 -Wmissing-include-dirs -Wno-unused-parameter -Wshadow -Wuninitialized -Wold-style-definition -m32 classifier.c -o triangle

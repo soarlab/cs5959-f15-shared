@@ -1,0 +1,6 @@
+-Using doubles and computing an angle could lead to some floating point errors upon exhastive testing. Could compare the side lengths or use the dot product to safley only use integers and use long integers.
+-I like having a verbose command line option. Useful for debugging.
+-Needs error checking around atol suggest using strol like we talked about in class. I have the same error.
+-Using dobules for length of sides could lead to some floating point errors should use long integers and not computer the sqrt just store the result of the addition.
+-Angle checking against decimal numbers could have some floating point errors.
+
