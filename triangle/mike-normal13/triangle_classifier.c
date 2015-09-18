@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <assert.h>
 
 // point & edge types
 typedef struct{int x; int y;} point;
@@ -45,9 +46,6 @@ int main(int argc, char* argv[])
 		printf("error\n");
 		return -1;
 	}
-	// printf("end pointer check 1\n");
-	// printf("end_ptr_a: %c\n", *end_ptr_a);
-	// printf("end_ptr_b: %s\n", end_ptr_b);
 	if(*end_ptr_a != 0 || *end_ptr_b != 0)
 	{
 		printf("error\n");
@@ -88,10 +86,6 @@ int main(int argc, char* argv[])
 	mag_b = get_mag(&p_b, &p_c);
 	mag_c = get_mag(&p_c, &p_a);
 
-	// printf("mag_a: %Lf\n", mag_a);
-	// printf("mag_b: %Lf\n", mag_b);
-	// printf("mag_c: %Lf\n", mag_c);
-
 	//check for colinear points
 	 //x_1(y_2-y_3)+x_2(y_3-y_1)+x_3(y_1-y_2)=0. 
 	if((p_a.x*(p_b.y - p_c.y) + p_b.x*(p_c.y - p_a.y) + p_c.x*(p_a.y - p_b.y)) == 0)
@@ -99,10 +93,6 @@ int main(int argc, char* argv[])
 		printf("not a triangle\n");
 		return 0;
 	}
-
-	// printf("ang_a: %f\n", ang_a);
-	// printf("ang_b: %f\n", ang_b);
-	// printf("ang_c: %f\n", ang_c);
 
 	// if all three edges are the same length...
 	if(fabsl(mag_a - mag_b) < 0.00000001 && fabsl(mag_b - mag_c) < 0.00000001 && fabsl(mag_c - mag_a) < 0.00000001)
@@ -178,6 +168,10 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	// ******** assert both output strings were assigned values before completing ***********
+	assert(edge_t != 0);
+	assert(angle_t != 0);
+
 	printf("%s %s\n", edge_t, angle_t);
 }
 
@@ -190,6 +184,10 @@ int point_init(point* p, int x, int y)
 		return -1;
 	}
 
+	// ********** assert that both coordinates are 0 before being assigned ***************
+	assert(p->x == 0);
+	assert(p->y == 0);
+
 	p->x = x;
 	p->y = y;
 	// great success!
@@ -199,9 +197,13 @@ int point_init(point* p, int x, int y)
 //	returns the squared magnitude of an edge.
 long long get_mag(point* p_1, point* p_2)
 {
-	//printf("in Point: p_2->x - p_1->x = %d\n", p_2->x - p_1->x);
-	//printf("in Point: p_2->y - p_1->y = %d\n", p_2->y - p_1->y);
-	return pow((p_2->x - p_1->x), 2) + pow((p_2->y - p_1->y), 2);
+	// local side length
+	long long side_mag = pow((p_2->x - p_1->x), 2) + pow((p_2->y - p_1->y), 2);
+
+	// ************ assert we have no no negative side lengths *******************************
+	assert(side_mag > -1);
+
+	return side_mag;
 }
 
 // returns the length of the longest side (squared)
