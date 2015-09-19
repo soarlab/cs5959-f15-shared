@@ -1,12 +1,13 @@
 /*Dustin Jay Tuckett, Triangle classifier*/
 #include "triangle.h"
+#include "assert.h"
 
 /*
  * This program can only accept 6 numbers as arguments.  The 6 numbers will represent the
  * x and y coordinates of six points ( x1, y1,...).  The points may be in decimal notation
  * but the decimal will be truncated.  If the points do not make a triangle 'not a triangle'
  * is printed, otherwise the classification of the triangle (in lower case) is printed.
- * If the input is not valid, 'error' is printed. +/-1073741823 are the largest acceptable 
+ * If the input is not valid, 'error' is printed. +/-1073741823 are the largest acceptable
  * numbers.
  */
 int main (int argc, char **argv)
@@ -14,7 +15,7 @@ int main (int argc, char **argv)
 
   long points[6];
   long long sides[3];
-  if ( !parseInput( argc, argv, points ) ) {    
+  if ( !parseInput( argc, argv, points ) ) {
     printf("error\n");
     return 1;
   }
@@ -24,6 +25,8 @@ int main (int argc, char **argv)
   }
 
   calculateSidesAndSort( points, sides);
+  assert( points != NULL );
+  assert( sides != NULL );
   printResult( whatClass( sides ), whatType( sides ) );
 
   return 0;
@@ -54,15 +57,17 @@ int parseInput( int argc, char **argv, long *points){
 /*
  * This method calculates the square of lengths of the sides
  * of the triangle.  The square is used to avoid the use of doubles.
- * This method also sorts the sides from smallest to largest to 
+ * This method also sorts the sides from smallest to largest to
  * facilitate easy comparison.
  */
 void calculateSidesAndSort( long *points, long long sides[] ) {
-	
-	sides[0] = dSquared ( points[0], points[1], points[2], points[3]);	
-	sides[1] = dSquared ( points[0], points[1], points[4], points[5]);	
+  //ensure that parameters have been created before calling this method
+  assert( sides != NULL );
+  assert( points != NULL );
+	sides[0] = dSquared ( points[0], points[1], points[2], points[3]);
+	sides[1] = dSquared ( points[0], points[1], points[4], points[5]);
 	sides[2] = dSquared ( points[2], points[3], points[4], points[5]);
-	
+
 	int minIndex = 0;
 	for(int i=0; i<3; i++) {
 		minIndex = i;
@@ -85,6 +90,8 @@ void calculateSidesAndSort( long *points, long long sides[] ) {
  * scalene (returns 0), isosceles ( returns 1 ), or equilateral ( returns 2 ).
  */
 int whatClass( long long sides[] ){
+  //precondition:  sides must be created appropriately
+  assert( sides != NULL );
 	if ( sides[0] == sides[1] && sides[0] == sides[2] ) {
 		return EQUILATERAL;
 	}
@@ -93,13 +100,14 @@ int whatClass( long long sides[] ){
 	}
 	return SCALENE;
 
-	
+
 }
 /*
  * This method determines whether a triangle is acute (returns 0),
  * obtuse ( returns 1 ) or right ( returns 2)
  */
 int whatType( long long sides[] ){
+  assert( sides != NULL );
 	long long hypotenusOfRight = sides[0] + sides[1];
 	if( hypotenusOfRight == sides[2] ) {
 		return RIGHT;
@@ -107,15 +115,15 @@ int whatType( long long sides[] ){
 	if (hypotenusOfRight > sides[2] ) {
 		return ACUTE;
 	}
-	return OBTUSE;	
+	return OBTUSE;
 }
 
 /*
- * Prints the classification of the triangle to the 
+ * Prints the classification of the triangle to the
  * console.  i.e. scalene right
  */
 void printResult( int tClass, int tType ) {
-  
+
   switch ( tClass ) {
     case SCALENE:
       printf("scalene ");
@@ -162,7 +170,6 @@ int valid( long x ) {
  * It checks the area of the triangle, if the area is zero, the points are colinear.
  */
 int checkColinear( long *points ) {
+  assert( points != NULL );
   return ( points[0]*(points[3]-points[5])+points[2]*(points[5]-points[1])+points[4]*(points[1]-points[3]) == 0 );
-}  
-
-
+}
