@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 // Question: Without adding the -lm flag to my makefile my program could not find the sqrt function
 // even though i've included the math library, according to stack overflow there is a difference 
@@ -12,7 +13,6 @@ typedef struct point
 {
 	long x, y;
 } POINT;
-
 
 long long getDistanceSquared(POINT a, POINT b)
 {
@@ -39,6 +39,9 @@ void printType(long long a, long long b, long long c)
 
 void printAngle(long long longest, long long other, long long another)
 {
+	assert(longest >= other);
+	assert(longest >= another);
+
 	if((other + another) > longest)
 	{
 		printf("acute\n");
@@ -51,7 +54,6 @@ void printAngle(long long longest, long long other, long long another)
 	{
 		printf("obtuse\n");
 	}
-
 }
 
 void printAngleType(long long a, long long b, long long c)
@@ -115,6 +117,9 @@ int main (int argc, char** argv)
 		values[counter - 1] = result;
 	}
 	// END INPUT VALIDATION
+
+	// Ensure that we reached all arguments from the array
+	assert(counter == 7);
 
 	POINT a;
 	POINT b;
