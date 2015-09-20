@@ -3,6 +3,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<inttypes.h>
+#include<assert.h>
 
 typedef enum { scalene, isosceles, equilateral } side;
 typedef enum { acute, obtuse, right } angle;
@@ -62,10 +63,10 @@ int main(int argc, char **argv)
 	{
 		if((deltaY1>0 && deltaY1>0) || (deltaY1<0 && deltaY1<0))
 		{
-			deltaX1=absoluteValue(x2-x1);
-			deltaX2=absoluteValue(x3-x1);
-			deltaY1=absoluteValue(y2-y1);
-			deltaY2=absoluteValue(y3-y1);
+			deltaX1= llabs(x2-x1);
+			deltaX2= llabs(x3-x1);
+			deltaY1= llabs(y2-y1);
+			deltaY2= llabs(y3-y1);
 			if(deltaX1*deltaY2==deltaX2*deltaY1)
 			{
 				//Not A Triangle
@@ -78,10 +79,10 @@ int main(int argc, char **argv)
 	{
 		if((deltaY1>0 && deltaY1<0) || (deltaY1<0 && deltaY1>0))
 		{
-			deltaX1=absoluteValue(x2-x1);
-			deltaX2=absoluteValue(x3-x1);
-			deltaY1=absoluteValue(y2-y1);
-			deltaY2=absoluteValue(y3-y1);
+			deltaX1= llabs(x2-x1);
+			deltaX2= llabs(x3-x1);
+			deltaY1= llabs(y2-y1);
+			deltaY2= llabs(y3-y1);
 			if(deltaX1*deltaY2==deltaX2*deltaY1)
 			{
 				//Not A Triangle
@@ -103,6 +104,14 @@ int main(int argc, char **argv)
 	aSquared=((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 	bSquared=((x1-x3)*(x1-x3)+(y1-y3)*(y1-y3));
 	cSquared=((x2-x3)*(x2-x3)+(y2-y3)*(y2-y3));
+	//Math should dictate this isn't possible
+	assert(aSquared>0);
+	assert(bSquared>0);
+	assert(cSquared>0);
+	//ensure no overflow
+	assert(aSquared<INT64_MAX);
+	assert(bSquared<INT64_MAX);
+	assert(cSquared<INT64_MAX);
 	sideType=getSideType(aSquared, bSquared, cSquared);
 	
 	if(aSquared>=bSquared && aSquared>=cSquared)
@@ -117,6 +126,9 @@ int main(int argc, char **argv)
 		cSquared=bSquared;
 		bSquared=swap;
 	}
+	//ensure that my sorting works like I think
+	assert(cSquared>=bSquared);
+	assert(cSquared>=aSquared);
 	angleType=getAngleType(aSquared, bSquared, cSquared);
 	//Check return and print accordingly (I didn't want to print inside the function)
 	if(sideType==scalene)
@@ -131,6 +143,7 @@ int main(int argc, char **argv)
 	{
 		//There is a case here despite the fact that 
 		//this should not be mathematically possible given integer coordinates.
+		assert(1);
 		printf("equilateral ");
 	}
 	
@@ -149,20 +162,13 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-//Gets the absolute value of the input without other libraries
-//Adapted for 64bit from https://graphics.stanford.edu/~seander/bithacks.html#IntegerAbs
-int64_t absoluteValue(int64_t input)
-{
-	int64_t const ABSValueMask =  input >> sizeof(int64_t) * 8 - 1;
-	return (input + ABSValueMask) ^ ABSValueMask;
-}
-
 side getSideType(int64_t aSquared, int64_t bSquared, int64_t cSquared)
 {
 	if(aSquared==bSquared && bSquared==cSquared)
 	{
 		//There is a case here despite the fact that 
 		//this should not be mathematically possible given integer coordinates.
+		assert(1);
 		return equilateral;
 	}
 	else if(aSquared==bSquared || cSquared==bSquared || aSquared==cSquared)
