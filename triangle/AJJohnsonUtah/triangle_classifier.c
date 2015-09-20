@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <assert.h>
 
 const int side_count = 3;
 const long long max_val = 1073741823L;
@@ -22,6 +23,7 @@ struct TrianglePoint {
  * Returns the string parsed to an integer if successful
  **/
 long long arg_to_long(char* str, int* err) {
+  assert(str != NULL && err != NULL);
   char* lastChar;
   long long parsed_val = strtoll(str, &lastChar, 0);
   // Determine if an error occured while parsing the string
@@ -46,6 +48,8 @@ long long arg_to_long(char* str, int* err) {
  * Returns -1 if an error occurs, and 0 otherwise.
  **/
 int parse_args(int argc, char** argv, struct TrianglePoint* points) {
+  assert(argv != NULL && points != NULL);
+
   int expected_args = 7;
   int error_val = 0;
   if(argc != expected_args) {
@@ -79,6 +83,7 @@ int parse_args(int argc, char** argv, struct TrianglePoint* points) {
  * A "functional length" is the length of its respective side SQUARED.
  **/
 void compute_side_lengths(struct TrianglePoint* points, long long* lengths) {
+  assert(points != NULL && lengths != NULL);
   int point_index;
   for(point_index = 0; point_index < side_count; point_index++) {
     long long x1 = points[point_index].x;
@@ -95,6 +100,7 @@ void compute_side_lengths(struct TrianglePoint* points, long long* lengths) {
  * Returns 0 if points are not a triangle, and 1 otherwise
  **/
 int is_triangle(struct TrianglePoint* points) {
+  assert(points != NULL);
   // Use the Shoelace Formula to determine "triangularity".
   // If the area between the points is 0, the points do not make a triangle.
   if((points[0].x * points[1].y 
@@ -113,6 +119,7 @@ int is_triangle(struct TrianglePoint* points) {
  * Determine the type of the triangle based on the lengths of the sides.
  **/
 enum TRIANGLE_TYPE determine_triangle_type(long long* side_lengths) {
+  assert(side_lengths != NULL);
   if(side_lengths[0] == side_lengths[1]
      && side_lengths[0] == side_lengths[2]) {
     return equilateral;
@@ -147,7 +154,7 @@ enum ANGLE_TYPE determine_angle_type(long long* side_lengths) {
     side_b = side_lengths[1];
     side_c = side_lengths[2];
   } else {
-    // all sides are equal in length, equilaterals are acute.
+    // No side is longest, triangle must be acute.
     return acute;
   }
 
@@ -174,6 +181,7 @@ char* triangle_type_to_str(enum TRIANGLE_TYPE triangle_type) {
   case isosceles: return "isosceles";
   case equilateral: return "equilateral";
   }
+  assert(0); // Execution should never reach this!
 }
 
 char* angle_type_to_str(enum ANGLE_TYPE angle_type) {
@@ -182,6 +190,7 @@ char* angle_type_to_str(enum ANGLE_TYPE angle_type) {
   case right: return "right";
   case obtuse: return "obtuse";
   }
+  assert(0); // Execution should never reach this!
 }
 
 /**
