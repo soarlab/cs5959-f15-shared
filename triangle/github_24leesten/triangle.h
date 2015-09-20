@@ -7,7 +7,7 @@ struct Point
 	long long y;
 };
 
-static long long debug = 0;
+static int debug = 0;
 
 long long distance(struct Point p1, struct Point p2);
 

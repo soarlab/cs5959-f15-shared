@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <assert.h>
 #include "triangle.h"
 // Helpful Websites
 // http://www.teacherschoice.com.au/maths_library/trigonometry/triangle_given_3_points.htm
@@ -123,7 +124,12 @@ long long distance(struct Point p1, struct Point p2)
 	x = (p1.x - p2.x) * (p1.x - p2.x);
 	y = (p1.y - p2.y) * (p1.y - p2.y);
 	sum = x + y;	
+	
+	if(debug){
+		printf("Sum: %d\n", sum);
+	}
 
+	assert(sum >= 0);
 	return sum;
 }
 
@@ -189,12 +195,12 @@ long long nat(struct Point point1, struct Point point2, struct Point point3)
 
 	gcd1 = gcd(numerator1, denominator1);
 	gcd2 = gcd(numerator2, denominator2);
-	
+
 	numerator1 = numerator1 / gcd1; 
 	numerator2 = numerator2 / gcd2;
 	denominator1 = denominator1 / gcd1;
-	denominator2 = denominator2 / gcd2;
-	
+	denominator2 = denominator2 / gcd2;	
+
 	if(debug){
 		printf("\tNumerator 1: %f\n\tNumerator 2: %f\n",numerator1, numerator2);
 		printf("\tDenominator 1: %f\n\tDenominator 2: %f\n",denominator1,denominator2);
@@ -211,8 +217,13 @@ long long nat(struct Point point1, struct Point point2, struct Point point3)
 //   and the numerator
 long long gcd(long long a, long long b)
 {
-	if (b == 0)
+	if (b == 0){
+		if(debug){
+			printf("gcd: %d\n", a);
+		}
+		
 		return a;
+	}
 	return gcd(b, a % b);
 }
 
