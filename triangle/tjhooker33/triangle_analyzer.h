@@ -8,6 +8,7 @@
  *              University of Utah
  */
 
+#include <assert.h> /* assert  */
 #include <ctype.h>  /* isDigit */
 #include <stdio.h>  /* printf  */
 #include <stdlib.h> /* strtoll */
@@ -19,14 +20,43 @@
 #define ARG_COUNT 7           /* max argument count for program main */
 #define MAX_RANGE 1073741823  /* largest  acceptable integer value */
 #define MIN_RANGE -1073741823 /* smallest acceptable integer value */
-#define ERROR() {     \
-    printf("error\n");\
-    return -1;	      \
-  }
-#define NAT()   {               \
-    printf("not a triangle\n");	\
-    return -1;			\
-  }
+#define ERROR() {    \
+  printf("error\n"); \
+  return -1;         \
+}
+#define NAT() {               \
+  printf("not a triangle\n"); \
+  return -1;                  \
+}
+#define ASSERT_DISTANCE(res, dx, dy) {           \
+  assert(res > 0);                               \
+  if (dx == 0) {                                 \
+    assert(res % dy == 0);                       \
+  } else if ((dx == 1 || dx == -1) && dy == 0) { \
+    assert(res == 1);                            \
+  } else {                                       \
+    assert(res > dx);                            \
+  }                                              \
+}
+#define ASSERT_TRI_PTRS(tri_point) {  \
+  assert(tri_point   != NULL);        \
+  assert(tri_point.x != NULL);        \
+  assert(tri_point.y != NULL);        \
+}
+#define ASSERT_SIDE_PTRS() {          \
+  assert(&triangle_sides[0] != NULL); \
+  assert(&triangle_sides[1] != NULL); \
+  assert(&triangle_sides[2] != NULL); \
+}
+#define ASSERT_MAGNITUDE() {          \
+  assert(triangle_sides[0] > 0);      \
+  assert(triangle_sides[1] > 0);      \
+  assert(triangle_sides[2] > 0);      \
+}
+/*
+  This assertion fails when OVERFLOW!!!
+  assert(triangle_sides[0] + triangle_sides[1] + triangle_sides[2] > 0);
+*/
 
 /*******************************************************************************************
  * Encapsulates 2 long integers representing an (x,y) coordinate pair.

@@ -7,9 +7,9 @@ bin/triangle: src/triangle.c
 
 .PHONY: test
 test: bin/triangle
-	cd test && ./gen_triangle_tests.py ../bin/triangle 10
+	./test/gen_triangle_tests.py ./bin/triangle 10
 
 .PHONY: clean
 clean:
-	$(RM) bin/triangle
+	$(RM) bin/triangle*
 	$(RM) -r bin/triangle.dSYM

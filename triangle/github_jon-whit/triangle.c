@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include <assert.h>
 
 #define DEBUG 0
 
@@ -21,26 +22,27 @@ int make_line(point *p1, point *p2, point *p3) {
     if ( (p2->y - p1->y)*(p3->x - p2->x) == (p3->y - p2->y)*(p2->x - p1->x) )
         return 1;
     else
- 	return 0;
+ 	  return 0;
 }
 
 /**
  * Classsifies the Triangle given by the 3 points that were specified.
- * 
+ *
  * A Triangle is classified as follows:
  *   1. Scalene | Equilateral | Isosceles
  *   2. Acute   | Obtuse      | Right
  *   3. Not A Triangle
  */
 void classify_triangle(point *p1, point *p2, point *p3) {
-    
+
     if ( DEBUG )
         printf("Classifying Triangle with points: (%li, %li), (%li, %li), (%li, %li)...\n", p1->x, p1->y, p2->x, p2->y, p3->x, p3->y);
-    
-    long long int l1 = (p2->x - p1->x)*(p2->x - p1->x) + (p2->y - p1->y)*(p2->y - p1->y);    
+
+    long long int l1 = (p2->x - p1->x)*(p2->x - p1->x) + (p2->y - p1->y)*(p2->y - p1->y);
     long long int l2 = (p3->x - p2->x)*(p3->x - p2->x) + (p3->y - p2->y)*(p3->y - p2->y);
     long long int l3 = (p3->x - p1->x)*(p3->x - p1->x) + (p3->y - p1->y)*(p3->y - p1->y);
-    
+    assert(l1 >= 0 && l2 >= 0 && l3 >= 0);
+
     if ( DEBUG ) {
         printf("l1: %lli\n", l1);
         printf("l2: %lli\n", l2);
@@ -54,11 +56,11 @@ void classify_triangle(point *p1, point *p2, point *p3) {
      */
     if ( make_line(p1, p2, p3) ) {
         printf("not a triangle");
-	return;
+	  return;
     }
 
     if ( l1 == l2 == l3 ) {
-        printf("equilateral "); 
+        printf("equilateral ");
     } else if ( l1 == l2 | l1 == l3 | l2 == l3 ) {
         printf("isosceles ");
     } else {
@@ -67,42 +69,43 @@ void classify_triangle(point *p1, point *p2, point *p3) {
 
     // find the longest side length
     long long int a = l2, b = l3, c = l1;
-    if ( l2 > c && l2 > l3 ) {
+    if ( l2 >= l1 && l2 >= l3 ) {
         a = l1;
         b = l3;
         c = l2;
     }
-    else if (l3 > c && l3 > l2 ) {
+    else if (l3 >= l1 && l3 >= l2 ) {
         a = l1;
         b = l2;
         c = l3;
     }
+    assert(c >= a && c >= b);
 
     // classify according to angle by using Pythagorean's theorem
     // here a = a^2, b = b^2, and c = c^2 (as you can see from above)
     if ( a + b == c )
         printf("right");
     else if ( a + b > c )
-    	printf("acute");
+    	  printf("acute");
     else
   	printf("obtuse");
 }
 
 /**
  * Validates the input arguments according to the supplied criterion for this assignment.
- * 
- * Each of the six arguments 
+ *
+ * Each of the six arguments
  */
 int valid_input(int argc, char **argv) {
-    
+
     // if less or more than 6 arguments were supplied, then print an error message.
     if ( argc != 7 ) {
         return 0;
-    }    
+    }
 
     /* check if each argument is an integer and within the range specified by the
      * assignment
-     * 
+     *
      * For more information see: http://www.cplusplus.com/reference/cstdlib/strtol/
      */
     int i;
@@ -110,13 +113,13 @@ int valid_input(int argc, char **argv) {
         char * endPtr;
         long int res = strtol(argv[i], &endPtr, 10);
 	if ( *endPtr != '\0' )
-            return 0; 
+            return 0;
         else if ( res > 1073741823 || res < -1073741823 )
      	    return 0;
     }
-   
+
     // otherwise each of the arguments was valid
-    return 1; 
+    return 1;
 }
 
 /**
@@ -127,8 +130,8 @@ int main(int argc, char **argv) {
     if ( !valid_input(argc, argv) ) {
         printf("error\n");
         return 0;
-    }    
- 
+    }
+
     // otherwise all of the supplied arguments were valid. pass the points through
     // to the Triangle classifier.
     long int x1, x2, x3, y1, y2, y3;
@@ -136,6 +139,13 @@ int main(int argc, char **argv) {
     x1 = strtol(argv[1], NULL, 10), y1 = strtol(argv[2], NULL, 10);
     x2 = strtol(argv[3], NULL, 10), y2 = strtol(argv[4], NULL, 10);
     x3 = strtol(argv[5], NULL, 10), y3 = strtol(argv[6], NULL, 10);
+    assert(x1 <= 1073741823 || x1 >= -1073741823);
+    assert(x2 <= 1073741823 || x2 >= -1073741823);
+    assert(x3 <= 1073741823 || x3 >= -1073741823);
+    assert(y1 <= 1073741823 || y1 >= -1073741823);
+    assert(y2 <= 1073741823 || y2 >= -1073741823);
+    assert(y3 <= 1073741823 || y3 >= -1073741823);
+
     point p1 = {x1, y1};
     point p2 = {x2, y2};
     point p3 = {x3, y3};

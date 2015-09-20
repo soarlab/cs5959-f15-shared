@@ -82,4 +82,30 @@ if($result9 =~ m/scalene right/){
 }
 else{
   print "Scalene Right Test Failed: 0 1 0 0 3 0 expected: \tScalene Right\n\tresulted:\t\t$result9\n";
+
+}
+
+my $result10 = `./triangle 1073741824 1 0 0 3 0 `;
+
+if($result10 =~ m/error/){
+  print "Positive Out of Bounds Test Passed\n";
+}
+else{
+  print "Positive Out of Bounds Test Failed: 1073741824 1 0 0 3 0 expected: \terror\n\tresulted:\t\t$result10\n";
+}
+my $result11 = `./triangle -1073741824 1 0 0 3 0 `;
+
+if($result11 =~ m/error/){
+  print "Negative Out of Bounds Test Passed\n";
+}
+else{
+  print "Negative Out of Bounds Test Failed: 0 1 0 0 3 0 expected: \terror\n\tresulted:\t\t$result11\n";
+}
+my $result12 = `./triangle 1073741822 -1073741822 0 0 -1073741822 1073741822 `;
+
+if($result12 =~ m/not a triangle/){
+  print "Colinear Test Passed\n";
+}
+else{
+  print "Colinear Test Failed: 1073741822 -1073741822 0 0 -1073741822 1073741822 expected: \tnot a triangle\n\tresulted:\t\t$result12\n";
 }

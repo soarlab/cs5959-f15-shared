@@ -12,6 +12,10 @@ assert(result == "error\n");
 result = subprocess.check_output("./triangle -1073741824 0 0 1 1 0", shell = True);
 assert(result == "error\n");
 
+#Input invalid
+result = subprocess.check_output("./triangle 0 0 0 1 1 0a", shell = True);
+assert(result == "error\n");
+
 #Duplicate Point
 result = subprocess.check_output("./triangle 0 0 0 0 1 0", shell = True);
 assert(result == "not a triangle\n");
@@ -47,6 +51,18 @@ assert(result == "isosceles right\n");
 #Isosceles acute triangle
 result = subprocess.check_output("./triangle 0 0 2 1 0 2", shell = True);
 assert(result == "isosceles acute\n");
+
+#Max size right
+result = subprocess.check_output("./triangle -1073741823 -1073741823 -1073741823 1073741823 1073741823 -1073741823", shell = True);
+assert(result == "isosceles right\n");
+
+#Near max size obtuse, slightly off of right
+result = subprocess.check_output("./triangle -1073741822 -1073741822 -1073741823 1073741823 1073741823 -1073741823", shell = True);
+assert(result == "isosceles obtuse\n");
+
+#Near max size acute, slightly off of right
+result = subprocess.check_output("./triangle -1073741823 -1073741823 -1073741822 1073741823 1073741823 -1073741823", shell = True);
+assert(result == "scalene acute\n");
 
 #finished
 print 'All tests passed!';

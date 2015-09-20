@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <string.h>
+#include <assert.h>
 
 /*note extra space after type of triangle to match regex
 and new line after angles and errors;*/
@@ -78,6 +79,8 @@ int main(int argc, char *argv[]){
 /*Takes a string argument and attempts to convert it into a long long
 Code will exit with an error if strtoll fails to convert string*/
 long long int convert(char *arg){
+  /*NULL check on pointer*/
+  assert(arg != 0);
   char *end = "\0";
   long long int val;
   errno = 0;
@@ -89,6 +92,9 @@ long long int convert(char *arg){
     printf(ERROR);
     exit(0);
   }
+
+  /*This should never trigger given check above, but just to be safe...*/
+  assert(val <= MAX && val >= MIN);
   return val;
 }
 
@@ -108,8 +114,11 @@ int testColinear(Point p1, Point p2, Point p3){
 }
 
 void printTriangleType(Triangle t){
+  /*There is no way we can have an equilateral triangle,
+    so if we do there is a problem*/
   if((t.a == t.b) && (t.b == t.c)){
-    printf(EQUILATERAL);
+    assert("Equilateral Triangle Error, there must have been error in \
+earlier math");
   } else if(t.a == t.b || t.a == t.c || t.b == t.c){
     printf(ISOSCELES);
   } else{
@@ -127,6 +136,9 @@ void printAngle(Triangle t){
   side[2] = t.c;
   qsort(side, 3, sizeof(long long int), compare);
 
+  /*Check to make sure that the sort worked*/
+  assert(side[0] <= side[1] && side[1] <= side[2]);
+  
   if((side[0] + side[1]) == (side[2])){
     printf(RIGHT);    
   } else if((side[2]) > (side[0] + side[1])){
@@ -139,6 +151,9 @@ void printAngle(Triangle t){
 /*Compare function used to sort the sides of the triangle from smallest to 
   largest */
 int compare (const void * a, const void * b){
+  /*Null check on the pointers*/
+  assert(a != 0 && b != 0);
+  
   long long int x = *(long long int*)a;
   long long int y = *(long long int*)b;
 

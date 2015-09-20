@@ -73,7 +73,9 @@ typedef struct point{
   int64_t y;
 } point_s;
 
-/* Enums used for the state of the program */ 
+/* Enums used for the state of the program */
+
+// all use the same unset value
 #define UNSET (0)
 
 typedef enum {
@@ -125,31 +127,42 @@ char * ANGLE_NAMES[] = {"\nINTERNAL ERROR angle_name_e variable not set\n",
  * so I'll just put them here                                                   *
  *******************************************************************************/
 
+/* Initialize a struct of type result_s */
 void
 result_init(result_s *result)
 {
+  assert(result != NULL);
+  
   result->condition = UNSET;
   result->first = UNSET;
   result->second = UNSET;
 }
 
 
+/* swap two values of two uint64s */
 void
 swap(uint64_t *first, uint64_t *second)
 {
+  assert(first != NULL);
+  assert(second != NULL);
+  
   uint64_t temp = *first;
   *first = *second;
   *second = temp;
 }
 
 
+/* sort an array of type uint64 */
 void
 sort(uint64_t *array, const size_t length)
 {
+  assert(array != NULL);
+  
   uint64_t max;
   size_t index_of_max;
 
   size_t scan;
+  /* standard insertion sort, a little overkill for 3 items */
   for (size_t current=0; current<length; current++) {
     max = array[current];
     index_of_max = current;
@@ -163,11 +176,21 @@ sort(uint64_t *array, const size_t length)
   }
 }
 
-
+/* Parse the given string as a 64 bit signed int, and verrify that it is within
+ * bounds given. Bounds are inclusive and must not be max or min values for
+ * 64 bit signed int
+ * returns FAIL on failure and PASS on success
+ */
 int
 parse_int_ranged(const char *string, const int64_t min, const int64_t max,
 		 int64_t *out)
 {
+  assert(string != NULL);
+  assert(out != NULL);
+  assert(min <= max);
+  assert(min > INT64_MIN);
+  assert(max < INT64_MAX);
+
   char *end;
   long long int parsed = strtoll(string, &end, 10);
 
@@ -182,11 +205,17 @@ parse_int_ranged(const char *string, const int64_t min, const int64_t max,
 }
 
 
+/* Parse a list of strings into a list of 64 bit ints, if any parse fails returns
+ * FAIL, if all pass return PASS
+ */
 int
 parse_int_array_ranged(const char *strings[], const size_t length,
 		       const int64_t min, const int64_t max,
 		       int64_t outs[])
-{
+{ 
+  assert(strings != NULL);
+  assert(outs != NULL);
+
   for (size_t i=0; i<length; i++) {
     if (parse_int_ranged(strings[i], min, max, &outs[i]) == FAIL) {
       return FAIL;
@@ -196,12 +225,16 @@ parse_int_array_ranged(const char *strings[], const size_t length,
   return PASS;
 }
 
-
+/* Parse a list of strings as points x0 y0 x1 y1 .... 
+ * returns FAIL if any parse fails and PASS is all pass 
+ */
 int
 parse_points(const char *strings[], const size_t length,
 	     const int64_t low, const int64_t high,
-	     point_s out[])
+	     point_s outs[])
 {
+  assert(strings != NULL);
+  assert(outs != NULL);
   assert(length%2 == 0);
 
   int64_t numbers[6];
@@ -210,17 +243,19 @@ parse_points(const char *strings[], const size_t length,
   }
   
   for (size_t i=0; i<length; i+=2) {
-    out[i/2].x = numbers[i];
-    out[i/2].y = numbers[i+1];
+    outs[i/2].x = numbers[i];
+    outs[i/2].y = numbers[i+1];
   }
 
   return PASS;
 }
 
-
+/* Prints the representation of the values held in a result_s */
 void
 print_result(const result_s *result)
 {
+  assert(result != NULL);
+  
   switch (result->condition) {
   case UNSET:
     printf("\nINTERNAL ERROR cannot print a result that was not set");
@@ -248,6 +283,7 @@ print_result(const result_s *result)
  * Main functions                                                               *
  *******************************************************************************/
 
+/* computes the distance squared between two points */
 uint64_t
 distance_squared(const point_s p1, const point_s p2)
 {
@@ -262,12 +298,15 @@ distance_squared(const point_s p1, const point_s p2)
   return delta_x_squared + delta_y_squared;
 }
 
-
+/* sets the given result indicating if 3, 2, or no edges have the same length */
 void
 classify_length_name(const uint64_t lengths[],
 		     result_s *result)
 {
-  if (lengths[0] == lengths[2]) {
+  assert(lengths != NULL);
+  assert(result != NULL);
+  
+  if ((lengths[0] == lengths[1]) && (lengths[1] == lengths[2])) {
     result->first = EQUILATERAL;
   }
   else if ((lengths[0] == lengths[1]) || (lengths[1] == lengths[2])) {
@@ -278,11 +317,19 @@ classify_length_name(const uint64_t lengths[],
   }
 }
 
-
+/* set the given result indicating if any angle is 90 degrees, any angle is more
+ * than 90 degrees, or all are below 90 degrees
+ */
 void
 classify_angle_name(const uint64_t lengths[],
 		    result_s *result)
 {
+  assert(lengths != NULL);
+  assert(result != NULL);
+  
+  /* use pythagoras: h^2 == a^2 + b^2 iff the triangle contains a 90 degree 
+   *  side 
+   */
   if (lengths[0] == lengths[1] + lengths[2]) {
     result->second = RIGHT;
   }
@@ -295,37 +342,46 @@ classify_angle_name(const uint64_t lengths[],
 }
 
 
+/* Do all the operations of main, but only set the result instead of printing */
 void
-classify_triangle_scrub(const int argc, const char *argv[],
+nonprinting_main(const int argc, const char *argv[],
 			result_s *result)
 {
+  assert(argv != NULL);
+  assert(result != NULL);
+  
+  // We must have 6 things given to us
   if (argc != 7) {
     result->condition = INPUT_ERROR;
     return;
   }
 
+  // These 6 things must be numbers, which we interpret as points
   point_s points[3];
   if (parse_points(&argv[1], 6, LOW_BOUND, HIGH_BOUND, points) == FAIL) {
     result->condition = INPUT_ERROR;
     return;
   }
 
+  // Compute the distance squared of each side of the triangle
   uint64_t distances_squared[3];
   for (size_t i=0; i<3; i++) {
     distances_squared[i] = distance_squared(points[i], points[(i+1)%3]);
   }
 
+  // Sort them from largest to smallest
   sort(distances_squared, 3);
 
-  
-  if ((distances_squared[2] == 0) ||
-      ((points[0].x * (points[1].y - points[2].y) +
+  // If the area of the triangle is zero it is not a triangle to us
+  // based on http://mathworld.wolfram.com/Collinear.html
+  if (((points[0].x * (points[1].y - points[2].y) +
 	points[1].x * (points[2].y - points[0].y) +
 	points[2].x * (points[0].y - points[1].y)) == 0)) {
     result->condition = NOT_A_TRIANGLE;
     return;
   }
 
+  // We finally have a triangle, set langth based name, and angle based name
   result->condition = TRIANGLE;
   classify_length_name(distances_squared, result);
   classify_angle_name(distances_squared, result);
@@ -335,9 +391,16 @@ classify_triangle_scrub(const int argc, const char *argv[],
 int
 main(const int argc, const char *argv[])
 {
+  // initialize result 
   result_s result;
   result_init(&result);
-  classify_triangle_scrub(argc, argv, &result);
+
+  // call the internal main
+  nonprinting_main(argc, argv, &result);
+
+  // print the results found
   print_result(&result);
+
+  // return -1 if error occured
   return -(result.condition == INPUT_ERROR);
 }

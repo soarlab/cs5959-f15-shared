@@ -123,7 +123,7 @@ int create_point_component(char *num, long *component) {
 
   *component = strtol(num, &endptr, 10);
   if (*endptr != '\0' || check_range(component)) {
-    return -1;
+    return -1;  
   }
   return 0;
 }
@@ -151,6 +151,8 @@ int create_triangle(char *argv[]) {
   /* i keeps track of the individual component (x) or (y) parsed from argv */
   j = 0;
   for(i = 1; i < 7; i+=2, j++) {
+    /* ensure a null pointer is not passed to create_point_component function */
+    ASSERT_TRI_PTRS(&triangle_points[j]);
     if ( create_point_component(argv[i],   &(triangle_points[j].x)) 
       || create_point_component(argv[i+1], &(triangle_points[j].y)) ) {
       return -1;
@@ -175,11 +177,17 @@ int create_triangle(char *argv[]) {
  *          long long                    distance between p1 and p2
  */
 long long compute_distance(coordinate *p1, coordinate *p2) {
-  long long dx, dy;
+  long long dx, dy, res;
 
-  dx = p2->x - p1->x;
-  dy = p2->y - p1->y;
-  return (dx * dx) + (dy * dy);
+  dx  = p2->x - p1->x;
+  dy  = p2->y - p1->y;
+  res = (dx * dx) + (dy * dy);
+
+  /* result must be in terms of magnitude which is always non-negative */
+  /* result cannot be zero, otherwise two points were in fact the same */
+  ASSERT_DISTANCE(res, dx, dy);
+  ASSERT_DISTANCE(res, dy, dx);
+  return res;
 }
 
 
@@ -200,9 +208,15 @@ long long compute_distance(coordinate *p1, coordinate *p2) {
 void compute_triangle_sides(void) {
   int i, j;
 
+  /* ensure a null pointer is not passed to compute_distance function */
+  ASSERT_SIDE_PTRS();
+
   triangle_sides[0] = compute_distance(&triangle_points[0], &triangle_points[1]);
   triangle_sides[1] = compute_distance(&triangle_points[0], &triangle_points[2]);
   triangle_sides[2] = compute_distance(&triangle_points[2], &triangle_points[1]);
+
+  /* all lengths must have positive magnitude */
+  ASSERT_MAGNITUDE();
 
   /* Ascending order sort by length */
   for (i = 0; i < 2; i++) {
@@ -212,6 +226,10 @@ void compute_triangle_sides(void) {
       }
     }
   }
+  
+  /* swaps must preseve lengths' magnitude */
+  ASSERT_MAGNITUDE();
+
   return;
 }
 
@@ -324,17 +342,22 @@ int is_obtuse(void) {
 void print_classification(void) {
   if (is_isosceles()) {
     printf("isosceles ");
-  } else {
+  } else if (is_scalene()) {
     printf("scalene ");
+  } else {
+    assert(0); /* something went horribly wrong, didn't it */
   }
 
   if (is_acute()) {
     printf("acute\n");
   } else if (is_right()) {
     printf("right\n");
-  } else {
+  } else if (is_obtuse()) {
     printf("obtuse\n");
+  } else {
+    assert(0); /* something went horribly wrong, didn't it */
   }
+  return;
 }
 
 /*******************************************************************************************
