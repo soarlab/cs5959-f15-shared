@@ -22,7 +22,7 @@ int make_line(point *p1, point *p2, point *p3) {
     if ( (p2->y - p1->y)*(p3->x - p2->x) == (p3->y - p2->y)*(p2->x - p1->x) )
         return 1;
     else
- 	      return 0;
+ 	  return 0;
 }
 
 /**
@@ -56,7 +56,7 @@ void classify_triangle(point *p1, point *p2, point *p3) {
      */
     if ( make_line(p1, p2, p3) ) {
         printf("not a triangle");
-	      return;
+	  return;
     }
 
     if ( l1 == l2 == l3 ) {
@@ -88,7 +88,7 @@ void classify_triangle(point *p1, point *p2, point *p3) {
     else if ( a + b > c )
     	  printf("acute");
     else
-  	    printf("obtuse");
+  	printf("obtuse");
 }
 
 /**
