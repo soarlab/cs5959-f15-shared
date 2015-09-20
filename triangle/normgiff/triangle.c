@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdint.h>
+#include <assert.h>
 
 int64_t length(int64_t x1, int64_t y1, int64_t x2, int64_t y2)
 {
@@ -55,7 +56,9 @@ char* check_angle(int64_t sides[])
 	// a^2 + b^2 > c^2 acute (2)
 	// a^2 + b^2 < c^2 obtuse (3)
 	qsort(sides, 3, sizeof(int64_t), compare);
-	
+	assert(sides[0] <= sides[1]);
+	assert(sides[0] < sides[2]);
+	assert(sides[1] < sides[2]);
 	if(sides[0] + sides[1] == sides[2])
 	{
 		return "right";
