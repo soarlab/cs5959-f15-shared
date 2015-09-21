@@ -171,4 +171,3 @@ else
     my $failed = $test_count - $passed;
     print "***\tFailed $failed / $test_count Tests\t\t***\n*******************************************\n";
   }
-                                                                                                               178,3         Bot

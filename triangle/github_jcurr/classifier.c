@@ -5,6 +5,7 @@
  */
 
 #include "classifier.h"
+#include <assert.h>
 
 // point variables
 long x1,x2,x3,_y1,y2,y3;
@@ -67,12 +68,19 @@ char* classify_by_angles(int result)
 }
 
 // compute the dot product for each angle
+// dot product == 0 -> right angle
+// 	        > 0 -> acute angle
+//              < 0 -> obtuse angle
 // if any one angle was right or obtuse, return that code, else acute
 int check_dot_products()
 {
   long long a = ax*bx + ay*by;
   long long b = bx*cx + by*cy;
   long long c = -(cx*ax + cy*ay);
+
+  // if two angles are reported as obtuse, either vectors are 
+  // oriented incorrectly or perhaps overflow has occured
+  assert(!((a < 0 && b < 0) | (a < 0 && c < 0) | (b < 0 && c < 0)));
 
   if(a == 0 || b == 0 || c == 0)
     return 0;
@@ -114,10 +122,13 @@ int get_equal_edge_length_count()
 
   if(b == c)
     equal_count++;
-
+  
+  assert(a > 0 && b > 0 && c > 0);//will fail if overflow occured
+  assert(equal_count != 3); //equilateral triangle is actually impossible
   return equal_count;
 }
 
+// calls strtol and verifies that the value was an integer
 long extract_value_and_verify_strtol(char *str)
 {
   char * endptr;
@@ -148,6 +159,7 @@ int validate_triangle()
   long long area = x1*(y2-y3) + x2*(y3-_y1) + x3*(_y1-y2);
   if(area == 0)
     return 0;
+  
   return 1;
 }
 
