@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
 
 int main(int argc, char *argv[]){
 
@@ -16,20 +17,6 @@ int main(int argc, char *argv[]){
 	}
 
 
-	/* Check to make sure type and range of inputs is correct */
-	else{
-		for (int j = 1; j < 7; j++){
-			if(atol(argv[j]) > 1073741823 || atol(argv[j]) < -1073741823){
-				printf("error\n");
-				if(verbose){
-					printf("Number is not int within range");
-				}
-				return 0;
-			}
-			
-		}
-	}
-
 	/* Inputs converted to long points with simple naming for clarity. 
 	* Bad conversions will result in undefined behavior. */
 	char *endptr;
@@ -39,36 +26,42 @@ int main(int argc, char *argv[]){
   		printf("error\n");
   		return 0;
   	}
+  	assert(x1 > -1073741823 && x1 < 1073741823);
 
   	long y1 = strtol(argv[2], &endptr, 10);
   	if(*endptr != '\0'){
   		 printf("error\n");
   		return 0;
   	}
+  	assert(y1 > -1073741823 && y1 < 1073741823);
 
   	long x2 = strtol(argv[3], &endptr, 10);
   	if(*endptr != '\0'){
   		printf("error\n");
   		return 0;
   	}
+	assert(x2 > -1073741823 && x2 < 1073741823);
 
   	long y2 = strtol(argv[4], &endptr, 10);
   	if(*endptr != '\0'){
   		printf("error\n");
   		return 0;
   	}
+	assert(y2 > -1073741823 && y2 < 1073741823);
 
   	long x3 = strtol(argv[5], &endptr, 10);
   	if(*endptr != '\0'){
   		printf("error\n");
   		return 0;
   	}
+	assert(x3 > -1073741823 && x3 < 1073741823);
 
   	long y3 = strtol(argv[6], &endptr, 10);
   	if(*endptr != '\0'){
   		printf("error\n");
   		return 0;
   	}
+	assert(y3 > -1073741823 && y3 < 1073741823);
 
 	/* Check that triangle does not have any duplicate points - REDUNDANT */
 	if ( (x1 == x2 && y1 == y2) || (x1 == x3 && y1 == y3) || (x2 == x3 && y2 == y3) ){
@@ -94,6 +87,8 @@ int main(int argc, char *argv[]){
 		side1 = side3;
 		side3 = temp;
 	}
+
+	assert(side1 > side2 && side1 > side3); //Assert that the largest side was successfully set. 
 
 	if(verbose){
 		printf("side1 = %lld, side2 = %lld, side3 = %lld\n", side1, side2, side3);
