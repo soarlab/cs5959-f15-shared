@@ -209,5 +209,8 @@ __int64_t CalculateLength(struct point A, struct point B)
 	// Computes the length.
 	__int64_t length = ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1));
 
+	// Asserts that the length did not overflow during computation. 
+	assert(length > 0);
+
 	return length;
 }

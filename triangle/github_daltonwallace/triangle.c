@@ -39,6 +39,8 @@ void printType(long long a, long long b, long long c)
 
 void printAngle(long long longest, long long other, long long another)
 {
+	// Ensure that the parameter passed as longest
+	// is indeed the largest value
 	assert(longest >= other);
 	assert(longest >= another);
 
@@ -132,6 +134,15 @@ int main (int argc, char** argv)
 	c.x = values[4];
 	c.y = values[5];
 
+
+	// Ensure that all points are within the valid range
+	assert(a.x >= -1073741823 || a.x <= 1073741823);
+	assert(a.y >= -1073741823 || a.y <= 1073741823);
+	assert(b.x >= -1073741823 || b.x <= 1073741823);
+	assert(b.y >= -1073741823 || b.y <= 1073741823);
+	assert(c.x >= -1073741823 || c.x <= 1073741823);
+	assert(c.y >= -1073741823 || c.y <= 1073741823);
+
 	// Determine if 'not a triangle'
 	isTriangle(a, b, c);
 
@@ -139,6 +150,11 @@ int main (int argc, char** argv)
 	long long lengthA = getDistanceSquared(a, b);
 	long long lengthB = getDistanceSquared(b, c);
 	long long lengthC = getDistanceSquared(c, a);
+
+	// Assert each side is non negative in length
+	assert(lengthA >= 0);
+	assert(lengthB >= 0);
+	assert(lengthC >= 0);
 
   printType(lengthA, lengthB, lengthC);
   printAngleType(lengthA, lengthB, lengthC);
