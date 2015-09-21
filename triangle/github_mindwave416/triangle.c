@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-#include <string.h>
+#include <assert.h>
 
 /* Pre-declarations of methods */
 double sideLen (long x1, long y1, long x2, long y2);
@@ -26,7 +25,8 @@ double sideLen (long x1, long y1, long x2, long y2){
 
 /* Check that the points aren't on the same line */
 void checkPoints(long points[]){
-  
+ /* Assert that the points array has been filled otherwise the rest of the code from here will break*/
+  assert(points != NULL);
   if((points[2] - points[0]) * (points[5] - points[1]) == (points[4] - points[0]) * (points[3] - points[1])) {
     printf("not a triangle");
     exit(0);
@@ -73,6 +73,8 @@ void checkAngles(long points[]){
     angleType = "obtuse\0";
   }
   else {
+    /* Assert that the dot product is greater than zero to make sure the previous angled measured as acute */
+    assert(dot > 0);
     dotPoints[0] = points[0]-points[2];
     dotPoints[1] = points[1]-points[3];
     dotPoints[2] = points[4]-points[2];
@@ -87,6 +89,8 @@ void checkAngles(long points[]){
       angleType = "obtuse\0";
     }
     else {
+    /* Assert that the dot product is greater than zero to make sure the previous angled measured as acute */
+      assert(dot > 0);
       dotPoints[0] = points[0]-points[4];
       dotPoints[1] = points[1]-points[5];
       dotPoints[2] = points[2]-points[4];
@@ -125,6 +129,8 @@ int main (int argc, char **argv){
           printf("error\n");
           exit(0);
         }
+      /* Assert that the whole string was converted to a long */
+      assert(*endptr == '\0');
       }
     }
   checkPoints(points);	
