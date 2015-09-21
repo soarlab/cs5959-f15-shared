@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<errno.h>
 #include<math.h>
+#include<assert.h>
 #ifndef M_PI
 #define M_PI acos(-1.0)
 #endif
@@ -51,7 +52,6 @@ int main(int argc, char *argv[]){
 
   points = (point *)malloc(sizeof(point)*6);
   sides = (double *)malloc(sizeof(double)*3);
-  /*angles = (double *)malloc(sizeof(double)*3);*/
 
   /* there should be six args */
   if(argc < 7)               /*fprintf(stderr, "Usage: %s x1 y1 x2 y2 x3 y3\n", argv[0]);*/
@@ -88,9 +88,11 @@ int main(int argc, char *argv[]){
   
   /* find sides*/
   find_sides(points, sides);
+  assert(sides[0] >= 0 && sides[1] >= 0 && sides[2] >= 0);
 
   /* reorder so largest side is at index 1 */
   put_longest_in_middle(sides);
+  assert(sides[1] >= sides[0] && sides[1] >= sides[2]);
 
   /* use cosine rule to find largest angle*/
   /* cosine rule:*/
@@ -100,6 +102,7 @@ int main(int argc, char *argv[]){
   /*   B = cos^(-1)((a^2 + c^2 - b^2) / 2ac)*/  
   angle = acos((pow(sides[0], 2) + pow(sides[2], 2) - pow(sides[1], 2)) /
 		   (2 * sides[0] * sides[2]));
+  assert(angle >= (M_PI / 3.0));
 
   /* DEBUGGERY */
   /*for(i=0; i<3; i++)
