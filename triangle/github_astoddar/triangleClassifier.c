@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 
 long long line1;	//global variables set once we determine the line distance between (x1, y1) - (x2, y2)
 long long line2;	//(x2, y2) - (x3, y3)
@@ -128,6 +129,14 @@ int calcSideLength(long long x1, long long y1, long long x2, long long y2, long 
  		sidesArray[2] = line2;
  	}
 
+
+ 	//Makes sure that the first element of sides array is greater than the other two
+ 	assert(sidesArray[0] >= sidesArray[1]);
+ 	assert(sidesArray[0] >= sidesArray[2]);
+
+
+
+
 }
 
 
@@ -239,5 +248,4 @@ int slopeCheck(long long x1, long long y1, long long x2, long long y2, long long
 	return 0;
 	
 }
-
 
