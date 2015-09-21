@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
 #define PI 3.14159265358979323846
 // 2147483647
 
@@ -83,67 +84,88 @@ int pointEqual(struct tcPoint a, struct tcPoint b)
 }
 
 
-long long getLineLengthSQ(struct tcLine line)
+unsigned long long getLineLengthSQ(struct tcLine line)
 {
 	long long x1 = line.start.x;
 	long long x2 = line.end.x;
 	long long y1 = line.start.y;
-	long long y2 = line.end.y;
+	long long y2 = line.end.y;//plugh
 	long long x = x1-x2;
+	if (x < 0)
+		x = -x;
 	long long y = y1-y2;
-	return x*x + y*y; //a^2 + b^2 = c^2
+	if (y < 0)
+		y = -y;
+	unsigned long long finalx = x;
+	unsigned long long finaly = y;//plugh
+
+	unsigned long long toReturn = finalx*finalx + finaly*finaly;//a^2 + b^2 = c^2
+	assert(toReturn > finaly && toReturn > finaly); //no overflow?
+	return toReturn; 
 }
 double atan2pi(long double y, long double x)
 {
+	//Implemented from wikipedia's defenition of atan2 for long double
+	assert(x != 0.0 || y != 0.0);//undefined
 	double toReturn;
-	double radtodegree = 180/PI;
-	if (x > 0)
+	double radtodegree = 180.0/PI;
+	if (x > 0.0)
 		toReturn = atan((double)(y / x));
-	if (x < 0 && y >= 0)
+	if (x < 0.0 && y >= 0.0)
 		toReturn = atan((double)(y / x)) + PI;
-	if (x < 0 && y < 0)
+	if (x < 0.0 && y < 0.0)
 		toReturn = atan((double)(y / x)) - PI;
-	if (x == 0)
+	if (x == 0.0)
 	{
-		if (y > 0)
+		if (y > 0.0)
 		{
-			toReturn = PI / 2;
+			toReturn = PI / 2.0;
 		}
-		if (y < 0)
+		if (y < 0.0)
 		{
-			toReturn = -PI / 2;
-		}
-		if (y = 0)
-		{
-			//UNDEFINED
+			toReturn = -PI / 2.0;
 		}
 	}
-	
-	//if(x == 0)
-	//	return 90;
-	//return radtodegree * atan((double)(y/x));
 	return toReturn *radtodegree;
+}
+
+int strcmp2(char* a, char* b)
+{
+	assert(a != 0);//no null pointers
+	assert(b != 0);//no null pointers
+	int i = 0;
+	while (1)
+	{
+		if (a[i] != b[i])
+		{
+			return 0;
+		}
+		if (a[i] == 0)//or b[i] == 0, but we've already established they're equal
+		{
+			break;
+		}
+		i++;
+	}
+	return 1;
 }
 
 int getAngleType(struct tcAngle angle)
 {
-	//
 	double anglea = atan2pi((long double)(angle.mid.y-angle.left.y),(long double)(angle.mid.x - angle.left.x));
 	double angleb = atan2pi((long double)(angle.mid.y-angle.right.y), (long double)(angle.mid.x - angle.right.x));
 
 	double angleToReturn = anglea - angleb;
 	if (angleToReturn < 0.0)
 		angleToReturn = -angleToReturn;
+	if (angleToReturn > 180.0)
+		angleToReturn = 360.0 - angleToReturn;
+	assert(angleToReturn <= 180.0 && angleToReturn >= 0);
 
-
-	if (angleToReturn > 180)
-		angleToReturn = 360 - angleToReturn;
-
-	if(angleToReturn == 0 || angleToReturn == 180)
+	if(angleToReturn == 0.0 || angleToReturn == 180.0)
 		return ERROR_ANGLE;
-	if (angleToReturn == 90)
+	if (angleToReturn == 90.0)
 		return RIGHT_ANGLE;
-	if (angleToReturn < 90)
+	if (angleToReturn < 90.0)
 		return ACUTE_ANGLE;
 	return OBTUSE_ANGLE;
 }
@@ -161,10 +183,17 @@ int main(int argc, char **argv)
 	int in3 = strtol(argv[4],(char**)NULL,10);
 	int in4 = strtol(argv[5],(char**)NULL,10);
 	int in5 = strtol(argv[6],(char**)NULL,10);
+	if ((in0 == 0 && !strcmp2(argv[1], "0")) || (in1 == 0 && !strcmp2(argv[2], "0")) || (in2 == 0 && !strcmp2(argv[3], "0")) || (in3 == 0 && !strcmp2(argv[4], "0")) || (in4 == 0 && !strcmp2(argv[5], "0")) || (in5 == 0 && !strcmp2(argv[6], "0")))
+	{
+		puts("error");
+		return 1;
+	}
+
+
 	struct tcTriangle triangle = makeTriangle(in0,in1,in2,in3,in4,in5);
 	if(pointEqual(triangle.a,triangle.b)||pointEqual(triangle.b,triangle.c)||pointEqual(triangle.c,triangle.a))
 	{
-		puts("not a triangle1");
+		puts("not a triangle");
 		return 0;
 	}
 	int abcangle = getAngleType(triangle.abc);
@@ -172,12 +201,12 @@ int main(int argc, char **argv)
 	int cabangle = getAngleType(triangle.cab);
 	if(abcangle == ERROR_ANGLE || bcaangle == ERROR_ANGLE || cabangle == ERROR_ANGLE)
 	{
-		puts("not a triangle2");
+		puts("not a triangle");
 		return 0;
 	}
-	long long ablinesq = getLineLengthSQ(triangle.ab);
-	long long bclinesq = getLineLengthSQ(triangle.bc);
-	long long calinesq = getLineLengthSQ(triangle.ca);
+	unsigned long long ablinesq = getLineLengthSQ(triangle.ab);
+	unsigned long long bclinesq = getLineLengthSQ(triangle.bc);
+	unsigned long long calinesq = getLineLengthSQ(triangle.ca);
 
 	if(ablinesq == bclinesq && bclinesq == calinesq)
 	{
