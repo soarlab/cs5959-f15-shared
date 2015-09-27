@@ -14,20 +14,20 @@ import java.io.*;
 
 public class Jsha1sum {
 
-  private static String PATH = "fuzz.txt";
   private static BufferedInputStream BIS;
 
-  public static byte[] readFile(int size) throws IOException {
+  public static byte[] readFile(String filePath, int size) throws IOException {
     byte[] buffer = new byte[size];
-    BIS = new BufferedInputStream(new FileInputStream(PATH));
+    BIS = new BufferedInputStream(new FileInputStream(filePath));
     BIS.read(buffer);
     return buffer;
   }
 
   public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
     MessageDigest sha = MessageDigest.getInstance("SHA-1");
-    sha.update(readFile(Integer.parseInt(args[0])));
-    System.out.println(getHexString(sha.digest()) + "  ./" + PATH);
+    String filePath = args[0];
+    sha.update(readFile(filePath, Integer.parseInt(args[1])));
+    System.out.println(getHexString(sha.digest()) + "  " + filePath);
   }
 
   /**

@@ -12,14 +12,16 @@
 #include <stdlib.h> /* random generator */
 #include <time.h>   /* time */
 
-void write_bytes(FILE *fp, long size) {
+void write_bytes(FILE *fp, long seed, long size) {
   char str[size];
-  time_t now;
+  // time_t now;
   int i, r;
   
-  now = time(NULL);
-  printf("Random seed for base = %ld \n", (long)((double)now));
-  srand(now);
+  // now = time(NULL);
+  // printf("Random seed for base = %ld \n", (long)((double)now));
+  printf("Random seed for base = %ld \n", seed);
+  srand(seed);
+  // srand(now);
 
   /* write MAX random bytes to the file */
   /* ASCII characters from 'SPACE' to '~' */
@@ -31,11 +33,12 @@ void write_bytes(FILE *fp, long size) {
 }
 
 int main(int argc, char *argv[]) {
-  long max = strtol(argv[1], NULL, 10);
+  long seed = strtol(argv[1], NULL, 10);
+  long max  = strtol(argv[2], NULL, 10);
 
   FILE *fp = fopen("base.txt", "w+");
   if (fp) {
-    write_bytes(fp, max);
+    write_bytes(fp, seed, max);
     fclose(fp);
   } else {
     printf("Oh darn! It looks like fopen failed. \n");
