@@ -1,0 +1,6 @@
+The quick brown fox jumps over the lazy dog
+The:quick:brown:fox:jumps:over:the:lazy:dog
+How now brown cow
+How:now:brown:cow
+one two three four five six seven eight nine ten
+one:two:three:four:five:six:seven:eight:nine:ten

@@ -1,0 +1,6 @@
+ick brown fox jumps over the lazy dog
+ick:brown:fox:jumps:over:the:lazy:dog
+w brown cow
+w:brown:cow
+o three four five six seven eight nine ten
+o:three:four:five:six:seven:eight:nine:ten
