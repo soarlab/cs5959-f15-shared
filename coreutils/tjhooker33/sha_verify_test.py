@@ -23,16 +23,21 @@ def res_path():
 def sums_path():
   return 'log/sums.txt'
 
+def sums_path_2():
+  return 'log/sums_2.txt'
+
 def sha_path():
   return '../coreutils/src/sha1sum'
 
+# returns the output of a process
 def exec_process(args):
   ps         = Popen(args, stdout=PIPE)
   (out, err) = ps.communicate()
   exit_code  = ps.wait()
-  print out
+  # print out
   return out
 
+# logs results to disk
 class Logger:
   def __init__(self, path):
     self.log_file = open(path, 'w+')
@@ -46,6 +51,7 @@ class Logger:
   def close(self):
     self.log_file.close()
 
+# executes the software under test
 class Sha1Sum:
   def __init__(self, path):
     self.args = [sha_path(), path]
@@ -53,6 +59,7 @@ class Sha1Sum:
   def run(self):
     return exec_process(self.args)
 
+# writes a base file of random bytes
 class Baser:
   def __init__(self, size):
     print 'baser init with size = ' + str(size)
@@ -72,12 +79,12 @@ class Baser:
     base_file.close()
     return data
 
+# generates fuzzed files from the base file
 class Fuzzer:
   def __init__(self, size, count):
     print 'fuzzer init with size = ' + str(size)
     self.size  = size
     self.count = count
-    # self.path = fuzz_path + str(itr) + '.txt'
     self.baser = Baser(self.size)
 
   def fuzz(self):
@@ -88,7 +95,7 @@ class Fuzzer:
         print 'fuzzing file # ' + str(i)
       fuzz_file = open(fuzz_path() + str(i) + '.txt', 'wb')
       data      = bytearray(self.baser.read_base())
-      data[random.randint(0, len(data))] = bytes(unichr(random.randint(32, 127)))
+      data[random.randint(0, len(data) - 1)] = bytes(unichr(random.randint(32, 127)))
       fuzz_file.write(data)
       fuzz_file.close()
 
@@ -101,6 +108,7 @@ class Fuzzer:
 
     log.close()
 
+# executes differential versions (system's sha1sum and java)
 class Differ:
   def __init__(self, size, count):
     print 'differ init with size = ' + str(size)
@@ -122,12 +130,13 @@ class Differ:
     v_22_diff_file.close()
     java_diff_file.close()
 
+# determines pass/fail results
 class Oracle:
   def __init__(self):
     None
 
-  def run(self):
-    print 'Oracle is running...'
+  def run1(self):
+    print 'Oracle is verifying digests...'
     log = Logger(res_path())
 
     out1 = exec_process([sha_path(), '-c', sums_path()])
@@ -165,5 +174,7 @@ if __name__ == '__main__':
   f.run()
   d = Differ(int(sys.argv[1]), int(sys.argv[2]))
   d.run()
-  Oracle().run()
+  o = Oracle()
+  o.run1()
+
   print 'See ya!'

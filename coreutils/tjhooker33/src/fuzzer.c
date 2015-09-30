@@ -14,27 +14,27 @@
 #include <time.h>   /* time */
 
 void fuzz(FILE *fp1, long seed, long size, long index) {
-  // time_t now;
   char buffer[size];
   char temp;
 
   fread(buffer, sizeof(buffer), 1, fp1);
-
-  // now = time(NULL);
-  // printf("Random seed for fuzz = %ld \n", (long)((double)now));
+  fclose(fp1);
   printf("Random seed for fuzz = %ld \n", seed);
   srand(seed);
-  // srand(now);
-
+  
   /* check to make sure the new random byte isn't the same as the old one */
-  do {
-    temp = rand() % 32 + 94;
-  } while (temp == buffer[index]);
-  buffer[index] = temp;
+  int i;
+  for (i = 0; i < 1; i++) {
+    do {
+      temp = rand() % 32 + 94;
+    } while (temp == buffer[index]);
+    buffer[index] = temp;
+  }
 
   FILE *fp2 = fopen("fuzz.txt", "w+");
   if (fp2) {
     fwrite(buffer, 1, sizeof(buffer), fp2);
+    fclose(fp2);
   } else {
     printf("Oh darn! It looks like the fuzzer won't work. \n");
   }
