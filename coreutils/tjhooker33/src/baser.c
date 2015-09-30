@@ -14,15 +14,11 @@
 
 void write_bytes(FILE *fp, long seed, long size) {
   char str[size];
-  // time_t now;
   int i, r;
   
-  // now = time(NULL);
-  // printf("Random seed for base = %ld \n", (long)((double)now));
   printf("Random seed for base = %ld \n", seed);
   srand(seed);
-  // srand(now);
-
+  
   /* write MAX random bytes to the file */
   /* ASCII characters from 'SPACE' to '~' */
   for (i = 0; i < size; i++) {

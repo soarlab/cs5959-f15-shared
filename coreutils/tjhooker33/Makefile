@@ -26,8 +26,11 @@ baser:
 fuzzer: 
 	/usr/bin/gcc -fmessage-length=0 -pedantic-errors -std=gnu99 -Werror -Wall -Wextra -Wwrite-strings -Winit-self -Wcast-align -Wcast-qual -Wpointer-arith -Wstrict-aliasing -Wformat=2 -Wmissing-include-dirs -Wno-unused-parameter -Wshadow -Wuninitialized -Wold-style-definition src/fuzzer.c -o src/fuzzer.o
 
-test:
-	python ./tester.py ${ARGS}
+c_test:
+	python ./sha_collision_test.py ${ARGS}
+
+v_test:
+	python ./sha_verify_test.py 1000 10
 
 scrub:
 	rm -f *.txt
