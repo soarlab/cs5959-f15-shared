@@ -40,10 +40,10 @@ for i in $(seq 2000 100000)
 do
 	let num=$i*1000
 	rand="$(random_string $num)"
-	#python=$(python -c "import base64; print base64.b64encode('$rand');")
-	#coreutil=$(echo '$rand'|./base64)
+	python=$(python -c "import base64; print base64.b64encode('$rand');")
+	coreutil=$(echo '$rand'|./base64)
 	START=$(date +%s)
-	#tester "$coreutil" "$python" "$i"
+	tester "$coreutil" "$python" "$i"
 	tester "($rand|./base64|./base64 -d)" "$rand" "$i"
 	END=$(date +%s)
 	echo $((END-START)) >> times_lin.txt
