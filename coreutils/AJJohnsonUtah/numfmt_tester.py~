@@ -1,0 +1,22 @@
+import subprocess
+import sys
+
+tests_passed = 0
+tests_run = 0
+
+def do_test(command, expected, description):
+    global tests_run
+    tests_run += 1
+    test_output = subprocess.check_output(command, shell=True)
+    if(test_output == expected):
+        global tests_passed
+        tests_passed += 1
+        if(len(sys.argv) == 2 and (sys.argv[1] == "-v" or sys.argv[1] == "V")):
+            print("PASSED: " + description)
+        return True
+    else:
+        print("FAILED: %s\n\tIncorrect output: %s"
+              % (description, test_output))
+        return False
+
+do_test("numfmt --to=si 123456123", "123M\n", "Too many inputs gives error.")
