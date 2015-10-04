@@ -1,0 +1,7 @@
+Evaluating coreutils base64
+Norman Gifford
+CS 5959
+
+test.sh - this is the fuzzing bash script
+time.py - this is the python code that pots the graph for execution times
+times.txt - is the output of the bash script for the python code

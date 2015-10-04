@@ -21,6 +21,19 @@ def test(testcommand, expectedcommand):
 		logger.error("===== RESULT: " + str(actual))
 		logger.error("===== coreutils 8.21 " + expectedcommand)
 		logger.error("===== RESULT: " + str(expected))
+
+def testWithKnownAnswer(command, answer):
+	try:
+		result = subprocess.check_output(command, shell=True)
+	except subprocess.CalledProcessError as e:
+		result = e.returncode
+
+	if(result != answer):
+		global logger
+		logger.error("FAIL: coreutils 8.23 " + command)
+		logger.error("===== RESULT: " + str(result))
+		logger.error("===== ANSWER: " + answer)
+
 		
 def testNumeric(minValue, maxValue):
 	options = ["E \+ E", "E \- E", "E / E", "E \* E", "#"]
@@ -58,10 +71,9 @@ def testNumeric(minValue, maxValue):
 		formula = temp
 	
 	test("../../src/expr " + formula, "expr " + formula)
-	# test("expr " + formula, "expr " + formula)
 
 def testRelation(minValue, maxValue):
-	options = ["E '|' E", "E '&' E", "# '<' #", "# '<=' #", "# '==' #", "# '>' #", "# '>=' #", "# '!=' #"]
+	options = ["E '|' E", "E '&' E", "# '<' #", "# '<=' #", "# '==' #", "# '>' #", "# '>=' #", "# '!=' #", "# '%' #"]
 	formula = options[randint(0,7)]
 	
 	i = 0
@@ -96,7 +108,7 @@ def testRelation(minValue, maxValue):
 		formula = temp
 	
 	test("../../src/expr " + formula, "expr " + formula)
-	# test("expr " + formula, "expr " + formula)
+#	test("expr " + formula, "expr " + formula)
 
 
 
@@ -110,11 +122,31 @@ def main():
 	logger.addHandler(hdlr) 
 	logger.setLevel(logging.WARNING)
 
-	for index in range(1):
-		testNumeric(-50, -1)
+	for index in range(1000):
+		testNumeric(-10000, -1)
 	
-	for index in range(1):
-		testRelation(1,100)
+	for index in range(1000):
+		testRelation(1,10000)
+
+	# Run a series of tests with the expected answer
+	testWithKnownAnswer("../../src/expr aaa : 'a\+'", "3\n")
+	testWithKnownAnswer("../../src/expr abc : 'a\(.\)c'", "b\n")
+	testWithKnownAnswer("../../src/expr index abcdef cz", "3\n")
+	testWithKnownAnswer("../../src/expr index \+ index a", "1\n")
+	testWithKnownAnswer("../../src/expr abc : '^a[[:alnum:]]'", "2\n")
+	testWithKnownAnswer("../../src/expr match abc '^a[[:alnum:]]'", "2\n")
+	testWithKnownAnswer("../../src/expr substr 'dalton' 1 5", "dalto\n")
+ 	testWithKnownAnswer("../../src/expr index california 'i'", "4\n")
+	
+	# In this case the result is the return code which is 1 when the result is null or 0
+	testWithKnownAnswer("../../src/expr index abcdefghijklmnopqrstuvwxy 'z'", "1")
+	testWithKnownAnswer("../../src/expr length thisisateststring$%456^", "23\n")	
+	testWithKnownAnswer("../../src/expr", "2")
+
+	# Run to ensure correct output to screen
+	subprocess.call("../../src/expr --help", shell=True)
+	subprocess.call("../../src/expr --version", shell=True)	
+	subprocess.call("../../src/expr index index a", shell=True)
 
 if __name__ == '__main__':
 	main()
