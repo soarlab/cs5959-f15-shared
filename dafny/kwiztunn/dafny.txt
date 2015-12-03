@@ -1,0 +1,40 @@
+method Min(x:int, y:int, z:int) returns (min:int)
+ensures min >= 0;
+ensures min <= x || min <= y || min <= z
+|| min <= -x || min <= -y || min <= -z;
+{
+  var x_abs:int := x;
+  var y_abs:int := y;
+  var z_abs:int := z;
+  
+  if (x < 0)
+  { x_abs := -x; }
+  if (y < 0)
+  { y_abs := -y; }
+  if (z < 0)
+  { z_abs := -z; }
+  
+  if (x_abs <= y_abs && x_abs <= z_abs)
+  { min := x_abs; }
+  if (y_abs <= x_abs && y_abs <= z_abs)
+  { min := y_abs; }
+  if (z_abs <= x_abs && z_abs <= y_abs)
+  { min := z_abs; }
+  
+  return min;
+  
+}
+
+method Multiply2(n:int) returns (r:int)
+ requires 0 <= n;
+ ensures r == 2*n;
+{
+ r := 0;
+ var i:int := 0;
+ while (i < n) 
+   invariant r == i*2 && n >= i >= 0
+ {
+   r := r + 2;
+   i := i + 1;
+ }
+}
