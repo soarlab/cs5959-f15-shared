@@ -1,0 +1,36 @@
+method Multiply2(n:int) returns (r:int)
+ requires 0 <= n;
+ ensures r == 2*n;
+{
+ r := 0;
+ var i:int := 0;
+ while (i < n)
+  invariant 0 <= i <= n
+  invariant r == 2*i
+ {
+   r := r + 2;
+   i := i + 1;
+ }
+}
+
+
+
+method Min(a: int, b: int, c: int) returns (d: int)
+{
+  var x:int := 0;
+  var y:int := 0;
+  var z:int := 0;
+  if a < 0{x := -a;}
+  else{x := a;}
+  if b < 0{y := -b;}
+  else{y := b;}
+  if c < 0{z := -c;}
+  else{z := c;}
+  
+  if x < y && x < z
+    {return x;}
+  else if y < x && y < z
+    {return y;}
+  else
+    {return z;}
+}
