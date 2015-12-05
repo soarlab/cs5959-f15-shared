@@ -1,0 +1,17 @@
+//Takes 3 integer parameters and returns their smallest absolute value.
+method Min(a:int, b:int, c:int) returns(min:int)
+ensures min + a == 0 || min - a == 0 || min + b == 0 || min - b == 0 || min + c == 0 || min - c == 0
+{
+  min := a;
+  if(a < 0){
+    min := a*-1;}
+  if(b >= 0 && min > b){
+    min := b;}
+  if(b < 0 && min > b*-1){
+    min := b*-1;}
+  if(c >= 0 && min > c){
+    min := c;}
+  if(c < 0 && min > c*-1){
+    min := c*-1;}
+  return min;
+}
