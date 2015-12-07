@@ -1,0 +1,31 @@
+#include <pthread.h>
+#include <stdio.h>
+#include <assert.h>
+
+int Global;
+
+void *Thread1(void *x) {
+  int y;
+  y = Global;
+  y++;
+  Global = y;
+  return NULL;
+}
+
+void *Thread2(void *x) {
+  int y;
+  y = Global;
+  y--;
+  Global = y;
+  return NULL;
+}
+
+int main() {
+  pthread_t t[2];
+  pthread_create(&t[0], NULL, Thread1, NULL);
+  pthread_create(&t[1], NULL, Thread2, NULL);
+  pthread_join(t[0], NULL);
+  pthread_join(t[1], NULL);
+  assert(Global == 0);
+}
+
