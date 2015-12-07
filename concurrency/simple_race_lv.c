@@ -5,12 +5,18 @@
 int Global;
 
 void *Thread1(void *x) {
-  Global++;
+  int y;
+  y = Global;
+  y++;
+  Global = y;
   return NULL;
 }
 
 void *Thread2(void *x) {
-  Global--;
+  int y;
+  y = Global;
+  y--;
+  Global = y;
   return NULL;
 }
 
