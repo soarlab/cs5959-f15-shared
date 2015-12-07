@@ -1,0 +1,18 @@
+method Multiply2(n:int) returns (r:int)
+ requires 0 <= n;
+ ensures r == 2*n;
+{
+ r := 0;
+ var i:int := 0;
+ while (i < n)
+ //i must always be greater than 0
+ invariant i >= 0;
+ // at the end of each loop r must be equal to 2*i
+ invariant r == 2*i;
+ // the value of r will never exceed 2*n
+ invariant r <= 2*n;
+ {
+   r := r + 2;
+   i := i + 1;
+ }
+}

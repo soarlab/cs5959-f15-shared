@@ -1,0 +1,61 @@
+method Min(x:int,y:int,z:int) returns (a:int)
+ensures a>=0;
+ensures x>=0 ==> a<=x;
+ensures y>=0 ==> a<=y;
+ensures z>=0 ==> a<=z;
+ensures x<0 ==> a<=-x;
+ensures y<0 ==> a<=-y;
+ensures z<0 ==> a<=-z;
+{
+  var abs_x,abs_y,abs_z;
+  if(x<0)
+  {
+    abs_x:=-x;
+  }
+  else
+  {
+    abs_x:=x;
+  }
+  if(y<0)
+  {
+    abs_y:=-y;
+  }
+  else
+  {
+    abs_y:=y;
+  }
+  if(z<0)
+  {
+    abs_z:=-z;
+  }
+  else
+  {
+    abs_z:=z;
+  }
+  if(abs_x <= abs_y && abs_x<=abs_z)
+  {
+    return abs_x;
+  }
+  else if(abs_y<=abs_z && abs_y<=abs_x)
+  {
+    return abs_y;
+  }
+  else{
+    return abs_z;
+  }
+}
+
+method Multiply2(n:int) returns (r:int)
+ requires 0 <= n;
+ ensures r == 2*n;
+{
+ r := 0;
+ var i:int := 0;
+ while (i < n)
+ invariant 0 <= i <= n
+ invariant r==2*i
+ {
+   r := r + 2;
+   i := i + 1;
+ }
+}
