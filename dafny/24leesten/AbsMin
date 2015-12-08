@@ -1,0 +1,29 @@
+method absMin(n1:int,n2:int,n3:int) returns (min:int)
+ensures (min == n1 || min == -n1) || (min == n2 || min == -n2) || (min == n3 || min == -n3)
+ensures (min <= n1 || min <= (n1 * -1)) && (min <= n2 || min <= (n2 * -1)) && (min <= n3 || min <= (n3 * -1))
+ensures min >= 0
+{
+ if (n1 < 0) {
+   min := -n1; 
+ } else {
+   min := n1;
+ }
+ if (n2 < 0) {
+   if (-n2 < min) {
+     min := -n2;
+   }
+ } else {
+   if (n2 < min) {
+     min := n2;
+   }
+ }
+ if (n3 < 0) {
+   if (-n3 < min) {
+     min := -n3;
+   } 
+ }else {
+  if (n3 < min) {
+   min := n3;
+  }
+ }
+}
