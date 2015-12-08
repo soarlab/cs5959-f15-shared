@@ -1,6 +1,6 @@
 method absMin(n1:int,n2:int,n3:int) returns (min:int)
 ensures (min == n1 || min == -n1) || (min == n2 || min == -n2) || (min == n3 || min == -n3)
-ensures (min <= n1 || min <= (n1 * -1)) && (min <= n2 || min <= (n2 * -1)) && (min <= n3 || min <= (n3 * -1))
+ensures (min <= n1 || min <= -n1) && (min <= n2 || min <= -n2) && (min <= n3 || min <= -n3)
 ensures min >= 0
 {
  if (n1 < 0) {
