@@ -1,0 +1,24 @@
+method Min(x:int, y:int, z:int) returns (s: int)
+ensures s <= y
+ensures s <= x
+ensures s <= z
+{
+  if(x > y)
+  {
+    if(y>z)
+    {
+      s := z;
+      return;
+    }
+    s := y;
+  }
+  else
+  {
+    if(x>z)
+    {
+      s := z;
+      return;
+    }
+    s := x;
+  }
+}
