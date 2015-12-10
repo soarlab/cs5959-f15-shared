@@ -1,0 +1,39 @@
+method Min(a:int, b:int, c:int) returns(d:int) 
+ensures d > -1
+{
+  var a_abs: int := 0;
+  var b_abs: int := 0;
+  var c_abs: int := 0;
+  
+  if a < 0
+  {
+    a_abs := -a;
+  }
+  if b < 0
+  {
+    b_abs := -b;
+  }
+  if c < 0
+  {
+    c_abs := -c;
+  }
+  assert a_abs > -1;
+  assert b_abs > -1;
+  assert c_abs > -1;
+  
+  if a_abs <= b_abs && a_abs <= c_abs
+  {
+    d := a_abs;
+    return d;
+  }
+  if b_abs <= a_abs && b_abs <= c_abs
+  {
+    d := b_abs;
+    return d;
+  }
+  if c_abs <= a_abs && c_abs <= b_abs
+  {
+    d := c_abs;
+    return d;
+  }
+}
