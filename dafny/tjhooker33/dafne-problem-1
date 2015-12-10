@@ -4,9 +4,13 @@ ensures r >= a && (r == a || r == -a)
 {
   if a < 0
   {
-    return -a;
+    r := -a;
   }
-  return a;
+  else 
+  {
+    r := a;  
+  }
+  return r;
 }
 
 method min(a:int, b:int, c:int) returns (r:int)
