@@ -1,0 +1,37 @@
+method abs(a:int) returns (r:int)
+ensures r >= 0
+ensures r >= a && (r == a || r == -a)
+{
+  if a < 0
+  {
+    r := -a;
+  }
+  else 
+  {
+    r := a;  
+  }
+  return r;
+}
+
+method min(a:int, b:int, c:int) returns (r:int)
+ensures r >= 0 // absolute value
+ensures (r <= a || r <= -a) && (r <= b || r <= -b) && (r <= c || r <= -c)
+{
+  var x:int := abs(a);
+  var y:int := abs(b);
+  var z:int := abs(c);
+  
+  if x <= y && x <= z 
+  {
+    r:= x;
+  }
+  else if y <= x && y <= z
+  {
+    r:= y;
+  }
+  else 
+  {
+    r:= z;  
+  }
+  return r;
+}

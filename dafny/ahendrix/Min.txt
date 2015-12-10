@@ -1,0 +1,29 @@
+method Min(x:int, y:int, z:int) returns (s: int)
+ensures s <= x || s <= -x
+ensures s <= y || s <= -y
+ensures s <= z || s <= -z
+{
+  s := x;
+   if(s < 0)
+  {
+    s := -s;
+  }
+  var comp: int := y;
+ if(comp < 0)
+  {
+    comp := -comp;
+  }
+  if(comp < s)
+  {
+    s := comp;
+  }
+  comp:= z;
+ if(comp < 0)
+  {
+    comp := -comp;
+  }
+  if(comp < s)
+  {
+    s := comp;
+  }
+}

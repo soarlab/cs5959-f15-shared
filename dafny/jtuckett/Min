@@ -1,0 +1,59 @@
+/**
+  Returns the smallest magnitude integer from the three
+  inputs.
+  return value MUST be >=0
+  return value must be the absolute value of one of the inputs
+  return value must be the smallest magnitude of the inputs.
+  Author: Dustin Jay Tuckett
+*/
+method Min(x:int, y:int, z:int) returns (min:int)
+ //min must be equal to the absolute value of one of the inputs
+ ensures min == (if x < 0 then -x else x) ||
+         min == (if y < 0 then -y else y) ||
+         min == (if z < 0 then -z else z);
+ //min must be smaller than or equal to all inputs
+ ensures min<=(if x < 0 then -x else x) &&
+         min<=(if y < 0 then -y else y) &&
+         min<=(if x < 0 then -x else x);
+ //min must be greater than 0
+ ensures min >= 0;
+{
+  /*Originally I tried to use a method to set abs variables.  However,
+    this prevented the post-conditions from checking out.  So, instead
+    I used the syntax noted in the tutorial to assign the variables*/
+  var absx:=(if x < 0 then -x else x);
+  var absy:=(if y < 0 then -y else y);
+  var absz:=(if z < 0 then -z else z);
+  if (absx <= absy && absx <= absz ) {
+    min:=absx;
+  } else if (absy <=absx && absy <= absz) {
+    min:=absy;
+  } else if (absz <= absx && absz <= absy) {
+    min:=absz;
+  }
+  return min;
+}
+
+method Main()
+{
+  var x := 0;
+  var y := 0;
+  var z := 0;
+
+  var min := Min(x, y, z);
+  assert min == 0;
+
+  x := -1;
+  y := 2;
+  z := 3;
+
+  min := Min(x, y, z);
+  assert min == 1;
+
+  x := -1;
+  y := -50;
+  z := 3;
+
+  min := Min(x, y, z);
+  assert min == 1;
+}

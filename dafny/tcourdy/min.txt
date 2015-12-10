@@ -1,0 +1,24 @@
+method Min(x:int, y:int, z:int) returns(min:int)
+ensures min >= 0
+ensures ((min == x || min == -x) && (min <= y || min <= -y) && (min <= z || min <= -z)) || ((min == y || min == -y) && (min <= x || min <= -x) && (min <= z || min <= -z)) || ((min == z || min == -z) && (min <= x || min <= -x) && (min <= y || min <= -y))
+{
+  var a, b, c := x, y, z;
+  if(a < 0){
+    a := -a;
+  }
+  if(b < 0){
+    b := -b;
+  }
+  if(c < 0){
+    c := -c;
+  }
+  
+  if(a <= b && a <= c){
+    min := a;
+  } else if(b <= a && b <= c){
+    min := b;
+  } else {
+    min := c;
+  }
+  
+}

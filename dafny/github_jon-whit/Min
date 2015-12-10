@@ -1,0 +1,52 @@
+method Min(x:int, y:int, z:int) returns (abs_min:int)
+ensures abs_min >= 0;
+ensures ((if x < 0 then -x else x) < (if y < 0 then -y else y)) && ((if x < 0 then -x else x) < (if z < 0 then -z else z)) ==> abs_min == (if x < 0 then -x else x);
+//ensures (x < y) && (x < z) ==> abs_min == x;
+ensures ((if x < 0 then -x else x) < (if y < 0 then -y else y)) && ((if x < 0 then -x else x) >= (if z < 0 then -z else z)) ==> abs_min == (if z < 0 then -z else z);
+//ensures (x < y) && (x >= z) ==> abs_min == z;
+ensures ((if y < 0 then -y else y) < (if x < 0 then -x else x)) && ((if y < 0 then -y else y) < (if z < 0 then -z else z)) ==> abs_min == (if y < 0 then -y else y);
+//ensures (y < x) && (y < z) ==> abs_min == y;
+ensures ((if y < 0 then -y else y) < (if x < 0 then -x else x)) && ((if y < 0 then -y else y) >= (if z < 0 then -z else z)) ==> abs_min == (if z < 0 then -z else z);
+//ensures (y < x) && (y >= z) ==> abs_min == z;
+{
+  var absx := x;
+  var absy := y;
+  var absz := z;
+  
+  if (x < 0) {
+    absx := -x;
+  }
+  if (y < 0) {
+    absy := -y;
+  }
+  if (z < 0) {
+    absz := -z;
+  }
+  
+  if (absx < absy) {
+    if (absx < absz) {
+      abs_min := absx;
+    }
+    else {
+      abs_min := absz;
+    }
+  }
+  else {
+    if (absy < absz) {
+      abs_min := absy;
+    }
+    else {
+      abs_min := absz;
+    }
+  }
+}
+
+method Main()
+{
+  var x := 0;
+  var y := -2;
+  var z := -3;
+  
+  var abs_min := Min(x, y, z);
+  assert abs_min == 0;
+}
