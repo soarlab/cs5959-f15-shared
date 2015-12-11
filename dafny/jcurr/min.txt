@@ -1,0 +1,38 @@
+method Min(a: int, b: int, c: int) returns(min_abs: int)
+ensures min_abs >= 0
+ensures (min_abs == a || min_abs == b || min_abs == c)
+        || (min_abs == -a || min_abs == -b || min_abs == -c)
+{
+  var abs_a:int, abs_b:int, abs_c:int;
+  if(a < 0){
+    abs_a := -a;
+  }
+  else{
+    abs_a := a;
+  }
+  
+   if(b < 0){
+    abs_b := -b;
+  }
+  else{
+    abs_b := b;
+  }
+  
+  if(c < 0){
+    abs_c := -c;
+  }
+  else{
+    abs_c := c;
+  }
+  
+  if(abs_a <= abs_b && abs_a <= abs_c){
+    min_abs := abs_a;
+  }
+  else if(abs_b <= abs_a && abs_b <= abs_b){
+    min_abs := abs_b;
+  }
+  else{
+    min_abs := abs_c;
+  }
+  
+}
