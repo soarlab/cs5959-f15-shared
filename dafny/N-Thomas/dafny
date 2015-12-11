@@ -1,0 +1,57 @@
+method Min(a:int,b:int,c:int) returns (x:int)
+ensures x >= 0;
+ensures x <= a || x <= -a;
+ensures x <= b || x <= -b;
+ensures x <= c || x <= -c;
+{
+  var abs_a:int;
+  var abs_b:int;
+  var abs_c:int;
+  
+  if(a<0){
+    abs_a := -a;
+  }
+  else{
+    abs_a := a;
+  }
+  
+  if(b<0){
+    abs_b := -b;
+  }
+  else{
+    abs_b := b;
+  }
+  
+  if(c<0){
+    abs_c := -c;
+  }
+  else{
+    abs_c := c;
+  }
+  
+  if(abs_a < abs_b && abs_a < abs_c){
+    x := abs_a;
+  }
+  else if(abs_b < abs_c){
+    x := abs_b;
+  }
+  else{
+    x:= abs_c;
+  }
+}
+
+method Multiply2(n:int) returns (r:int)
+ requires 0 <= n
+ ensures r == 2*n
+{
+ r := 0;
+ var i:int := 0;
+ while (i < n)
+ invariant i <= n
+ invariant i >= 0
+ invariant r == i*2
+ {
+   r := r + 2;
+   i := i + 1;
+ }
+}
