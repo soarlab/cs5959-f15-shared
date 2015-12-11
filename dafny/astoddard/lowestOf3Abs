@@ -1,0 +1,37 @@
+method Min(x:int,y:int,z:int) returns (min:int)
+ensures 0 <= min
+ensures min*min <= x*x
+ensures min*min <= y*y
+ensures min*min <= z*z
+{
+  var i1:int;
+  var i2:int;
+  var i3:int;
+ if (x < 0) {
+   i1 := -x; 
+ }
+ else{
+   i1 := x;
+ }
+ if (y < 0){
+   i2:= -y;
+ }
+ else{
+   i2 := y;
+ }
+ if (z < 0){
+   i3:= -z;
+ }
+ else{
+   i3 := z;
+ }
+ min := i1;
+ 
+ if (min > i2){
+   min := i2;
+ }
+ 
+ if (min > i3){
+   min:=i3;
+ }
+}
