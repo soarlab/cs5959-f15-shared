@@ -1,8 +1,6 @@
 method Min(a:int,b:int,c:int) returns (x:int)
 ensures x >= 0;
-ensures x <= a || x <= -a;
-ensures x <= b || x <= -b;
-ensures x <= c || x <= -c;
+ensures x*x <= a*a && x*x <= b*b && x*x <= c*c
 {
   var abs_a:int;
   var abs_b:int;
