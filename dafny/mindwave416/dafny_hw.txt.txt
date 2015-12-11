@@ -1,0 +1,43 @@
+method min(x: int, y: int, z:int) returns (min: int) 
+ensures (min >= 0);
+ensures (min <= x) || (min <= -x)
+ensures (min <= y) || (min <= -y)
+ensures (min <= z) || (min <= -z)
+{
+  min := -1;
+  var ax := x;
+  var ay := y;
+  var az := z;
+  if( ax<0){
+    ax := -ax;
+  }
+  if( ay<0){
+    ay := -ay;
+  }
+  if( az<0){
+    az := -az;
+  }
+  if (ax <= ay) && (ax <= az){
+    min := ax;
+  } else if (ay <= ax) && (ay <=az){
+    min := ay;
+  } else if (az <= ax) && (az <= ay){
+    min := az;
+  }
+}
+
+method Multiply2(n:int) returns (r:int)
+ requires 0 <= n;
+ ensures r == 2*n;
+{
+ r := 0;
+ var i:int := 0;
+ while (i < n)
+  invariant (0 <= i <= n)
+  invariant (r == 2*i)
+ {
+   r := r + 2;
+   i := i + 1;
+ }
+}
+ 
